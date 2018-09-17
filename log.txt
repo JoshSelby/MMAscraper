@@ -1,0 +1,135 @@
+starting worker pid=17456 on localhost:11891 at 17:07:23.503
+starting worker pid=22688 on localhost:11891 at 17:07:23.815
+starting worker pid=26196 on localhost:11891 at 17:07:24.095
+starting worker pid=22776 on localhost:11891 at 17:07:24.378
+starting worker pid=25744 on localhost:11891 at 17:07:24.700
+starting worker pid=25724 on localhost:11891 at 17:07:25.019
+starting worker pid=11904 on localhost:11891 at 17:07:25.335
+starting worker pid=13040 on localhost:11891 at 17:07:25.673
+starting worker pid=11216 on localhost:11891 at 17:08:18.150
+starting worker pid=23748 on localhost:11891 at 17:08:18.418
+starting worker pid=1704 on localhost:11891 at 17:08:18.692
+starting worker pid=22404 on localhost:11891 at 17:08:18.952
+starting worker pid=18384 on localhost:11891 at 17:08:19.235
+starting worker pid=14956 on localhost:11891 at 17:08:19.517
+starting worker pid=22132 on localhost:11891 at 17:08:19.800
+starting worker pid=27140 on localhost:11891 at 17:08:20.085
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: httr
+Loading required package: httr
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: dplyr
+Loading required package: dplyr
+Loading required package: httr
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: dplyr
+Loading required package: httr
+Loading required package: dplyr
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
