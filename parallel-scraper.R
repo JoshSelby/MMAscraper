@@ -4,16 +4,18 @@ if (!require("doSNOW")) install.packages("doSNOW")
 library(doSNOW)
 if (!require("parallel")) install.packages("parallel")
 library(parallel)
-if (!require("dplyr")) install.packages("dplyr")
-library(dplyr)
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
 
 
 # Start our search with Chael P. Sonnen. Can replace this with ANY fighter's Sherdog link.
-link = "/fighter/Chael-Sonnen-4112"
+link = "Chael-Sonnen-4112"
 
 
 # Scrapes a single page and creates list
 scrape <- function(link) {
+  if (!require("tidyverse")) install.packages("tidyverse")
+  library(tidyverse)
   if (!require("rvest")) install.packages("rvest")
   library(rvest)
   if (!require("httr")) install.packages("httr")
@@ -24,15 +26,13 @@ scrape <- function(link) {
   # Initialize scraper
   searched_links <- c()
   links_to_search <- c()
-  fights_table <- data.frame(matrix(ncol=11,nrow=0))
-  fn_nn <- list()
-  
-  
   
   no_errors = TRUE
   # read the webpage page of the fighter that we are interested in
   fighter_page <- tryCatch({
-    read_html(paste0("http://www.sherdog.com/fighter",link))
+    link %>%
+      paste0("http://www.sherdog.com/fighter/", .) %>%
+      read_html()
   }, 
   error=function(cond) {
     message(cond)
@@ -51,8 +51,9 @@ scrape <- function(link) {
   tbl_num <- 3
   loop = TRUE
   while (loop == TRUE) {
-    error_check <- fighter_page %>%
-      html_nodes(paste0("section:nth-child(",tbl_num,") h2")) %>%
+    error_check <- tbl_num %>% 
+      paste0("section:nth-child(", ., ") h2") %>%
+      html_nodes(fighter_page, .) %>%
       html_text()
     # Links to opponent pages
     if(!("Fight History - Pro" %in% error_check)){
@@ -63,115 +64,128 @@ scrape <- function(link) {
   }
   
   # Opposing fighters' links
-  fighter_links <- fighter_page %>%
-    html_nodes(paste0("section:nth-child(",tbl_num,") td:nth-child(2) a")) %>%
-    html_attr("href")  
+  fighter_links <- tbl_num %>% 
+    paste0("section:nth-child(", ., ") td:nth-child(2) a") %>%
+    html_nodes(fighter_page, .) %>%
+    html_attr("href")
   
   # Track Fighter name
-  fighter_names <- fighter_page %>%
+  fighter_name <- fighter_page %>%
     # use CSS selector to extract relevant entries from html
-    html_nodes(".nickname em , .fn") %>%
+    html_nodes(".fn") %>%
     # turn the html output into simple text fields
-    html_text
+    html_text()
   
-  
-  # Using our same fight page from before
-  fighter_table <- fighter_page %>%
-    # extract fight history
-    html_nodes(paste0("section:nth-child(",tbl_num,") td")) %>%
-    # not a well-behaved table so it is extracted as strings
+  # Extract fight history from page, wrap text to form a table
+  fighter_page_table <- tbl_num %>%
+    paste0("section:nth-child(", ., ") td") %>%
+    html_nodes(fighter_page, .) %>%
     html_text() %>%
-    # wrap text to reform table
     matrix(ncol = 6, byrow = T)
   
+  # Convert table to tibble
+  colnames(fighter_page_table) <- fighter_page_table[1,] %>% 
+    gsub("\\/", "", .)
+    
   
-  # Add column names from first entries of table
-  colnames(fighter_table) <- fighter_table[1,]
-  fighter_table <- fighter_table[-1,, drop = F]
-  fighter_table <- as.data.frame(fighter_table, stringsAsFactors = F)
-  fighter_table$Fighter1 <- fighter_names[[1]]
-  
-  # Split Method/Referee columns
-  fighter_table$Referee <- html_text(html_nodes(
-    fighter_page, paste0("section:nth-child(",tbl_num,") td:nth-child(4) .sub_line"))) %>% na.omit()
-  fighter_table$Method_d <- sapply(fighter_table$`Method/Referee`,
-                                   function(x) gsub("N/A","",gsub('\\)(.*)','',
-                                                                  gsub('^(.*)\\(','',x))))
-  fighter_table$Method <- sapply(fighter_table$`Method/Referee`,
-                                 function(x) gsub("N/A","",gsub('\\(.*','',x)))
-  
-  # Fix Date/Event column
-  fighter_table$Date <- html_text(html_nodes(
-    fighter_page, paste0("section:nth-child(",tbl_num,") td:nth-child(3) .sub_line"))) %>%
-    as.Date(format="%B / %d / %Y") %>% na.omit()
-  fighter_table$Event <- html_text(html_nodes(
-    fighter_page, paste0("section:nth-child(",tbl_num,") td:nth-child(3) a"))) %>% na.omit()
-  
-  # Add both fighters' links
-  fighter_table$Link1 <- link
-  fighter_table$Link2 <- fighter_links
-  
-  fighter_table <- fighter_table %>%
-    tbl_df() %>%
-    # reorder
+  fighter_tbl <- fighter_page_table %>%
+    as.tibble %>%
+    .[-1,] %>%
+    add_column(Fighter1 = fighter_name, .before = 1) %>%
+    # Split Method/Referee columns
+    mutate(Referee = tbl_num %>%
+             paste0("section:nth-child(", ., ") td:nth-child(4) .sub_line") %>%
+             html_nodes(fighter_page, .) %>%
+             html_text() %>%
+             na.omit(),
+           Method = MethodReferee %>%
+             sapply(function(x) x %>%
+                      gsub('\\(.*','', .) %>%
+                      gsub("N/A", "", .)
+             ),
+           Method_d = MethodReferee %>% 
+             sapply(function(x) x %>%
+                      gsub('^(.*)\\(','', .) %>%
+                      gsub('\\)(.*)','', .) %>%
+                      gsub("N/A", "", .)
+             ),
+           Date = tbl_num %>%
+             paste0("section:nth-child(", ., ") td:nth-child(3) .sub_line") %>%
+             html_nodes(fighter_page, .) %>%
+             html_text() %>%
+             as.Date(format="%B / %d / %Y") %>%
+             na.omit(),
+           Event = tbl_num %>%
+             paste0("section:nth-child(", ., ") td:nth-child(3) a") %>%
+             html_nodes(fighter_page, .) %>%
+             html_text() %>%
+             na.omit(),
+           # Add both fighters' links
+           Link1 = link,
+           Link2 = fighter_links
+    ) %>%
     select(Fighter1, Result, Fighter2=Fighter, Method, Method_d, R, Time, 
-           Referee, Event, Date, Link1, Link2)
-  
-  # Remove rows which are already in final table
-  fighter_table <- subset(fighter_table, !(Link2 %in% searched_links))
-  
-  fights_table <- rbind(fights_table, fighter_table)
+           Referee, Event, Date, Link1, Link2) %>%
+    # Remove rows which are already in final table
+    subset(!(Link2 %in% searched_links))
+    
   
   if (no_errors == TRUE) {
-    searched_links <- unique(append(searched_links, link))
+    searched_links <- searched_links %>% 
+      append(link) %>% 
+      unique
     links_to_search <- fighter_links[fighter_links != "javascript:void();"]
   }
   
-  return(list("fights" = fights_table,
-              "searched" = data.frame(searched_links),
+  return(list("fights" = fighter_tbl,
+              "searched" = searched_links %>% tibble(),
               "toSearch" = links_to_search))
   
 }
 
 # Combines the scraped results
 bind <- function(a, b) {
-  fights_table = rbind(a[[1]], b[[1]])
+  fighter_tbl = rbind(a[[1]], b[[1]])
   searched = rbind(a[[2]], b[[2]])
-  toSearch = append(a[[3]], b[[3]]) %>% setdiff(searched$searched_links)
+  toSearch = append(a[[3]], b[[3]]) %>% 
+    setdiff(searched$searched_links)
   
-  return(list("fights"=fights_table, "searched"=searched, "toSearch"=toSearch))
+  return(list("fights"=fighter_tbl, "searched"=searched, "toSearch"=toSearch))
 }
 
 
 NumberOfCluster <- detectCores()
-cl <- makeCluster(NumberOfCluster, outfile="log.txt")
+cl <- NumberOfCluster %>% makeCluster(outfile="log.txt")
 registerDoSNOW(cl)
 
 # Initialize fights table
-fights_table <- list("fights" = NULL,
-                     "searched" = data.frame("searched_links" = as.character()),
+fights_list <- list("fights" = NULL,
+                     "searched" = tibble("searched_links" = as.character()),
                      "toSearch" = link)
 
 # Will run until all fighters to scrape are exausted.
-# Scrapes 100 fighters per iteration, taking about 14 seconds each. ~25k/hour
+# Scrapes 100 fighters per iteration, taking about 12 seconds each. ~30k/hour
 # Script may stop from timing out. You can simply resume from where you left off.
 
-while(length(fights_table$toSearch >= 1)) {
+while(fights_list[[3]] %>% length >= 1) {
   print(system.time({
-    pb <- txtProgressBar(max = length(head(fights_table[[3]], 100)), style = 3)
+    pb <- fights_list[[3]] %>%
+      head(100) %>% length %>%
+      txtProgressBar(max = ., style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
     opts <- list(progress = progress)
-    fights_table2 <<- foreach(link2=head(fights_table[[3]], 100), .combine='bind', .multicombine=TRUE, 
+    
+    fights_list2 <<- foreach(link2=head(fights_list[[3]], 100), .combine='bind', .multicombine=TRUE, 
                              .maxcombine=2, .export=c("link", "scrape"), 
                              .options.snow = opts) %dopar% {
                                scrape(link2)
                              }
-    fights_table <- bind(fights_table, fights_table2)
+    fights_list <- bind(fights_list, fights_list2)
   }))
-  rm(fights_table2)
+  rm(fights_list2)
 }
 
 stopCluster(cl)
 rm(NumberOfCluster, opts, pb)
 
-saveRDS(fights_table, file = "fights_table.rds")
+saveRDS(fights_list, file = "~/GitHub/MMAscraper/raw-data/fights_table.rds")
