@@ -163,10 +163,10 @@ while(length(fights_table$toSearch >= 1)) {
     pb <- txtProgressBar(max = length(head(fights_table[[3]], 100)), style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
     opts <- list(progress = progress)
-    fights_table2 <<- foreach(link=head(fights_table[[3]], 100), .combine='bind', .multicombine=TRUE, 
+    fights_table2 <<- foreach(link2=head(fights_table[[3]], 100), .combine='bind', .multicombine=TRUE, 
                              .maxcombine=2, .export=c("link", "scrape"), 
                              .options.snow = opts) %dopar% {
-                               scrape(link)
+                               scrape(link2)
                              }
     fights_table <- bind(fights_table, fights_table2)
   }))

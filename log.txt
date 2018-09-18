@@ -133,3 +133,27 @@ The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
