@@ -18,8 +18,6 @@ scrape <- function(link) {
   library(rvest)
   if (!require("httr")) install.packages("httr")
   library(httr)
-  if (!require("dplyr")) install.packages("dplyr")
-  library(dplyr)
   if (!require("xml2")) install.packages("xml2")
   library(xml2)
   
