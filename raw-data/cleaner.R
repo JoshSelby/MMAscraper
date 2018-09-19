@@ -12,6 +12,10 @@ fights2 <- fights %>%
 fights <- rbind(fights, fights2)
 fights <- unique(fights)
 
+fights <- fights %>%
+  filter(Result != "loss",
+         Result == "win" | (Result != "win" & Link1 < Link2))
+
 # Remove all fights where Link2 is an unknown fighter
 # Remove fight where Link1=Link2
 # Remove Marcus Vinicius Cruz
@@ -19,44 +23,6 @@ fights <- fights %>%
   filter(Fighter2 != "Unknown Fighter") %>%
   filter(Link1 != Link2)
   
-
-
-
-timesAppearing <- fights %>% 
-  select(Link1) %>% 
-  table + 
-  fights %>% 
-  select(Link2) %>% 
-  table()
-
-oddNames <- timesAppearing[which(timesAppearing %% 2 == 1)] %>% names()
-
-fights %>% filter(Link1 == oddNames[2] | Link2 == oddNames[2]) %>% 
-  select(Link1, Link2) %>% 
-  unlist(use.names = FALSE) %>% 
-  table
-
-
-test1 <- fights %>% filter(Result == "win") %>% select(Link1) %>% arrange(Link1) %>% .[[1]]
-test2 <- fights %>% filter(Result == "loss") %>% select(Link2) %>% arrange(Link2) %>% .[[1]]
-setdiff(test1, test2)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Remove Referee names from Method and Method_d columns
 # Convert all foreign/accented letters to latin letters
