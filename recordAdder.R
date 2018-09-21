@@ -56,3 +56,6 @@ fighterRecords <- winCar %>%
   full_join(lossCar) %>% 
   full_join(drawCar) %>%
   mutate(matches = rowSums(.[2:4], na.rm=T))
+
+
+saveRDS(fights, file = "~/GitHub/MMAscraper/records/fights_records.rds")
