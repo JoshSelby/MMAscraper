@@ -1,0 +1,42 @@
+install.packages("EloRating")
+library(EloRating)
+library(lubridate)
+library(dplyr)
+library(data.table)
+
+fights <- read.csv("files/fights_table_records")
+fights$X <- NULL
+
+fights <- as.data.table(fights)
+
+L1f <- fights[, .(fighter = Link1, w=.N), by=Link1][,-1]
+L2f <- fights[, .(fighter = Link2, l=.N), by=Link2][,-1]
+test <- merge(L1f, L2f, all=TRUE)
+test$matches <- rowSums(test[,.(w,l)], na.rm=TRUE)
+setnames(test, c("fighter", "matches"), c("Link1", "matches1"))
+fights <- merge(fights, test, by="Link1")
+setnames(test, c("Link1", "matches1"), c("Link2", "matches2"))
+fights <- merge(fights, test, by="Link2")
+rm(L1f, L2f)
+
+
+fights1 <- fights %>%
+  filter(year(Date)>=1999, matches1>=8, matches2>= 8) %>%
+  select(match_id, Link1, Link2, Date, draw, g1, wins1, loss1, draw1, g2, wins2, loss2, draw2) %>%
+  as.data.table() %>%
+  arrange(match_id)
+
+
+res <- with(fights1, elo.seq(winner=Link1, loser=Link2, Date=Date, draw=draw))
+logtable <- as.data.table(res$logtable)
+
+logtable$Date <- as.Date(logtable$Date, "1999-01-07")
+logtable$winprob <- with(logtable, winprob(Apre, Bpre))
+head(sort(extract.elo(res, "2017-12-03"), decreasing = TRUE), 10)
+
+goat <- logtable[logtable[, .I[Apost == max(Apost)], by=winner]$V1][order(-Apost)]
+goat[, rank := .I]
+
+
+write.csv(logtable, "logtable.csv")
+write.csv(fights1, "fights1.csv")

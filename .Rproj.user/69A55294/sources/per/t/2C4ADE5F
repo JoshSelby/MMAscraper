@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1537230025846.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3587024704",
+    "id" : "2C4ADE5F",
+    "lastKnownWriteTime" : 1537230768,
+    "last_content_update" : 1537230768586,
+    "path" : "~/GitHub/MMAscraper/cleaner.R",
+    "project_path" : "cleaner.R",
+    "properties" : {
+        "cursorPosition" : "1,10",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

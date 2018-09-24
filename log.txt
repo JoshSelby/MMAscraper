@@ -133,3 +133,517 @@ The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
+starting worker pid=66888 on localhost:11383 at 18:00:39.495
+starting worker pid=62168 on localhost:11383 at 18:00:39.710
+starting worker pid=78816 on localhost:11383 at 18:00:39.900
+starting worker pid=64428 on localhost:11383 at 18:00:40.111
+starting worker pid=77104 on localhost:11383 at 18:00:40.318
+starting worker pid=66812 on localhost:11383 at 18:00:40.521
+starting worker pid=59068 on localhost:11383 at 18:00:40.755
+starting worker pid=72160 on localhost:11383 at 18:00:40.950
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Loading required package: rvest
+Installing package into 'C:/Users/anort/Documents/R/win-library/3.4'
+(as 'lib' is unspecified)
+Warning messages:
+1: There were 35 warnings (use warnings() to see them)Warning messages:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+ 1:  there is no package called 'rvest'
+Warning messages:
+There were 13 warnings (use warnings() to see them)There were 32 warnings (use warnings() to see them)ly = TRUE, logical.return = TRUE,  :1: 
+ 1: there is no package called 'rvest'
+, character.only = TRUE, logical.return = TRUE,  :
+ 2: library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  : there is no package called 'rvest'
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+ ere is no package called 'rvest'
+2: library(package, lib.loc = lib.loc2: haracter.only = TRUE, logical.return = TRUE,  :
+ In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+ ere is no package called 'rvest'
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+ In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :3:  there is no package called 'rvest'
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called 'rvest'
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called 'rvest'
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :4:  there is no package called 'rvest'
+5: library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called 'rvest'
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called 'rvest'
+6: In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called 'rvest'
+7: In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called 'rvest'
+8: In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called 'rvest'
+9: In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called 'rvest'
+starting worker pid=57152 on localhost:11383 at 18:02:27.648
+starting worker pid=55424 on localhost:11383 at 18:02:27.843
+starting worker pid=53460 on localhost:11383 at 18:02:28.035
+starting worker pid=79524 on localhost:11383 at 18:02:28.228
+starting worker pid=14840 on localhost:11383 at 18:02:28.446
+starting worker pid=65048 on localhost:11383 at 18:02:28.641
+starting worker pid=70344 on localhost:11383 at 18:02:28.834
+starting worker pid=72164 on localhost:11383 at 18:02:29.037
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: xml2
+Loading required package: httr
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: httr
+Loading required package: httr
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: dplyr
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: dplyr
+Loading required package: httr
+Loading required package: dplyr
+Loading required package: dplyr
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: In addition: rialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: ges:
+Warning messages:
+was built under R version 3.4.4 
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+3: package 'httr' was built under R version 3.4.4 
+connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+1: package 'rvest' was built under R version 3.4.4 
+4: package 'dplyr' was built under R version 3.4.4 
+2: package 'xml2' was built under R version 3.4.4 
+In addition: ttr' was built under R version 3.4.4 
+3: package 'httr' was built under R version 3.4.4 
+4: package 'dplyr' was built under R version 3.4.4 
+4: package 'dplyr' was built under R version 3.4.4 
+Warning messages:
+Error in unserialize(node$con) : error reading from c1: package 'rvest' was built under R version 3.4.4 
+ata -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+2: package 'xml2' was built under R version 3.4.4 
+3: package 'httr' was built under R version 3.4.4 
+In addition: ttr' was built under R version 3.4.4 
+4: package 'dplyr' was built under R version 3.4.4 
+In addition: 4: package 'dplyr' was built under R version 3.4.4 
+Warning messages:
+Warning messages:
+1: package 'rvest' was built under R version 3.4.4 
+onnection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+1: package 'rvest' was built under R version 3.4.4 
+2: package 'xml2' was built under R version 3.4.4 
+2: package 'xml2' was built under R version 3.4.4 
+3: package 'httr' was built under R version 3.4.4 
+3: package 'httr' was built under R version 3.4.4 
+Warning messages:
+was built under R version 3.4.4 
+4: package 'dplyr' was built under R version 3.4.4 
+1: package 'rvest' was built under R version 3.4.4 
+2: package 'xml2' was built under R version 3.4.4 
+3: package 'httr' was built under R version 3.4.4 
+4: package 'dplyr' was built under R version 3.4.4 
+Execution halted
+Execution halted
+Execution halted
