@@ -133,6 +133,7 @@ The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
+<<<<<<< HEAD
 starting worker pid=66888 on localhost:11383 at 18:00:39.495
 starting worker pid=62168 on localhost:11383 at 18:00:39.710
 starting worker pid=78816 on localhost:11383 at 18:00:39.900
@@ -596,10 +597,1113 @@ The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
+=======
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+starting worker pid=25072 on localhost:11492 at 12:42:53.401
+starting worker pid=14108 on localhost:11492 at 12:42:53.822
+starting worker pid=5240 on localhost:11492 at 12:42:54.107
+starting worker pid=28508 on localhost:11492 at 12:42:54.398
+starting worker pid=17380 on localhost:11492 at 12:42:54.680
+starting worker pid=28520 on localhost:11492 at 12:42:54.960
+starting worker pid=25924 on localhost:11492 at 12:42:55.232
+starting worker pid=25484 on localhost:11492 at 12:42:55.512
+Loading required package: rvest
+Loading required package: xml2
+Loading required package: httr
+starting worker pid=26368 on localhost:11492 at 12:44:06.426
+starting worker pid=16508 on localhost:11492 at 12:44:06.701
+starting worker pid=17336 on localhost:11492 at 12:44:06.977
+starting worker pid=18124 on localhost:11492 at 12:44:07.263
+starting worker pid=7900 on localhost:11492 at 12:44:07.544
+starting worker pid=26472 on localhost:11492 at 12:44:07.814
+starting worker pid=13716 on localhost:11492 at 12:44:08.092
+starting worker pid=3292 on localhost:11492 at 12:44:08.364
+Loading required package: tidyverse
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+Loading required package: xml2
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: xml2
+Loading required package: rvest
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+
+Attaching package: 'rvest'
+
+Loading required package: rvest
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+Loading required package: xml2
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+starting worker pid=11872 on localhost:11492 at 12:56:32.778
+starting worker pid=27836 on localhost:11492 at 12:56:33.069
+starting worker pid=19812 on localhost:11492 at 12:56:33.350
+starting worker pid=26896 on localhost:11492 at 12:56:33.630
+starting worker pid=28452 on localhost:11492 at 12:56:33.910
+starting worker pid=12500 on localhost:11492 at 12:56:34.182
+starting worker pid=27288 on localhost:11492 at 12:56:34.471
+starting worker pid=19828 on localhost:11492 at 12:56:34.801
+Loading required package: tidyverse
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: xml2
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: rvest
+Loading required package: xml2
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+starting worker pid=10964 on localhost:11492 at 13:02:04.907
+starting worker pid=27696 on localhost:11492 at 13:02:05.180
+starting worker pid=28572 on localhost:11492 at 13:02:05.463
+starting worker pid=19848 on localhost:11492 at 13:02:05.745
+starting worker pid=5056 on localhost:11492 at 13:02:06.024
+starting worker pid=12136 on localhost:11492 at 13:02:06.295
+starting worker pid=15684 on localhost:11492 at 13:02:06.578
+starting worker pid=2836 on localhost:11492 at 13:02:06.865
+Loading required package: tidyverse
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+Loading required package: xml2
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: xml2
+Loading required package: rvest
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: xml2
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+starting worker pid=19864 on localhost:11492 at 13:26:07.225
+starting worker pid=24496 on localhost:11492 at 13:26:07.497
+starting worker pid=15124 on localhost:11492 at 13:26:07.768
+starting worker pid=27828 on localhost:11492 at 13:26:08.044
+starting worker pid=1968 on localhost:11492 at 13:26:08.323
+starting worker pid=28664 on localhost:11492 at 13:26:08.635
+starting worker pid=5308 on localhost:11492 at 13:26:08.914
+starting worker pid=28516 on localhost:11492 at 13:26:09.189
+Loading required package: tidyverse
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages ---------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: xml2
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: xml2
+Loading required package: rvest
+Loading required package: httr
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+
+Attaching package: 'rvest'
+
+Loading required package: httr
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: xml2
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: xml2
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: httr
 Error in unserialize(node$con) : error reading from connection
 Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
 Error in unserialize(node$con) : error reading from connection
 Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+In addition: Warning message:
+'glue::collapse' is deprecated.
+Use 'glue_collapse' instead.
+See help("Deprecated") and help("glue-deprecated"). 
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+starting worker pid=29984 on localhost:11621 at 13:46:25.357
+starting worker pid=25680 on localhost:11621 at 13:46:25.785
+starting worker pid=4016 on localhost:11621 at 13:46:26.156
+starting worker pid=25800 on localhost:11621 at 13:46:26.517
+starting worker pid=18332 on localhost:11621 at 13:46:26.965
+starting worker pid=26992 on localhost:11621 at 13:46:27.338
+starting worker pid=28776 on localhost:11621 at 13:46:27.705
+starting worker pid=21844 on localhost:11621 at 13:46:28.061
+Loading required package: tidyverse
+-- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+Loading required package: tidyverse
+-- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+-- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Attaching packages --------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.0.0     v purrr   0.2.5
+v tibble  1.4.2     v dplyr   0.7.6
+v tidyr   0.8.1     v stringr 1.3.1
+v readr   1.1.1     v forcats 0.3.0
+-- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+Loading required package: xml2
+-- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+-- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+Loading required package: xml2
+Loading required package: xml2
+-- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+Loading required package: httr
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+-- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: httr
+Loading required package: rvest
+Loading required package: xml2
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+-- Conflicts ------------------------------------------------------------------------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+Loading required package: rvest
+Loading required package: xml2
+
+Attaching package: 'rvest'
+
+The following object is masked from 'package:purrr':
+
+    pluck
+
+The following object is masked from 'package:readr':
+
+    guess_encoding
+
+Loading required package: httr
+>>>>>>> df5dd2323bd8e258898cbc963f0fa364cc40ef09
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+<<<<<<< HEAD
 In addition: In addition: rialize(node$con) : error reading from connection
 Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
 In addition: ges:
@@ -644,6 +1748,25 @@ was built under R version 3.4.4
 2: package 'xml2' was built under R version 3.4.4 
 3: package 'httr' was built under R version 3.4.4 
 4: package 'dplyr' was built under R version 3.4.4 
+=======
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+>>>>>>> df5dd2323bd8e258898cbc963f0fa364cc40ef09
 Execution halted
 Execution halted
 Execution halted
