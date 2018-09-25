@@ -60,6 +60,7 @@ fights <- fightsRaw %>%
          Date = ifelse(grepl("GCVT - Gaisei Challenge", Event), "1994-07-25", Date),
          Date = ifelse(grepl("Combat Super Fight - Carangolas", Event), "2018-07-16", Date),
          Date = ifelse(grepl("NG - New Generation", Event) & Date=="0000-11-30", "2017-11-30", Date),
+         Date = as.Date(Date),
          Method = ifelse(Method=="Isaac Yap", "Submission", Method),
          Method_d = ifelse(Method_d=="Isaac Yap", "Triangle Choke", Method_d),
          Method = ifelse(grepl("^Nc$|N/C|No Conest", Method), "No Contest", Method),

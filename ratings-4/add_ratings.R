@@ -1,5 +1,11 @@
+if (!require("comperank")) install.packages("comperank")
 library(comperank)
+if (!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
+if (!require("lubridate")) install.packages("lubridate")
+library(lubridate)
+if (!require("Rcpp")) install.packages("Rcpp")
+library(Rcpp)
 
 fights <- readRDS(file = "~/GitHub/MMAscraper/records-3/fights_records.rds")
 
@@ -29,7 +35,7 @@ fightsElo <- full_join(fightsM, elo, by = c("match_id" = "game")) %>%
             .funs = round)
 
 # Fighters' highest elo achieved
-fightsElo %>% group_by(Link1) %>% filter(r1a == max(r1a)) %>% arrange(-r1a) %>% View
+fightsElo %>% group_by(Link1) %>% filter(r1a == max(r1a)) %>% arrange(-r1a)
 
 fightsEloLong <- fightsElo %>% 
   select(match_id, Link1, Date, r1a) %>%
@@ -37,40 +43,65 @@ fightsEloLong <- fightsElo %>%
               select(match_id, Link2, Date, r2a), 
             by = c("match_id" = "match_id", "Link1" = "Link2", 
                    "Date" = "Date", "r1a" = "r2a")) %>%
-  rename(Link = Link1, rating = r1a)
+  rename(Link = Link1, rating = r1a) %>%
+  arrange(Date)
+
+
+by_fighter <- fightsEloLong %>%
+  group_by(Link) %>%
+  nest() 
+
+
+
 
 
 
 dates <- fightsElo %>% .$Date %>% unique
 
-
-
 topN <- tibble(Link = as.character())
-for (i in dates) {
+for (i in dates[1:50]) {
   topNi <- fightsEloLong %>%
     filter(Date <= i) %>%
-    arrange(Date) %>%
     group_by(Link) %>%
     filter(rating == last(rating)) %>%
     arrange(-rating) %>%
     select(Link, rating) %>%
-    unique() %>%
-    head(15)
-  colnames(topNi)[2] <- i
-  topN <- merge(topN, topNi, all = TRUE) %>% unique()
-  print(i)
+    distinct() %>%
+    head(15) 
+  colnames(topNi)[2] <- as.Date(i) %>% paste()
+  topN <- merge(topN, topNi, all = TRUE) %>% distinct()
+  print(as.Date(i))
 }
 
 
 
 
-test <- fightsEloLong %>% 
-  filter(Date <= "2005-01-01") %>%
-  arrange(Date) %>%
+test2 <- fightsEloLong %>% 
+  filter(Date <= dates[5000]) %>%
   group_by(Link) %>% 
   filter(rating == last(rating)) %>%
   arrange(-rating) %>%
   select(Link, rating) %>%
-  rename("2005-01-01" = rating) %>%
-  head(15)
+  head(15) 
 
+
+
+
+cppFunction('double last_rcpp(NumericVector x) {
+            int n = x.size();
+            return x[n-1];
+            }')
+
+test <- tapply(fightsEloLong$rating, fightsEloLong$Link, FUN = last_rcpp)
+
+topN <- tibble(Link = as.character())
+for (i in dates) {
+  bruh <- fightsEloLong %>%
+    filter(Date <= i)
+  topNi <- tapply(bruh$rating, bruh$Link, FUN = last_rcpp) %>%
+    sort(TRUE) %>%
+    head(15) 
+  colnames(topNi)[2] <- as.Date(i) %>% paste()
+  topN <- merge(topN, topNi, all = TRUE) %>% distinct()
+  print(as.Date(i))
+}

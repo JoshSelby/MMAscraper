@@ -1,6 +1,8 @@
-library(EloRating)
+if (!require("dplyr")) install.packages("dplyr")
 library(dplyr)
+if (!require("data.table")) install.packages("data.table")
 library(data.table)
+
 
 fights <- readRDS("~/GitHub/MMAscraper/clean-data-2/fights_clean.rds")
 
