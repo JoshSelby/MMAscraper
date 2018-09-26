@@ -47,52 +47,12 @@ fightsEloLong <- fightsElo %>%
   arrange(Date)
 
 
-by_fighter <- fightsEloLong %>%
-  group_by(Link) %>%
-  nest() 
-
-
-
-
-
-
 dates <- fightsElo %>% .$Date %>% unique
-
-topN <- tibble(Link = as.character())
-for (i in dates[1:50]) {
-  topNi <- fightsEloLong %>%
-    filter(Date <= i) %>%
-    group_by(Link) %>%
-    filter(rating == last(rating)) %>%
-    arrange(-rating) %>%
-    select(Link, rating) %>%
-    distinct() %>%
-    head(15) 
-  colnames(topNi)[2] <- as.Date(i) %>% paste()
-  topN <- merge(topN, topNi, all = TRUE) %>% distinct()
-  print(as.Date(i))
-}
-
-
-
-
-test2 <- fightsEloLong %>% 
-  filter(Date <= dates[5000]) %>%
-  group_by(Link) %>% 
-  filter(rating == last(rating)) %>%
-  arrange(-rating) %>%
-  select(Link, rating) %>%
-  head(15) 
-
-
-
 
 cppFunction('double last_rcpp(NumericVector x) {
             int n = x.size();
             return x[n-1];
             }')
-
-test <- tapply(fightsEloLong$rating, fightsEloLong$Link, FUN = last_rcpp)
 
 topN <- tibble(Link = as.character())
 for (i in dates) {
@@ -100,8 +60,26 @@ for (i in dates) {
     filter(Date <= i)
   topNi <- tapply(bruh$rating, bruh$Link, FUN = last_rcpp) %>%
     sort(TRUE) %>%
-    head(15) 
-  colnames(topNi)[2] <- as.Date(i) %>% paste()
+    head(25) 
+  topNi <- tibble(Link = rownames(topNi), i = topNi)
+  colnames(topNi)[2] <- paste(i)
   topN <- merge(topN, topNi, all = TRUE) %>% distinct()
-  print(as.Date(i))
+  i %>% as.Date("1970-01-01") %>% print
 }
+
+
+saveRDS(fightsElo, file = "fightsElo.rds")
+write_csv(fightsEloLong, "fightsEloLong.csv")
+write_csv(fightsEloLong %>% 
+            slice(50:549) %>% 
+            mutate(Date = as.numeric(Date),
+                   rating = as.integer(rating)), "fightsEloLong2.csv")
+saveRDS(topN, file = "top_25_elo.rds")
+saveRDS(topN, file = "top_15_elo.rds")
+
+
+top_15_elo %>% 
+  select(Link, "2018-01-02") %>% 
+  filter(!is.na(.[[2]])) %>% 
+  arrange(-.[[2]])
+

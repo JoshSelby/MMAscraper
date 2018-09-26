@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1537554331787.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D0432BB6",
+    "lastKnownWriteTime" : 32651569751457901,
+    "last_content_update" : 1537554331787,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "9B87DA7E",
+        "caption" : "rankelo",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=rankelo&cache_key=9B87DA7E",
+        "displayedObservations" : "99165",
+        "environment" : "",
+        "object" : "rankelo",
+        "preview" : "0",
+        "totalObservations" : "99165",
+        "variables" : "3"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
