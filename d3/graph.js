@@ -28,6 +28,18 @@ var svg = d3.select("body").append("svg")
 
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
+// gridlines in x axis function
+function make_x_gridlines() {
+    return d3.axisBottom(x)
+        .ticks(5)
+}
+
+// gridlines in y axis function
+function make_y_gridlines() {
+    return d3.axisLeft(y)
+        .ticks(5)
+}
+
 
 d3.csv("fightsEloLong2.csv", function(error, data) {
   if (error) throw error;
@@ -45,15 +57,13 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
   y.domain([d3.min(data, function(d) { return d.rating }),
             d3.max(data, function(d) { return d.rating })]);
 
-  console.log([1000,d3.max(data, function(d) { return d.rating })]);
 
   // Nest the entries by
   var dataNest = d3.nest()
       .key(function(d) {return d.Link;})
       .entries(data);
 
-  legendSpace = width/dataNest.length;
-
+  // Plot points and lines
   dataNest.forEach(function(d,i) {
 
       svg.append("path")
@@ -87,6 +97,23 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
 
   });
 
+  // add the X gridlines
+  svg.append("g")
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + height + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+      )
+
+  // add the Y gridlines
+  svg.append("g")
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+      )
+
   // Add the X Axis
   svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -95,5 +122,6 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
   // Add the Y Axis
   svg.append("g")
       .call(d3.axisLeft(y));
+
 
 });

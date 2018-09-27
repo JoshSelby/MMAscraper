@@ -71,14 +71,13 @@ for (i in dates) {
 saveRDS(fightsElo, file = "fightsElo.rds")
 write_csv(fightsEloLong, "fightsEloLong.csv")
 write_csv(fightsEloLong %>% 
-            slice(50:549) %>% 
-            mutate(Date = as.numeric(Date),
-                   rating = as.integer(rating)), "fightsEloLong2.csv")
+            filter(grepl("Dustin-Poirier|Ovince|Yoel-Romero|Tyron-Woodley|Colby-Covington|Khabib-Nurma",Link)) %>% 
+            arrange(Date), "d3/fightsEloLong2.csv")
 saveRDS(topN, file = "top_25_elo.rds")
 saveRDS(topN, file = "top_15_elo.rds")
 
 
-top_15_elo %>% 
+topN %>% 
   select(Link, "2018-01-02") %>% 
   filter(!is.na(.[[2]])) %>% 
   arrange(-.[[2]])
