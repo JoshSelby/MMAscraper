@@ -63,6 +63,8 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       .key(function(d) {return d.Link;})
       .entries(data);
 
+      console.log(dataNest);
+
   // Plot points and lines
   dataNest.forEach(function(d,i) {
 

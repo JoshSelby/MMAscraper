@@ -1,7 +1,3 @@
-var limit = 60 * 1,
-    duration = 750,
-    now = new Date(Date.now() - duration)
-
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 150, bottom: 50, left: 50},
     width = 960 - margin.left - margin.right,
@@ -32,8 +28,6 @@ var svg = d3.select("body").append("svg")
 
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-var paths = svg.append('g');
-
 // gridlines in x axis function
 function make_x_gridlines() {
     return d3.axisBottom(x)
@@ -57,61 +51,79 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       d.rating = +d.rating;
   });
 
-
   // Scale the range of the data
   x.domain([d3.min(data, function(d) { return d.Date }),
             d3.max(data, function(d) { return d.Date })]);
   y.domain([d3.min(data, function(d) { return d.rating }),
             d3.max(data, function(d) { return d.rating })]);
 
+
   // Nest the entries by
-  var fighters = d3.nest()
-      .key(function(d) {return d.Link;})
+  var dataNest = d3.nest()
+      .key(function(d) {return d.Date;})
       .entries(data);
 
-  var fighters = Object.assign({}, fighters)
+
+
   // Plot points and lines
-  for (var indFighter in fighters) {
-      var fighter = fighters[indFighter]
-      fighter.path = paths.append('path')
-          .data([fighter.data])
-          .attr('class', indFighter + ' group')
-          .style('stroke', fighter.color)
-  };
+  dataNest.forEach(function(d,i) {
+    console.log(d.values.);
+      svg.append("path")
+          .attr("class", "line")
+          .style("stroke", function() { // Add the colours dynamically
+              return d.color = color(d.key); })
+          .attr("id", 'tag'+d.key.replace(/\s+/g, '')) // assign ID
+          .attr("d", valueline(d.values));
 
-  function tick() {
+      svg.selectAll("dot")
+          .data(d.values)
+          .enter().append("circle")
+          .attr("r", 2.5)
+          .attr("cx", function(d) { return x(d.Date); })
+          .attr("cy", function(d) { return y(d.rating); })
+          .style("fill", function() { // Add the colours dynamically
+              return d.color = color(d.key); })
+          .style("stroke", "black")
+          .style("stroke-width", "1");
 
-      // Add new values
-      for (var indFighter in fighters) {
-          var fighter = fighters[indFighter]
-          //group.data.push(group.value) // Real values arrive at irregular intervals
-          fighter.values.push(20 + Math.random() * 100)
-          console.log(fighter);
-      }
+      svg.append("text")
+          .attr("transform", "translate(" +
+              (x(d.values[d.values.length-1].Date)+10) + "," +
+              y(d.values[d.values.length-1].rating) + ")")
+          .attr("dy", ".35em")
+          .attr("text-anchor", "start")
+          .style("fill", function() { // Add the colours dynamically
+              return d.color = color(d.key); })
+          .text(d.values[d.values.length-1].Link + ", " +
+                d.values[d.values.length-1].rating);
 
+  });
 
-      // Slide x-axis left
-      axis.transition()
-          .duration(duration)
-          .ease('linear')
-          .call(x.axis)
+  // add the X gridlines
+  svg.append("g")
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + height + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+      )
 
-      // Slide paths left
-      paths.attr('transform', null)
-          .transition()
-          .duration(duration)
-          .ease('linear')
-          .attr('transform', 'translate(' + x(now - (limit - 1) * duration) + ')')
-          .each('end', tick)
+  // add the Y gridlines
+  svg.append("g")
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+      )
 
-      // Remove oldest data point from each group
-      for (var name in groups) {
-          var group = groups[name]
-          group.data.shift()
-      }
-  }
+  // Add the X Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
 
-  tick()
+  // Add the Y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
 
 
 });
