@@ -38,8 +38,8 @@
 
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script>
-        var limit = 60 * 1,
-            duration = 750,
+        var limit = 10,
+            duration = 2000,
             now = new Date(Date.now() - duration)
 
         var width = 1000,
@@ -116,7 +116,6 @@
                 //group.data.push(group.value) // Real values arrive at irregular intervals
                 group.data.push(20 + Math.random() * 100)
                 group.path.attr('d', line)
-                console.log(group);
             }
 
 
