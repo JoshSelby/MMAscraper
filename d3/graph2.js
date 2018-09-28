@@ -38,7 +38,7 @@ var circleTransition = d3.select("circle")
 
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-var t = 1000;
+var t = 2000;
 
 // gridlines in x axis function
 function make_x_gridlines() {
@@ -102,10 +102,11 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       // data-join
       var dot = svg.selectAll("dot")
           .data(d.values);
+      console.log(dataNest);
 
       // update
-      dot.transition()
-          .duration(t)
+      dot.transition(t)
+          .ease(d3.easeLinear)
           .attr("r", 5)
           .attr("cx", function(d) { return x(d.Date); })
           .attr("cy", function(d) { return y(d.rating); })
