@@ -1,26 +1,22 @@
 var t = 0,
-ticksx = 24,
-duration = 1000;
+ticksx = 36,
+duration = 500;
 // parse the date
 var parseDate = d3.timeParse("%Y-%m-%d");
 
 
 function refilter() {
 
-  var margin = {top: 50, right: 150, bottom: 50, left: 50},
-      width = 960 - margin.left - margin.right,
+  var margin = {top: 30, right: 30, bottom: 30, left: 30},
+      width = 1000 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
-  /*
-    var x = d3.scale.linear()
-    .domain([1, n])
-    .range([0, width]);
-   */
+
  var x = d3.scaleTime()
      .domain([new Date(2000, 0, 1), new Date(2000, ticksx, 1)])
      .range([0, width]);
 
  var y = d3.scaleLinear()
-    .domain([1000,2000])
+    .domain([1000,2300])
     .range([height, 0]);
 
  var xAxis = d3.axisBottom()
@@ -28,7 +24,7 @@ function refilter() {
     .ticks(5)
     .tickFormat(d3.timeFormat("%b-%d-%Y"));
 
- var yAxis = d3.axisLeft()
+ var yAxis = d3.axisRight()
      .scale(y)
      .ticks(5);
 
@@ -46,12 +42,12 @@ function refilter() {
 
   var xaxis = graph.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(50," + height + ")")
+    .attr("transform", "translate(-10," + (height+10) + ")")
     .call(xAxis);
 
   var yaxis = graph.append("g")
       .attr("class", "y axis")
-      .attr("transform", "translate(50,0)")
+      .attr("transform", "translate("+(width-10)+",10)")
       .call(yAxis);
 
   // gridlines in x axis function
@@ -74,6 +70,13 @@ function refilter() {
 
   var color = d3.scaleOrdinal(d3.schemeCategory10);
 
+  var chartGroup = svg.append("g")
+      .attr("width", width)
+      .attr("height", height + margin.top);
+
+
+
+
   //////////////////////////////////////////////////////////////////////////////
 
   d3.csv("fightsEloLong2.csv", function(error, data) {
@@ -93,14 +96,15 @@ function refilter() {
     // Plot points and lines
     dataNest.forEach(function(d,i) {
 
-        svg.append("path")
+        chartGroup.append("path")
             .attr("class", "line")
             .style("stroke", function() { // Add the colours dynamically
                 return d.color = color(d.key); })
             .attr("id", 'tag'+d.key.replace(/\s+/g, '')) // assign ID
-            .attr("d", valueline(d.values));
+            .attr("d", valueline(d.values))
+            .attr("width",500);
 
-        svg.selectAll("dot")
+        chartGroup.selectAll("dot")
             .data(d.values)
             .enter().append("circle")
             .attr("r", 2.5)
@@ -141,24 +145,15 @@ function refilter() {
       var curDy = y.domain();
       var newDy = [curminRate, curmaxRate];
 
-      console.log(newDy, y(newDy));
-
       x.domain(newDx);
-      y.domain(newDy);
 
+      console.log(y.domain());
       shiftX = newDx[0] - curDx[1].valueOf()
 
-      svg.selectAll("path")
-        .transition()
-        .duration(duration)
-        .ease(d3.easeLinear)
-        .attr("transform", "translate("+ -width/ticksx  * t +",0)");
-
-      svg.selectAll("dot")
-          .transition()
-          .duration(duration)
-          .ease(d3.easeLinear)
-          .attr("transform", "translate("+ -width/ticksx  * t +",0)");
+      chartGroup.transition()
+                .attr("transform", "translate("+ -width/ticksx  * t +",0)")
+                .duration(duration)
+                .ease(d3.easeLinear);
 
       // slide the x-axis left
       xaxis.transition()
@@ -171,8 +166,14 @@ function refilter() {
           .ease(d3.easeLinear)
           .call(yAxis)
           .on("end", tick);
+
+
     }
+
+
     tick();
+
+
 
   });
   //////////////////////////////////////////////////////////////////////////////
