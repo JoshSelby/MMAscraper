@@ -12,7 +12,7 @@ function refilter() {
       height = 500 - margin.top - margin.bottom;
 
   var x = d3.scaleTime()
-     .domain([new Date(2005, 0, 1), new Date(2005, ticksx, 1)])
+     .domain([new Date(1996, 0, 1), new Date(1996, ticksx, 1)])
      .range([0, width]);
 
   var y = d3.scaleLinear()
@@ -38,7 +38,7 @@ function refilter() {
 
   var chartGroup = d3.select("body").append("svg")
      .attr("width", width - 200)
-     .attr("height", height + margin.top + margin.bottom)
+     .attr("height", height + margin.top)
      .attr("transform", "translate(-"+ (width) +",0)")
      .append("g");
 
@@ -110,65 +110,66 @@ function refilter() {
             .style("stroke", "black")
             .style("stroke-width", "1");
 
-        chartGroup.append("text")
+        graph.append("text")
             .attr("transform", "translate(" +
-                (x(d.values[d.values.length-1].Date)+10) + "," +
-                y(d.values[d.values.length-1].rating) + ")")
+                0 + "," + y(d.values[d.values.length-1].rating) + ")")
             .attr("dy", ".35em")
             .attr("text-anchor", "start")
             .style("fill", function() { // Add the colours dynamically
                 return d.color = color(d.key); })
             .text(d.values[d.values.length-1].Link + ", " +
                   d.values[d.values.length-1].rating);
+
+                  console.log(t, d);
+
+        function tick() {
+          t++;
+
+
+
+          var curDx = x.domain();
+          var newDx = [curDx[0].setMonth(curDx[0].getMonth() + 1),
+                      curDx[1].setMonth(curDx[1].getMonth() + 1)]
+
+          var curminRate = d3.min(data.filter(function(d) {
+              return d.Date >= curDx[0] & d.Date <= curDx[1] }),
+              function(d) {return d.rating});
+          var curmaxRate = d3.max(data.filter(function(d) {
+              return d.Date >= curDx[0] & d.Date <= curDx[1] }),
+              function(d) {return d.rating});
+
+          var curDy = y.domain();
+          var newDy = [curminRate, curmaxRate];
+
+          x.domain(newDx);
+
+          chartGroup.transition()
+              .attr("transform", "translate("+ -width/ticksx  * t +")")
+              .duration(duration)
+              .ease(d3.easeLinear);
+
+          xTickLine.transition()
+              .duration(duration)
+              .ease(d3.easeLinear)
+              .call(d3.axisBottom()
+                .scale(x)
+                .tickSize(height)
+                .tickFormat(""));
+
+          xaxis.transition()
+              .duration(duration)
+              .ease(d3.easeLinear)
+              .call(xAxis);
+
+          yaxis.transition()
+              .duration(duration)
+              .ease(d3.easeLinear)
+              .call(yAxis)
+              .on("end", tick);
+        }
+        tick();
     });
 
-
-
-    function tick() {
-      t++;
-      var curDx = x.domain();
-      var newDx = [curDx[0].setMonth(curDx[0].getMonth() + 1),
-                  curDx[1].setMonth(curDx[1].getMonth() + 1)]
-
-      var curminRate = d3.min(data.filter(function(d) {
-          return d.Date >= curDx[0] & d.Date <= curDx[1] }),
-          function(d) {return d.rating});
-      var curmaxRate = d3.max(data.filter(function(d) {
-          return d.Date >= curDx[0] & d.Date <= curDx[1] }),
-          function(d) {return d.rating});
-
-      var curDy = y.domain();
-      var newDy = [curminRate, curmaxRate];
-
-      x.domain(newDx);
-
-      shiftX = newDx[0] - curDx[1].valueOf();
-
-      chartGroup.transition()
-          .attr("transform", "translate("+ -width/ticksx  * t +")")
-          .duration(duration)
-          .ease(d3.easeLinear);
-
-      xTickLine.transition()
-          .duration(duration)
-          .ease(d3.easeLinear)
-          .call(d3.axisBottom()
-            .scale(x)
-            .tickSize(height)
-            .tickFormat(""));
-
-      xaxis.transition()
-          .duration(duration)
-          .ease(d3.easeLinear)
-          .call(xAxis);
-
-      yaxis.transition()
-          .duration(duration)
-          .ease(d3.easeLinear)
-          .call(yAxis)
-          .on("end", tick);
-    }
-    tick();
   });
   //////////////////////////////////////////////////////////////////////////////
 }
