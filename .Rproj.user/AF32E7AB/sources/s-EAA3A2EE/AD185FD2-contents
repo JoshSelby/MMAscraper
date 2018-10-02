@@ -1,0 +1,14 @@
+ranker = function(list) {
+  match(list, rev(sort(list)))
+}
+
+fightsEloLongH <- head(fightsEloLong, 50)
+
+for (i in fightsEloLongH$Date %>% unique) {
+  fightsEloLongH %>% 
+    filter(Date <= i) %>%
+    group_by(Link) %>%
+    mutate(last = dplyr::last(rating)) %>%
+    print()
+  
+}

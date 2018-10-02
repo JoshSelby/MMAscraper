@@ -80,7 +80,7 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
           .attr("r", 2.5)
           .attr("cx", function(d) { return x(d.Date); })
           .attr("cy", function(d) { return y(d.rating); })
-          .style("fill", function() { // Add the colours dynamically
+          .style("fill", function() {
               return d.color = color(d.key); })
           .style("stroke", "black")
           .style("stroke-width", "1");
