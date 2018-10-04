@@ -10,8 +10,8 @@ html, body {
 }
 
 
-.x--axis {
+.grid {
   stroke: lightgrey;
-  stroke-opacity: 0.7;
+  stroke-opacity: 0.1;
 
 }

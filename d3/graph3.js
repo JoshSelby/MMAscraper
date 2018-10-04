@@ -120,8 +120,6 @@ function refilter() {
             .text(d.values[d.values.length-1].Link + ", " +
                   d.values[d.values.length-1].rating);
 
-                  console.log(t, d);
-
         function tick() {
           t++;
 

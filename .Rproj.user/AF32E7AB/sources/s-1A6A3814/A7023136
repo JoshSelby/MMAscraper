@@ -7,13 +7,13 @@
     "folds" : "",
     "hash" : "0",
     "id" : "A7023136",
-    "lastKnownWriteTime" : 1538155486,
-    "last_content_update" : 1538418938443,
+    "lastKnownWriteTime" : 1538586495,
+    "last_content_update" : 1538590939589,
     "path" : "~/GitHub/MMAscraper/ratings-4/add_ratings.R",
     "project_path" : "ratings-4/add_ratings.R",
     "properties" : {
-        "cursorPosition" : "50,0",
-        "scrollLine" : "29"
+        "cursorPosition" : "74,1",
+        "scrollLine" : "56"
     },
     "relative_order" : 1,
     "source_on_save" : false,

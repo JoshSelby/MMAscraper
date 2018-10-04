@@ -71,15 +71,10 @@ for (i in dates) {
 
 saveRDS(fightsElo, file = "fightsElo.rds")
 write_csv(fightsEloLong, "fightsEloLong.csv")
-write_csv(fightsEloLong %>% 
-            filter(Link %in% top10) %>% 
-            arrange(Date) %>% select(-match_id), "d3/fightsEloLong2.csv")
 saveRDS(topN, file = "top_25_elo.rds")
 saveRDS(topN, file = "top_15_elo.rds")
 
 
-topN %>% 
-  select(Link, "2018-01-02") %>% 
-  filter(!is.na(.[[2]])) %>% 
-  arrange(-.[[2]])
-
+write_csv(fightsEloLong %>% 
+            filter(Link %in% topN$Link) %>% 
+            arrange(Date), "d3/fightsEloLong2.csv")
