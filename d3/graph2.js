@@ -12,10 +12,10 @@ var parseDate = d3.timeParse("%Y-%m-%d");
 
 // set the ranges
 var x = d3.scaleTime()
-    .domain([new Date(2010, 1, 1), new Date(2010,7, 1)])
+    .domain([new Date(2008, 6, 1), new Date(2008,12, 1)])
     .range([0, width]);
 var y = d3.scaleLinear()
-    .domain([900,1300])
+    .domain([900,1100])
     .range([height, 0]);
 
 // define the line
@@ -88,9 +88,12 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
         .attr("class", "line")
         .style("stroke", function(d) {
                   return d.color = color(d.key); })
-        .attr("id", function(d) { return d.key })
+        .attr("id", function(d) { return d.key ; })
         .attr("d", function(d) { return valueline(d.values); });
 
+// console.log(d3.max(chartGroup.selectAll(".line[id='Rickson Gracie']").data()[0].values, function(d) {return d.Date }))
+
+console.log(chartGroup.selectAll(".line[id = '']"))
 
   function tick() {
     t++;
@@ -98,6 +101,10 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       var curDx = x.domain().slice();
       var curDx2 = [new Date(curDx[0].getTime()), new Date(curDx[1].getTime())]
       var nxtMonth = [curDx2[0].addMonths(6), curDx2[1].addMonths(1)]
+
+      //remove path
+      chartGroup.selectAll(".line[id='Rickson Gracie']")
+          .remove()
 
       //remove dots
       chartGroup.selectAll("g")
@@ -151,11 +158,13 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
         var curminRate = maxes[1][9];
       }
 
-      // curminRate = curmaxRate - 300;
-
-
       var curDy = y.domain();
-      var newDy = [curminRate-25, curmaxRate+25];
+      if (isNaN(curminRate)) {
+        var newDy = [900, 1100]
+      } else {
+        var newDy = [curminRate-25, curmaxRate+25];
+      }
+
 
       x.domain(newDx);
       y.domain(newDy);
