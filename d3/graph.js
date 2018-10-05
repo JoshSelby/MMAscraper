@@ -99,7 +99,7 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
 
       chartGroup.append("path")
           .attr("class", "line")
-          .style("stroke", function() { // Add the colours dynamically
+          .style("stroke", function() { /
               return d.color = color(d.key); })
           .attr("id", 'tag'+d.key.replace(/\s+/g, '')) // assign ID
           .attr("d", valueline(d.values));

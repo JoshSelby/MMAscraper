@@ -80,5 +80,5 @@ write_csv(fightsEloLong %>%
             arrange(Date), "d3/fightsEloLong2.csv")
 
 write_csv(fightsEloLong %>% 
-            filter(Link %in% (rankelo$player %>% head(20))) %>% 
+            filter(Date > "2017-01-01") %>% 
             arrange(Date), "d3/fightsEloLong3.csv")

@@ -32,10 +32,16 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom)
     .style("background-color", "lightgrey");
 
+svg.append("clipPath")
+    .attr("id", "rect-clip")
+    .append("rect")
+    .attr("width", width - 4 * margin.left)
+    .attr("height", height);
 
 var chartGroup = svg.append("g")
       .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+            "translate(" + margin.left + "," + margin.top + ")")
+      .attr("clip-path", "url(#rect-clip)");
 
 var xAxis = d3.axisBottom()
   .scale(x)
@@ -58,7 +64,9 @@ var yaxis = svg.append("g")
 
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-d3.csv("fightsEloLong3.csv", function(error, data) {
+
+
+d3.csv("fightsEloLong2.csv", function(error, data) {
   if (error) throw error;
 
   // format the data
@@ -72,17 +80,6 @@ d3.csv("fightsEloLong3.csv", function(error, data) {
       .key(function(d) {return d.Link;})
       .entries(data);
 
-  // dataNest.forEach(function(d,i) {
-  //   chartGroup.append("path")
-  //       .attr("class", "line")
-  //       .style("stroke", function() {
-  //           return d.color = color(d.key); })
-  //       .attr("id", d.key) // assign ID
-  //       .attr("d", valueline(d.values));
-  //
-  //     console.log(d.values[0].Date, d.values[d.values.length - 1].Date)
-  // });
-
 
   chartGroup.selectAll(".line")
       .data(dataNest)
@@ -93,7 +90,6 @@ d3.csv("fightsEloLong3.csv", function(error, data) {
                   return d.color = color(d.key); })
         .attr("id", function(d) { return d.key })
         .attr("d", function(d) { return valueline(d.values); });
-
 
 
   function tick() {
@@ -147,13 +143,19 @@ d3.csv("fightsEloLong3.csv", function(error, data) {
         return [keys, values];
       }
 
-      console.log(getKeysWithHighestValue(maxes))
+      maxes = getKeysWithHighestValue(maxes)
 
+      if (maxes[1].length < 10) {
+        var curminRate = maxes[1][maxes[1].length-1]
+      } else {
+        var curminRate = maxes[1][9];
+      }
 
-      var curminRate = getKeysWithHighestValue(maxes)[1][9];
+      // curminRate = curmaxRate - 300;
+
 
       var curDy = y.domain();
-      var newDy = [curminRate, curmaxRate];
+      var newDy = [curminRate-25, curmaxRate+25];
 
       x.domain(newDx);
       y.domain(newDy);

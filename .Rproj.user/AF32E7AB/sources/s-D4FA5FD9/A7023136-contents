@@ -35,7 +35,8 @@ fightsElo <- full_join(fightsM, elo, by = c("match_id" = "game")) %>%
             .funs = round)
 
 # Fighters' highest elo achieved
-fightsElo %>% group_by(Link1) %>% filter(r1a == max(r1a)) %>% arrange(-r1a)
+top10 <- fightsElo %>% group_by(Link1) %>% filter(r1a == max(r1a)) %>% 
+  arrange(-r1a) %>% select(Link1) %>% head(10) %>% .$Link1 
 
 fightsEloLong <- fightsElo %>% 
   select(match_id, Link1, Date, r1a) %>%
@@ -69,11 +70,15 @@ for (i in dates) {
 
 
 saveRDS(fightsElo, file = "fightsElo.rds")
-saveRDS(topN, file = "top_15_elo.rds")
+write_csv(fightsEloLong, "fightsEloLong.csv")
+saveRDS(topN, file = "top_25_elo.rds")
+#saveRDS(topN, file = "top_15_elo.rds")
 
 
-top_15_elo %>% 
-  select(Link, "2018-01-02") %>% 
-  filter(!is.na(.[[2]])) %>% 
-  arrange(-.[[2]])
+write_csv(fightsEloLong %>% 
+            filter(Link %in% topN$Link) %>% 
+            arrange(Date), "d3/fightsEloLong2.csv")
 
+write_csv(fightsEloLong %>% 
+            filter(Date > "2017-01-01") %>% 
+            arrange(Date), "d3/fightsEloLong3.csv")
