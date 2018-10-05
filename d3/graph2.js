@@ -130,8 +130,27 @@ d3.csv("fightsEloLong3.csv", function(error, data) {
       var curmaxRate = d3.max(newdata,
           function(d) {return d.rating});
 
+      maxes = {}
+      newdata.forEach(function(e) {
+        maxes[e.Link] = e.Link in maxes ? Math.max(maxes[e.Link], e.rating) : e.rating;
+      })
 
-      var curminRate = curmaxRate - 300;
+      function getKeysWithHighestValue(o){
+        var keys = Object.keys(o);
+        keys.sort(function(a,b){
+          return o[b] - o[a];
+        })
+        var values = Object.values(o);
+        values.sort(function(a,b){
+          return b - a;
+        })
+        return [keys, values];
+      }
+
+      console.log(getKeysWithHighestValue(maxes))
+
+
+      var curminRate = getKeysWithHighestValue(maxes)[1][9];
 
       var curDy = y.domain();
       var newDy = [curminRate, curmaxRate];
