@@ -15,7 +15,7 @@ var x = d3.scaleTime()
     .domain([new Date(1990, 1, 1), new Date(1990,7, 1)])
     .range([0, width]);
 var y = d3.scaleLinear()
-    .domain([1800,2200])
+    .domain([900,1300])
     .range([height, 0]);
 
 // define the line
@@ -68,12 +68,38 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       d.rating = +d.rating;
   });
 
+  var dataNest = d3.nest()
+      .key(function(d) {return d.Link;})
+      .entries(data);
+
+  // dataNest.forEach(function(d,i) {
+  //   chartGroup.append("path")
+  //       .attr("class", "line")
+  //       .style("stroke", function() {
+  //           return d.color = color(d.key); })
+  //       .attr("id", d.key) // assign ID
+  //       .attr("d", valueline(d.values));
+  //
+  //     console.log(d.values[0].Date, d.values[d.values.length - 1].Date)
+  // });
+
+
+        chartGroup.selectAll(".line")
+            .data(dataNest)
+            .enter()
+              .append("path")
+              .attr("class", "line")
+              .style("stroke", function(d) {
+                        return d.color = color(d.key); })
+              .attr("d", function(d) { return valueline(d.values); });
+
+
+
   function tick() {
     t++;
 
       var curDx = x.domain().slice();
       var curDx2 = [new Date(curDx[0].getTime()), new Date(curDx[1].getTime())]
-      console.log(curDx2)
       var nxtMonth = [curDx2[0].addMonths(6), curDx2[1].addMonths(1)]
 
       //remove
@@ -81,7 +107,6 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
           .filter(function(d,i) {
             return d.Date < new Date(curDx[0].getTime()).addMonths(-1)})
           .remove()
-
 
       //enter
       chartGroup.selectAll(".dot")
@@ -109,6 +134,13 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       x.domain(newDx);
       y.domain(newDy);
 
+      // dataNest.forEach(function(d,i) {
+      //   chartGroup.selectAll("path")
+      //     .transition()
+      //     .attr("d", valueline(d.values))
+      //     .duration(duration)
+      //     .ease(d3.easeLinear);
+      // });
 
       yaxis.transition()
         .duration(duration)
@@ -120,6 +152,18 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
         .ease(d3.easeLinear)
         .call(xAxis)
         .on("end", tick);
+
+
+
+      chartGroup.selectAll(".line")
+            .transition()
+            .attr("class", "line")
+            .style("stroke", function(d) {
+                      return d.color = color(d.key); })
+            .attr("d", function(d) { return valueline(d.values); })
+            .duration(duration)
+            .ease(d3.easeLinear);
+
 
       //update
       chartGroup.selectAll("circle")
