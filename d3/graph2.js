@@ -12,7 +12,7 @@ var parseDate = d3.timeParse("%Y-%m-%d");
 
 // set the ranges
 var x = d3.scaleTime()
-    .domain([new Date(1990, 1, 1), new Date(1990,7, 1)])
+    .domain([new Date(2010, 1, 1), new Date(2010,7, 1)])
     .range([0, width]);
 var y = d3.scaleLinear()
     .domain([900,1300])
@@ -58,7 +58,7 @@ var yaxis = svg.append("g")
 
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-d3.csv("fightsEloLong2.csv", function(error, data) {
+d3.csv("fightsEloLong3.csv", function(error, data) {
   if (error) throw error;
 
   // format the data
@@ -84,14 +84,15 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
   // });
 
 
-        chartGroup.selectAll(".line")
-            .data(dataNest)
-            .enter()
-              .append("path")
-              .attr("class", "line")
-              .style("stroke", function(d) {
-                        return d.color = color(d.key); })
-              .attr("d", function(d) { return valueline(d.values); });
+  chartGroup.selectAll(".line")
+      .data(dataNest)
+      .enter()
+        .append("path")
+        .attr("class", "line")
+        .style("stroke", function(d) {
+                  return d.color = color(d.key); })
+        .attr("id", function(d) { return d.key })
+        .attr("d", function(d) { return valueline(d.values); });
 
 
 
@@ -102,7 +103,7 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       var curDx2 = [new Date(curDx[0].getTime()), new Date(curDx[1].getTime())]
       var nxtMonth = [curDx2[0].addMonths(6), curDx2[1].addMonths(1)]
 
-      //remove
+      //remove dots
       chartGroup.selectAll("g")
           .filter(function(d,i) {
             return d.Date < new Date(curDx[0].getTime()).addMonths(-1)})
@@ -123,9 +124,13 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
                     curDx[1].setMonth(curDx[1].getMonth() + 1)]
 
       var newdata = data.filter(function(d) {
-        return d.Date >= newDx[0] & d.Date <= newDx[1]})
+        return d.Date >= new Date(curDx[0].getTime()).addYears(-1) &
+               d.Date <= new Date(curDx[1].getTime()).addDays(15) })
+
       var curmaxRate = d3.max(newdata,
           function(d) {return d.rating});
+
+
       var curminRate = curmaxRate - 300;
 
       var curDy = y.domain();
@@ -134,16 +139,8 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       x.domain(newDx);
       y.domain(newDy);
 
-      // dataNest.forEach(function(d,i) {
-      //   chartGroup.selectAll("path")
-      //     .transition()
-      //     .attr("d", valueline(d.values))
-      //     .duration(duration)
-      //     .ease(d3.easeLinear);
-      // });
-
       yaxis.transition()
-        .duration(duration)
+        .duration(duration/2)
         .ease(d3.easeLinear)
         .call(yAxis);
 
@@ -153,8 +150,7 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
         .call(xAxis)
         .on("end", tick);
 
-
-
+      //update lines
       chartGroup.selectAll(".line")
             .transition()
             .attr("class", "line")
@@ -164,8 +160,7 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
             .duration(duration)
             .ease(d3.easeLinear);
 
-
-      //update
+      //update dots
       chartGroup.selectAll("circle")
           .filter(function(d,i) {
             return d.Date > new Date(curDx[0].getTime()).addMonths(-1) })
