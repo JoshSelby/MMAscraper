@@ -12,10 +12,10 @@ var parseDate = d3.timeParse("%Y-%m-%d");
 
 // set the ranges
 var x = d3.scaleTime()
-    .domain([new Date(1989, 1, 1), new Date(1989,7, 1)])
+    .domain([new Date(1990, 1, 1), new Date(1990,7, 1)])
     .range([0, width]);
 var y = d3.scaleLinear()
-    .domain([900,1200])
+    .domain([1800,2200])
     .range([height, 0]);
 
 // define the line
@@ -68,31 +68,26 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       d.rating = +d.rating;
   });
 
-  // chartGroup.selectAll("circle")
-  //     .data(data.filter(function(d,i) {return d.Date < new Date(2000,1,1) }))
-  //     .enter().append("circle")
-  //         .attr("r", 4)
-  //         .attr("cx", function(d) { return x(d.Date); })
-  //         .attr("cy", function(d) { return y(d.rating); })
-  //         .attr("fill", function(d) {return d.color = color(d.Link)});
-
-
   function tick() {
     t++;
 
       var curDx = x.domain().slice();
       var curDx2 = [new Date(curDx[0].getTime()), new Date(curDx[1].getTime())]
-      var nxt6Month = [curDx2[0].addMonths(6), curDx2[1].addMonths(6)]
+      console.log(curDx2)
+      var nxtMonth = [curDx2[0].addMonths(6), curDx2[1].addMonths(1)]
 
-      chartGroup.selectAll("circle")
+      //remove
+      chartGroup.selectAll("g")
           .filter(function(d,i) {
-            return d.Date < new Date(curDx[0].getTime()).addMonths(-6)})
+            return d.Date < new Date(curDx[0].getTime()).addMonths(-1)})
           .remove()
 
+
+      //enter
       chartGroup.selectAll(".dot")
           .data(data.filter(function(d,i) {
-            return d.Date >nxt6Month[0] & d.Date <= nxt6Month[1] }))
-          .enter().append("g").classed("dot", true)
+            return d.Date >nxtMonth[0] & d.Date <= nxtMonth[1] }))
+          .enter().append("g")
           .append("circle")
               .attr("r", 4)
               .attr("cx", function(d) { return x(d.Date); })
@@ -114,14 +109,6 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
       x.domain(newDx);
       y.domain(newDy);
 
-      chartGroup.selectAll("circle")
-          .filter(function(d,i) {
-            return d.Date > new Date(curDx[0].getTime()).addMonths(-1) })
-          .transition()
-          .attr("cx", function(d) {return x(d.Date); })
-          .attr("cy", function(d) {return y(d.rating); })
-          .duration(duration)
-          .ease(d3.easeLinear);
 
       yaxis.transition()
         .duration(duration)
@@ -133,6 +120,16 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
         .ease(d3.easeLinear)
         .call(xAxis)
         .on("end", tick);
+
+      //update
+      chartGroup.selectAll("circle")
+          .filter(function(d,i) {
+            return d.Date > new Date(curDx[0].getTime()).addMonths(-1) })
+          .transition()
+          .attr("cx", function(d) {return x(d.Date); })
+          .attr("cy", function(d) {return y(d.rating); })
+          .duration(duration)
+          .ease(d3.easeLinear);
     }
 
     tick();
