@@ -18,7 +18,6 @@ fights2 <- fights %>%
 fights2 <- as_widecr(fights2)
 
 
-
 # 150 was shown to be the optimal K
 elo <- add_elo_ratings(fights2, K=150, initial_ratings = 1000)
 rankelo <- rank_elo(fights2, K=150, keep_rating = TRUE, initial_ratings = 1000) %>% arrange(ranking_elo)
@@ -70,15 +69,6 @@ for (i in dates) {
 
 
 saveRDS(fightsElo, file = "fightsElo.rds")
-write_csv(fightsEloLong, "fightsEloLong.csv")
+write_csv(fightsEloLong, "d3/fightsEloLong.csv")
 saveRDS(topN, file = "top_25_elo.rds")
 #saveRDS(topN, file = "top_15_elo.rds")
-
-
-write_csv(fightsEloLong %>% 
-            filter(Link %in% topN$Link) %>% 
-            arrange(Date), "d3/fightsEloLong2.csv")
-
-write_csv(fightsEloLong %>% 
-            filter(Date > "2017-01-01") %>% 
-            arrange(Date), "d3/fightsEloLong3.csv")

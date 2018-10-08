@@ -61,3 +61,4 @@ fighterRecords <- winCar %>%
 
 
 saveRDS(fights, file = "~/GitHub/MMAscraper/records-3/fights_records.rds")
+

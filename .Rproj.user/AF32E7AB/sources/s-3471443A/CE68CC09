@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1539026833778.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "CE68CC09",
+    "lastKnownWriteTime" : 1539027183,
+    "last_content_update" : 1539027183778,
+    "path" : "~/GitHub/MMAscraper/ratings-4/add_ratings.R",
+    "project_path" : "ratings-4/add_ratings.R",
+    "properties" : {
+        "cursorPosition" : "57,18",
+        "scrollLine" : "50"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

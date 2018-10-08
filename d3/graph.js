@@ -77,7 +77,7 @@ function make_y_gridlines() {
 }
 
 
-d3.csv("fightsEloLong2.csv", function(error, data) {
+d3.csv("fightsEloLong.csv", function(error, data) {
   if (error) throw error;
 
   // format the data
@@ -99,7 +99,7 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
 
       chartGroup.append("path")
           .attr("class", "line")
-          .style("stroke", function() { /
+          .style("stroke", function() { 
               return d.color = color(d.key); })
           .attr("id", 'tag'+d.key.replace(/\s+/g, '')) // assign ID
           .attr("d", valueline(d.values));

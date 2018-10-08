@@ -66,7 +66,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
 
-d3.csv("fightsEloLong2.csv", function(error, data) {
+d3.csv("fightsEloLong.csv", function(error, data) {
   if (error) throw error;
 
   // format the data
@@ -93,7 +93,7 @@ d3.csv("fightsEloLong2.csv", function(error, data) {
 
 // console.log(d3.max(chartGroup.selectAll(".line[id='Rickson Gracie']").data()[0].values, function(d) {return d.Date }))
 
-console.log(chartGroup.selectAll(".line[id = '']"))
+console.log(chartGroup.selectAll(".line[id = 'Rickson Gracie']"))
 
   function tick() {
     t++;
