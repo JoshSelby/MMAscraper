@@ -12,7 +12,7 @@ var parseDate = d3.timeParse("%Y-%m-%d");
 
 // set the ranges
 var x = d3.scaleTime()
-    .domain([new Date(2008, 6, 1), new Date(2008,12, 1)])
+    .domain([new Date(1989, 6, 1), new Date(1989,12, 1)])
     .range([0, width]);
 var y = d3.scaleLinear()
     .domain([900,1100])
@@ -76,6 +76,8 @@ d3.csv("fightsEloLong.csv", function(error, data) {
       d.rating = +d.rating;
   });
 
+  data = data.slice(0,5000);
+
   var dataNest = d3.nest()
       .key(function(d) {return d.Link;})
       .entries(data);
@@ -88,12 +90,17 @@ d3.csv("fightsEloLong.csv", function(error, data) {
         .attr("class", "line")
         .style("stroke", function(d) {
                   return d.color = color(d.key); })
-        .attr("id", function(d) { return d.key ; })
+        .attr("id", function(d,i) { return "line"+i ; })
         .attr("d", function(d) { return valueline(d.values); });
 
-// console.log(d3.max(chartGroup.selectAll(".line[id='Rickson Gracie']").data()[0].values, function(d) {return d.Date }))
+// console.log(d3.max(chartGroup.selectAll(".line").data()[0].values, function(d) {return d.Date }))
+chartGroup.selectAll(".line").each(function(d,i){
+  var totalLength = d3.select("#line" + i).node().getPointAtLength(0);
+  console.log(totalLength)
+})
 
-console.log(chartGroup.selectAll(".line[id = 'Rickson Gracie']"))
+
+
 
   function tick() {
     t++;
@@ -103,8 +110,8 @@ console.log(chartGroup.selectAll(".line[id = 'Rickson Gracie']"))
       var nxtMonth = [curDx2[0].addMonths(6), curDx2[1].addMonths(1)]
 
       //remove path
-      chartGroup.selectAll(".line[id='Rickson Gracie']")
-          .remove()
+      // chartGroup.selectAll(".line[id='Rickson Gracie']")
+      //     .remove()
 
       //remove dots
       chartGroup.selectAll("g")
