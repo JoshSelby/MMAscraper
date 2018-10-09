@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1539114764724.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4097ED0C",
+    "lastKnownWriteTime" : 3419473789575321445,
+    "last_content_update" : 1539114764724,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "40BB8F52",
+        "caption" : "fightsEloLong15",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=fightsEloLong15&cache_key=40BB8F52",
+        "displayedObservations" : 7578,
+        "environment" : "",
+        "object" : "fightsEloLong15",
+        "preview" : 0,
+        "totalObservations" : 7578,
+        "variables" : 4
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

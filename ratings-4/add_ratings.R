@@ -54,17 +54,19 @@ cppFunction('double last_rcpp(NumericVector x) {
             return x[n-1];
             }')
 
+# top N at each Date
 topN <- tibble(Link = as.character())
 for (i in dates) {
   bruh <- fightsEloLong %>%
     filter(Date <= i)
   topNi <- tapply(bruh$rating, bruh$Link, FUN = last_rcpp) %>%
     sort(TRUE) %>%
-    head(25) 
+    head(15) 
+  i = as.Date(13214, "1970-01-01") %>% gsub("-", "", .) %>% paste0("i", .)
   topNi <- tibble(Link = rownames(topNi), i = topNi)
   colnames(topNi)[2] <- paste(i)
   topN <- merge(topN, topNi, all = TRUE) %>% distinct()
-  i %>% as.Date("1970-01-01") %>% print
+  i %>% print
 }
 
 

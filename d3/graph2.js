@@ -65,8 +65,7 @@ var yaxis = svg.append("g")
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
-
-d3.csv("fightsEloLong.csv", function(error, data) {
+d3.csv("fightsEloLong15.csv", function(error, data) {
   if (error) throw error;
 
   // format the data
@@ -76,12 +75,11 @@ d3.csv("fightsEloLong.csv", function(error, data) {
       d.rating = +d.rating;
   });
 
-  data = data.slice(0,5000);
+
 
   var dataNest = d3.nest()
       .key(function(d) {return d.Link;})
       .entries(data);
-
 
   chartGroup.selectAll(".line")
       .data(dataNest)
@@ -93,15 +91,6 @@ d3.csv("fightsEloLong.csv", function(error, data) {
         .attr("id", function(d,i) { return "line"+i ; })
         .attr("d", function(d) { return valueline(d.values); });
 
-// console.log(d3.max(chartGroup.selectAll(".line").data()[0].values, function(d) {return d.Date }))
-chartGroup.selectAll(".line").each(function(d,i){
-  var totalLength = d3.select("#line" + i).node().getPointAtLength(0);
-  console.log(totalLength)
-})
-
-
-
-
   function tick() {
     t++;
 
@@ -109,9 +98,12 @@ chartGroup.selectAll(".line").each(function(d,i){
       var curDx2 = [new Date(curDx[0].getTime()), new Date(curDx[1].getTime())]
       var nxtMonth = [curDx2[0].addMonths(6), curDx2[1].addMonths(1)]
 
-      //remove path
-      // chartGroup.selectAll(".line[id='Rickson Gracie']")
-      //     .remove()
+      // remove path
+      chartGroup.selectAll(".line").filter(function(d,i){
+          var totalLength = [d3.selectAll(".line").nodes()[i].getPointAtLength(10000000000).x];
+          var lastFight = totalLength.map(function (d) { return x.invert(d); });
+          return lastFight[0] < x.domain()[0]
+        }).remove()
 
       //remove dots
       chartGroup.selectAll("g")
@@ -119,23 +111,36 @@ chartGroup.selectAll(".line").each(function(d,i){
             return d.Date < new Date(curDx[0].getTime()).addMonths(-1)})
           .remove()
 
-      //enter
+
+      //enter text
+      svg.append("g").selectAll("text")
+          .data(data.filter(function(d,i) {
+            return d.Date > nxtMonth[0] & d.Date <= nxtMonth[1] }))
+          .enter()
+          .append("text")
+              .attr("x", function(d) { return 720; })
+              .attr("y", function(d,i) { return 100 + 20*i; })
+              .attr("dy", ".35em")
+              .attr("fill", function(d) { return d.color = color(d.Link)})
+              .text(function(d) { return d.Link + ", " + d.rating});
+
+      //enter dots
       chartGroup.selectAll(".dot")
           .data(data.filter(function(d,i) {
-            return d.Date >nxtMonth[0] & d.Date <= nxtMonth[1] }))
+            return d.Date > nxtMonth[0] & d.Date <= nxtMonth[1] }))
           .enter().append("g")
           .append("circle")
               .attr("r", 4)
               .attr("cx", function(d) { return x(d.Date); })
               .attr("cy", function(d) { return y(d.rating); })
-              .attr("fill", function(d) {return d.color = color(d.Link)});
+              .attr("fill", function(d) { return d.color = color(d.Link)});
 
       var newDx = [curDx[0].setMonth(curDx[0].getMonth() + 1),
                     curDx[1].setMonth(curDx[1].getMonth() + 1)]
 
       var newdata = data.filter(function(d) {
         return d.Date >= new Date(curDx[0].getTime()).addYears(-1) &
-               d.Date <= new Date(curDx[1].getTime()).addDays(15) })
+               d.Date <= new Date(curDx[1].getTime()).addDays(-45) })
 
       var curmaxRate = d3.max(newdata,
           function(d) {return d.rating});
@@ -159,10 +164,10 @@ chartGroup.selectAll(".line").each(function(d,i){
 
       maxes = getKeysWithHighestValue(maxes)
 
-      if (maxes[1].length < 10) {
+      if (maxes[1].length < 15) {
         var curminRate = maxes[1][maxes[1].length-1]
       } else {
-        var curminRate = maxes[1][9];
+        var curminRate = maxes[1][14];
       }
 
       var curDy = y.domain();
