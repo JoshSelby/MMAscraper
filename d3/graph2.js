@@ -1,5 +1,5 @@
 var t = 0,
-    duration = 2000,
+    duration = 1000,
     ticksx = 6;
 
 // set the dimensions and margins of the graph
@@ -51,33 +51,38 @@ var chartGroup = svg.append("g")
             "translate(" + margin.left + "," + margin.top + ")")
       .attr("clip-path", "url(#rect-clip)");
 
-var chartGroup2 = svg.append("g")
+var textGroup = svg.append("g")
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")")
       .attr("clip-path", "url(#rect-clip2)");
 
-
 var xAxis = d3.axisBottom()
   .scale(x)
   .tickFormat(d3.timeFormat("%b %Y"))
-  .tickSize(6);
+  .tickSize(-height);
 
-var yAxis = d3.axisLeft()
+var yAxis = d3.axisRight()
    .scale(y)
-   .ticks(5);
+   .ticks(5)
+   .tickSize(-width);
 
 var xaxis = svg.append("g")
   .attr("class", "x axis")
-  .attr("transform", "translate("+margin.left+"," + (height +margin.top) + ")")
+  .attr("transform", "translate("+margin.left+"," + (height + margin.top + 20) + ")")
   .call(xAxis);
 
 var yaxis = svg.append("g")
     .attr("class", "y axis")
-    .attr("transform", "translate("+(width+margin.left)+","+margin.top+")")
+    .attr("transform", "translate("+width+","+margin.top+")")
     .call(yAxis);
 
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
+var textlabel = textGroup.append("g")
+    .attr("class", "label")
+    .append("text")
+        .attr("x", width * 3/4 + 20)
+        .attr("dy", ".35em");
 
 d3.csv("fightsEloLong15.csv", function(error, data) {
   if (error) throw error;
@@ -100,8 +105,15 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
         .attr("class", "line")
         .style("stroke", function(d) {
                   return d.color = color(d.key); })
+        .style("stroke-width", 3)
         .attr("id", function(d,i) { return "line"+i ; })
         .attr("d", function(d) { return valueline(d.values); });
+
+
+  test = chartGroup.selectAll(".line")
+      .nodes()[1]
+      .getPointAtLength(0)
+  console.log(test)
 
   function tick() {
     t++;
@@ -115,23 +127,41 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
           var totalLength = [d3.selectAll(".line").nodes()[i].getPointAtLength(10000000000).x];
           var lastFight = totalLength.map(function (d) { return x.invert(d); });
           return lastFight[0] < x.domain()[0]
-        }).remove()
+        }).remove();
 
       //remove dots
       chartGroup.selectAll("g")
           .filter(function(d,i) {
-            return d.Date < new Date(curDx[0].getTime()).addMonths(-1)})
-          .remove()
+            return d.Date < new Date(curDx[0].getTime()).addYears(-1)})
+          .exit()
+          .remove();
+
+
+      //enter text
+      textGroup.selectAll("text")
+          .data(data.filter(function(d,i) {
+            return d.Date > new Date(curDx[1].getTime()).addDays(-45) &
+            d.Date <= new Date(curDx[1].getTime()).addDays(-10) }))
+          .enter().append("g")
+          .append("text")
+              .attr("x", width * 3/4 + 20)
+              .attr("y", function(d) { return y(d.rating); })
+              .attr("dy", ".35em")
+              .attr("fill", function(d) { return d.color = color(d.Link); })
+              .text(function(d) { return d.Link + ", " +d.rating; })
+              .attr("font-family", "sans-serif")
+              .attr("font-weight", "bold")
+              .attr("font-size", "20px");
 
 
       //enter dots
       chartGroup.selectAll(".dot")
           .data(data.filter(function(d,i) {
             return d.Date > new Date(curDx[1].getTime()).addDays(-45) &
-            d.Date <= new Date(curDx[1].getTime()).addDays(-15) }))
+            d.Date <= new Date(curDx[1].getTime()).addDays(-14) }))
           .enter().append("g")
           .append("circle")
-              .attr("r", 8)
+              .attr("r", 10)
               .attr("cx", function(d) { return x(d.Date); })
               .attr("cy", function(d) { return y(d.rating); })
               .attr("fill", function(d) { return d.color = color(d.Link)})
@@ -196,12 +226,11 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
 
 
 
+
       //update lines
       chartGroup.selectAll(".line")
             .transition()
             .attr("class", "line")
-            .style("stroke", function(d) {
-                      return d.color = color(d.key); })
             .attr("d", function(d) { return valueline(d.values); })
             .duration(duration)
             .ease(d3.easeLinear);

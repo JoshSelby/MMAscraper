@@ -17,14 +17,20 @@ html, body {
 
 
 .axis line{
-  stroke: red;
+  stroke: lightgrey;
+  opacity: 0.3;
 }
 
 .axis path{
   stroke: red;
+  opacity: 0;
 }
 
 .axis text{
   fill: red;
+  font: 20px sans-serif;
+}
+
+.text{
   font: 20px sans-serif;
 }
