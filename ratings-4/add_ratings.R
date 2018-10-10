@@ -62,15 +62,18 @@ for (i in dates) {
   topNi <- tapply(bruh$rating, bruh$Link, FUN = last_rcpp) %>%
     sort(TRUE) %>%
     head(15) 
-  i = as.Date(13214, "1970-01-01") %>% gsub("-", "", .) %>% paste0("i", .)
+  i = as.Date(i, "1970-01-01") %>% gsub("-", "", .) %>% paste0("i", .)
   topNi <- tibble(Link = rownames(topNi), i = topNi)
   colnames(topNi)[2] <- paste(i)
   topN <- merge(topN, topNi, all = TRUE) %>% distinct()
   i %>% print
 }
 
+fightsEloLong15 <- fightsEloLong %>% 
+  filter(Link %in% topN$Link)
 
 saveRDS(fightsElo, file = "fightsElo.rds")
-write_csv(fightsEloLong, "d3/fightsEloLong.csv")
+write_csv(fightsEloLong15, "d3/fightsEloLong15.csv")
+
 saveRDS(topN, file = "top_25_elo.rds")
 #saveRDS(topN, file = "top_15_elo.rds")

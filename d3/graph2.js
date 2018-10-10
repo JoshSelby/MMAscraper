@@ -109,9 +109,6 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
         .attr("id", function(d,i) { return "line"+i ; })
         .attr("d", function(d) { return valueline(d.values); });
 
-
-
-
   function tick() {
     t++;
 
