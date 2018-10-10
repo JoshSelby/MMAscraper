@@ -110,10 +110,7 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
         .attr("d", function(d) { return valueline(d.values); });
 
 
-  test = chartGroup.selectAll(".line")
-      .nodes()[1]
-      .getPointAtLength(0)
-  console.log(test)
+
 
   function tick() {
     t++;
@@ -121,6 +118,17 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
       var curDx = x.domain().slice();
       var curDx2 = [new Date(curDx[0].getTime()), new Date(curDx[1].getTime())]
       var nxtMonth = [curDx2[0].addMonths(6), curDx2[1].addMonths(1)]
+
+      textData = _.compact(chartGroup.selectAll(".line")
+          .nodes().map(function(d) {
+            return d.__data__.values
+              .filter(function(d) {
+                return d.Date <= new Date(curDx[1].getTime()).addDays(-45)
+          }).pop()}))
+
+      //remove text
+      textGroup.selectAll("text")
+          .remove();
 
       //remove path
       chartGroup.selectAll(".line").filter(function(d,i){
@@ -136,15 +144,12 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
           .exit()
           .remove();
 
-
       //enter text
       textGroup.selectAll("text")
-          .data(data.filter(function(d,i) {
-            return d.Date > new Date(curDx[1].getTime()).addDays(-45) &
-            d.Date <= new Date(curDx[1].getTime()).addDays(-10) }))
+          .data(textData)
           .enter().append("g")
-          .append("text")
-              .attr("x", width * 3/4 + 20)
+            .append("text")
+              .attr("x", width * 0.76)
               .attr("y", function(d) { return y(d.rating); })
               .attr("dy", ".35em")
               .attr("fill", function(d) { return d.color = color(d.Link); })
@@ -152,7 +157,6 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
               .attr("font-family", "sans-serif")
               .attr("font-weight", "bold")
               .attr("font-size", "20px");
-
 
       //enter dots
       chartGroup.selectAll(".dot")
@@ -224,8 +228,14 @@ d3.csv("fightsEloLong15.csv", function(error, data) {
         .call(xAxis)
         .on("end", tick);
 
-
-
+      //update text
+      textGroup.selectAll("text")
+          .transition()
+            .attr("y", function(d) { return y(d.rating); })
+            .attr("fill", function(d) { return d.color = color(d.Link); })
+            .text(function(d) { return d.Link + ", " +d.rating; })
+            .duration(duration)
+            .ease(d3.easeLinear);
 
       //update lines
       chartGroup.selectAll(".line")
