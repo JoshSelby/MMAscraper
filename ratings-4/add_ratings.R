@@ -18,7 +18,6 @@ fights2 <- fights %>%
 fights2 <- as_widecr(fights2)
 
 
-
 # 150 was shown to be the optimal K
 elo <- add_elo_ratings(fights2, K=150, initial_ratings = 1000)
 rankelo <- rank_elo(fights2, K=150, keep_rating = TRUE, initial_ratings = 1000) %>% arrange(ranking_elo)
@@ -55,31 +54,23 @@ cppFunction('double last_rcpp(NumericVector x) {
             return x[n-1];
             }')
 
+# top N at each Date
 topN <- tibble(Link = as.character())
 for (i in dates) {
   bruh <- fightsEloLong %>%
     filter(Date <= i)
   topNi <- tapply(bruh$rating, bruh$Link, FUN = last_rcpp) %>%
     sort(TRUE) %>%
-    head(25) 
+    head(15) 
+  i = as.Date(13214, "1970-01-01") %>% gsub("-", "", .) %>% paste0("i", .)
   topNi <- tibble(Link = rownames(topNi), i = topNi)
   colnames(topNi)[2] <- paste(i)
   topN <- merge(topN, topNi, all = TRUE) %>% distinct()
-  i %>% as.Date("1970-01-01") %>% print
+  i %>% print
 }
 
 
 saveRDS(fightsElo, file = "fightsElo.rds")
-write_csv(fightsEloLong, "fightsEloLong.csv")
-write_csv(fightsEloLong %>% 
-            filter(Link %in% top10) %>% 
-            arrange(Date) %>% select(-match_id), "d3/fightsEloLong2.csv")
+write_csv(fightsEloLong, "d3/fightsEloLong.csv")
 saveRDS(topN, file = "top_25_elo.rds")
-saveRDS(topN, file = "top_15_elo.rds")
-
-
-topN %>% 
-  select(Link, "2018-01-02") %>% 
-  filter(!is.na(.[[2]])) %>% 
-  arrange(-.[[2]])
-
+#saveRDS(topN, file = "top_15_elo.rds")

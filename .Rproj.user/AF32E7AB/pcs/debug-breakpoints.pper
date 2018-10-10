@@ -1,6 +1,21 @@
 {
     "debugBreakpointsState" : {
         "breakpoints" : [
+            {
+                "editor_line_number" : 64,
+                "editor_state" : 1,
+                "function_name" : "toplevel",
+                "function_steps" : "",
+                "id" : 1,
+                "is_package_breakpoint" : false,
+                "is_pending_debug_completion" : false,
+                "line_number" : 64,
+                "needs_updated_steps" : false,
+                "package_name" : "",
+                "path" : "~/GitHub/MMAscraper/update-scraper.R",
+                "state" : 1,
+                "type" : 1
+            }
         ]
     }
 }
