@@ -52,12 +52,21 @@ drawCar <- fights %>%
   table() %>% 
   as.tibble
 
+ncCar <- fights %>% 
+  filter(Result == "NC") %>% 
+  select(Link1, Link2) %>% 
+  unlist %>% 
+  table() %>% 
+  as.tibble
+
 colnames(drawCar) <- c("Fighter", "draw")
+colnames(ncCar) <- c("Fighter", "NC")
 
 fighterRecords <- winCar %>% 
   full_join(lossCar) %>% 
   full_join(drawCar) %>%
-  mutate(matches = rowSums(.[2:4], na.rm=T))
+  full_join(ncCar) %>%
+  mutate(matches = rowSums(.[2:5], na.rm=T))
 
 
 saveRDS(fights, file = "~/GitHub/MMAscraper/records-3/fights_records.rds")

@@ -7,7 +7,7 @@ library(lubridate)
 if (!require("Rcpp")) install.packages("Rcpp")
 library(Rcpp)
 
-fights <- readRDS(file = "~/GitHub/MMAscraper/records-3/fights_records.rds")
+fights <- readRDS(file = "./records-3/fights_records.rds")
 
 fights2 <- fights %>%
   filter(Result %in% c("win", "draw") & Method != "DQ") %>%
@@ -33,10 +33,6 @@ fightsElo <- full_join(fightsM, elo, by = c("match_id" = "game")) %>%
   mutate_at(.vars = vars(r1b:r2a),
             .funs = round)
 
-# Fighters' highest elo achieved
-top10 <- fightsElo %>% group_by(Link1) %>% filter(r1a == max(r1a)) %>% 
-  arrange(-r1a) %>% select(Link1) %>% head(10) %>% .$Link1 
-
 fightsEloLong <- fightsElo %>% 
   select(match_id, Link1, Date, r1a) %>%
   full_join(fightsElo %>%
@@ -46,34 +42,7 @@ fightsEloLong <- fightsElo %>%
   rename(Link = Link1, rating = r1a) %>%
   arrange(Date)
 
+fights <- merge(fightsElo, fightsM) %>% 
+  arrange(match_id)
 
-dates <- fightsElo %>% .$Date %>% unique
-
-cppFunction('double last_rcpp(NumericVector x) {
-            int n = x.size();
-            return x[n-1];
-            }')
-
-# top N at each Date
-topN <- tibble(Link = as.character())
-for (i in dates) {
-  bruh <- fightsEloLong %>%
-    filter(Date <= i)
-  topNi <- tapply(bruh$rating, bruh$Link, FUN = last_rcpp) %>%
-    sort(TRUE) %>%
-    head(15) 
-  i = as.Date(i, "1970-01-01") %>% gsub("-", "", .) %>% paste0("i", .)
-  topNi <- tibble(Link = rownames(topNi), i = topNi)
-  colnames(topNi)[2] <- paste(i)
-  topN <- merge(topN, topNi, all = TRUE) %>% distinct()
-  i %>% print
-}
-
-fightsEloLong15 <- fightsEloLong %>% 
-  filter(Link %in% topN$Link)
-
-saveRDS(fightsElo, file = "fightsElo.rds")
-write_csv(fightsEloLong15, "d3/fightsEloLong15.csv")
-
-saveRDS(topN, file = "top_25_elo.rds")
-#saveRDS(topN, file = "top_15_elo.rds")
+saveRDS(fights, file = "./ratings-4/fightsElo.rds")

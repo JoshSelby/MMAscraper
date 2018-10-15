@@ -2,15 +2,15 @@ library(tidyverse)
 library(rvest)
 
 # Get all fights you already scraped
-fights <- readRDS(file = "~/GitHub/MMAscraper/clean-data-2/fights_clean.rds")
+fights <- readRDS(file = "./clean-data-2/fights_clean.rds")
 
-rm(fights_list)
 
-# What's the most recent Date you have already scraped
+# What's the most recent Date you have already scraped, minus 1 month
 lastDate <- fights %>% 
   arrange(Date) %>% 
   pull(Date) %>% 
-  tail(1)
+  tail(1) %>%
+  -30
 
 
 events_page <- read_html("http://www.sherdog.com/events/")
@@ -51,8 +51,11 @@ while (tail(event_tbl %>% pull(Dates), 1) > lastDate) {
   i = i+1
 }
 
+# filter events greater than last Date that are not already in our fights table
 event_tbl <- event_tbl %>%
   filter(Dates > lastDate)
+
+
 
 rm(events_page, events_pagei, i)
 ####################################################################
@@ -70,7 +73,7 @@ fightInfo <- function(eventLinks) {
       next;
     } 
     
-    fights_tbl <- event %>% html_nodes("td span") %>% html_text(T) %>% matrix(ncol = 5, byrow = T) %>% .[,-4]
+    fights_tbl <- event %>% html_nodes("td span") %>% html_text(T) %>% matrix(ncol = 5, byrow = T) %>% .[,-4] %>% matrix(ncol=4)
     MethodReferee <- event %>% html_nodes("td:nth-child(5)") %>% html_text() %>% .[-(1:2)]
     R <- event %>% html_nodes("td:nth-child(6)") %>% html_text()
     Time <- event %>% html_nodes("td:nth-child(7)") %>% html_text()
@@ -95,6 +98,8 @@ fightInfo <- function(eventLinks) {
              Date = event_tbl$Dates[match(link, event_tbl$Links)])
     
     fights_tbl2 <<- rbind(fights_tbl, fights_tbl2)
+    
+    rm(event, fights_tbl, MethodReferee, R, Time, Links, f3, l4, l2, noRecords)
     print(i)
     i = i+1
   }
@@ -124,7 +129,7 @@ fights_tbl2 <- fights_tbl2 %>%
   select(-MethodReferee)
 
 
-source('~/GitHub/MMAscraper/clean-data-2/cleaner.R', echo=TRUE)
+source('./clean-data-2/cleaner.R', echo=TRUE)
 fights_tbl2 <- clean(fights_tbl2)
 fights <- full_join(fights, fights_tbl2)
-saveRDS(fights, file = "~/GitHub/MMAscraper/clean-data-2/fights_clean.rds")
+saveRDS(fights, file = "./clean-data-2/fights_clean.rds")

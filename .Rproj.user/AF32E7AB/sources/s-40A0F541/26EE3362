@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1539636566708.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "26EE3362",
+    "lastKnownWriteTime" : 18296204203720751,
+    "last_content_update" : 1539636566708,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "1A8D3C69",
+        "caption" : "fights3",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=fights3&cache_key=1A8D3C69",
+        "displayedObservations" : 441740,
+        "environment" : "",
+        "object" : "fights3",
+        "preview" : 0,
+        "totalObservations" : 441740,
+        "variables" : 33
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1539636945877.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6FD67B18",
+    "lastKnownWriteTime" : 1539637636,
+    "last_content_update" : 1539637636321,
+    "path" : "~/GitHub/MMAscraper/raw-data-1/update-scraper.R",
+    "project_path" : "raw-data-1/update-scraper.R",
+    "properties" : {
+        "cursorPosition" : "124,40",
+        "scrollLine" : "111"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
