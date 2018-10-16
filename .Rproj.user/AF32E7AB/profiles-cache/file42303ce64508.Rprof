@@ -1,0 +1,5 @@
+memory profiling: GC profiling: line profiling: sample.interval=10000
+#File 1: <expr>
+:1720577:25498400:79853368:110:"uniqlist" "[.data.table" 1#3 "[" 1#3 "force" "doTryCatch" "tryCatchOne" "tryCatchList" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "profvis" 
+:1721688:26486716:80095792:116:"[.data.table" 1#3 "[" 1#3 "force" "doTryCatch" "tryCatchOne" "tryCatchList" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "profvis" 
+:1723753:26708351:80591448:277:"cat" "defaultHandler" "doWithOneRestart" "withOneRestart" "withRestarts" "message" "value[[3]]" "tryCatchOne" "tryCatchList" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "profvis" 

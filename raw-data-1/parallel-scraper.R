@@ -11,7 +11,6 @@ library(tidyverse)
 # Start our search with Chael P. Sonnen. Can replace this with ANY fighter's Sherdog link.
 link = "Chael-Sonnen-4112"
 
-
 # Scrapes a single page and creates list
 scrape <- function(link) {
   if (!require("tidyverse")) install.packages("tidyverse")
@@ -34,12 +33,12 @@ scrape <- function(link) {
       paste0("http://www.sherdog.com/fighter/", .) %>%
       read_html()
   }, 
-  error=function(cond) {
+    error=function(cond) {
     message(cond)
     no_errors = FALSE
     return(fighter_page)
   },
-  warning=function(cond) {
+    warning=function(cond) {
     message(cond)
     no_errors = FALSE
     return(fighter_page)
@@ -153,39 +152,43 @@ bind <- function(a, b) {
   return(list("fights"=fighter_tbl, "searched"=searched, "toSearch"=toSearch))
 }
 
-
-NumberOfCluster <- detectCores()
-cl <- NumberOfCluster %>% makeCluster(outfile="log.txt")
-registerDoSNOW(cl)
-
-# Initialize fights table
-fights_list <- list("fights" = NULL,
-                     "searched" = tibble("searched_links" = as.character()),
-                     "toSearch" = link)
-
-# Will run until all fighters to scrape are exausted.
-# Scrapes 100 fighters per iteration, taking about 12 seconds each. ~30k/hour
-# Script may stop from timing out. You can simply resume from where you left off.
-
-while(fights_list[[3]] %>% length >= 1) {
-  print(system.time({
-    pb <- fights_list[[3]] %>%
-      head(100) %>% length %>%
-      txtProgressBar(max = ., style = 3)
-    progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-    
-    fights_list2 <<- foreach(link2=head(fights_list[[3]], 100), .combine='bind', .multicombine=TRUE, 
-                             .maxcombine=2, .export=c("link", "scrape"), 
-                             .options.snow = opts) %dopar% {
-                               scrape(link2)
-                             }
-    fights_list <- bind(fights_list, fights_list2)
-  }))
-  rm(fights_list2)
+parScrap <- function() {
+  NumberOfCluster <- detectCores()
+  cl <- NumberOfCluster %>% makeCluster(outfile="log.txt")
+  registerDoSNOW(cl)
+  
+  # Initialize fights table
+  fights_list <- list("fights" = NULL,
+                      "searched" = tibble("searched_links" = as.character()),
+                      "toSearch" = link)
+  
+  # Will run until all fighters to scrape are exausted.
+  # Scrapes 100 fighters per iteration, taking about 12 seconds each. ~30k/hour
+  # Script may stop from timing out. You can simply resume from where you left off.
+  
+  while(fights_list[[3]] %>% length >= 1) {
+    print(system.time({
+      pb <- fights_list[[3]] %>%
+        head(100) %>% length %>%
+        txtProgressBar(max = ., style = 3)
+      progress <- function(n) setTxtProgressBar(pb, n)
+      opts <- list(progress = progress)
+      
+      fights_list2 <<- foreach(link2=head(fights_list[[3]], 100), .combine='bind', .multicombine=TRUE, 
+                               .maxcombine=2, .export=c("link", "scrape"), 
+                               .options.snow = opts) %dopar% {
+                                 scrape(link2)
+                               }
+      fights_list <- bind(fights_list, fights_list2)
+    }))
+    rm(fights_list2)
+  }
+  
+  stopCluster(cl)
+  rm(NumberOfCluster, opts, pb)
+  
 }
 
-stopCluster(cl)
-rm(NumberOfCluster, opts, pb)
-
-saveRDS(fights_list, file = "~/GitHub/MMAscraper/raw-data-1/fights_table.rds")
+if(exists("fights_list")) {
+  saveRDS(fights_list, file = "~/GitHub/MMAscraper/raw-data-1/fights_table.rds")
+}

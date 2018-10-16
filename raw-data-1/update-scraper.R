@@ -60,7 +60,6 @@ event_tbl <- event_tbl %>%
 rm(events_page, events_pagei, i)
 ####################################################################
 
-
 fightInfo <- function(eventLinks) {
   fights_tbl2 <<- tibble()
   i = 1
@@ -108,7 +107,8 @@ fightInfo <- function(eventLinks) {
 fightInfo(event_tbl$Links)
 
 for (i in 1:nrow(fights_tbl2)) {
-  fights_tbl2$MethodReferee[i] <- gsub(fights_tbl2$Referee[i], "", fights_tbl2$MethodReferee[i])
+  fights_tbl2$MethodReferee[i] <- gsub(fights_tbl2$Referee[i], "", 
+                                       fights_tbl2$MethodReferee[i])
 }  
 
 fights_tbl2 <- fights_tbl2 %>% 
@@ -128,6 +128,42 @@ fights_tbl2 <- fights_tbl2 %>%
   ) %>%
   select(-MethodReferee)
 
+
+# Featured bout on events page only has Referee's first name,
+# so go to the fighter pages to get ref's full name.
+
+source('./raw-data-1/parallel-scraper.R', echo=TRUE)
+fights_tbl2 %>% setDT()
+fNameRef <- fights_tbl2[grepl("^\\w*$", Referee),]
+
+for (link in pull(fNameRef, Link1)) {
+  fighter_page <- tryCatch({
+    link %>%
+      paste0("http://www.sherdog.com/fighter/", .) %>%
+      read_html()
+  }, 
+    error=function(cond) {
+      message(cond)
+      no_errors = FALSE
+      return(fighter_page)
+    },
+    warning=function(cond) {
+      message(cond)
+      no_errors = FALSE
+      return(fighter_page)
+    })
+  # Delete featured fighters who are only amateurs
+  if(fighter_page %>% html_text(trim = TRUE) %>% grepl("Fight History - Pro", .)) {
+    fighterFights <- scrape(link)[[1]] %>% setDT() %>% head(1)
+    fNameRef[grep(link, Link1), Referee := fighterFights$Referee]
+    print(link)
+  } else {
+    fights_tbl2 <- fights_tbl2[Link1 != link,]
+    fNameRef <- fNameRef[Link1 != link,]
+  }
+}
+
+fights_tbl2[grepl("^\\w*$", Referee), Referee := fNameRef$Referee]
 
 source('./clean-data-2/cleaner.R', echo=TRUE)
 fights_tbl2 <- clean(fights_tbl2)

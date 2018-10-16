@@ -1,9 +1,9 @@
 library(tidyverse)
 library(stringi)
 
-fights_list <- readRDS("~/GitHub/MMAscraper/raw-data-1/fights_table.rds")
-fightsRaw <- fights_list[[1]]
-rm(fights_list)
+# fights_list <- readRDS("~/GitHub/MMAscraper/raw-data-1/fights_table.rds")
+# fightsRaw <- fights_list[[1]]
+# rm(fights_list)
 
 clean <- function(fightsRaw) {
   fightsRaw2 <- fightsRaw %>% 
@@ -96,5 +96,4 @@ clean <- function(fightsRaw) {
 
 #fights <- clean(fightsRaw)
 
-
-saveRDS(fights, file = "~/GitHub/MMAscraper/clean-data-2/fights_clean.rds")
+# saveRDS(fights, file = "~/GitHub/MMAscraper/clean-data-2/fights_clean.rds")

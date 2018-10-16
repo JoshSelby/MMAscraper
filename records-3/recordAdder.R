@@ -4,7 +4,7 @@ if (!require("data.table")) install.packages("data.table")
 library(data.table)
 
 
-fights <- readRDS("~/GitHub/MMAscraper/clean-data-2/fights_clean.rds")
+fights <- readRDS("./clean-data-2/fights_clean.rds")
 
 fights <- fights %>% 
   arrange(Date) %>%
@@ -69,5 +69,5 @@ fighterRecords <- winCar %>%
   mutate(matches = rowSums(.[2:5], na.rm=T))
 
 
-saveRDS(fights, file = "~/GitHub/MMAscraper/records-3/fights_records.rds")
+saveRDS(fights, file = "./records-3/fights_records.rds")
 
