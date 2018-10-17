@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1539795003274.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "82202299",
+    "lastKnownWriteTime" : 1539809791,
+    "last_content_update" : 1539809791623,
+    "path" : "~/GitHub/MMAscraper/metrics-5/metrics.R",
+    "project_path" : "metrics-5/metrics.R",
+    "properties" : {
+        "cursorPosition" : "55,47",
+        "scrollLine" : "27"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
