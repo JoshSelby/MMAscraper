@@ -1,0 +1,8 @@
+rankelo <- merge(merge(rankelo100, rankelo150, by = "player"), rankelo200, by="player")
+colnames(rankelo) <- c("player", "elo100", "rank100", "elo150", "rank150", "elo200", "rank200")
+
+rankelo <- rankelo %>% mutate(rank150-rank100, rank150-rank200)
+
+
+
+rankelo %>% arrange(rank150) %>% head(200) %>% View()

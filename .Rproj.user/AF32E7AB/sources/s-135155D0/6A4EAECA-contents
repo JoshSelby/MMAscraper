@@ -1,0 +1,4 @@
+library(ggplot2)
+
+ggplot(filtfights2, aes(x=log(fightLag1))) +
+  geom_histogram()

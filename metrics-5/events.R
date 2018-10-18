@@ -26,6 +26,7 @@ fightMetrics <- fightMetrics %>% full_join(events)
 
 filtfights <- fightMetrics %>%
   filter(wins1 + loss1 + draw1 >= 5,
+         wins2 + loss2 + draw2 >= 5,
          Org %in% c("UFC", "Bellator", "One Championship", "ACB", "M-1", "FNG", "Professional Fighters League"),
          Date > "2013-01-01")
 
@@ -39,11 +40,16 @@ filtfights %>%
 # Highest skilled leagues
 fightMetrics %>% 
   filter(wins1 + loss1 + draw1 >= 5,
+         wins2 + loss2 + draw2 >= 5,
          Date > "2013-01-01") %>%
   group_by(Org) %>% 
-  summarise(average_lvl = mean(r1b+r2b), fights = n()) %>% 
+  summarise(average_lvl = mean(r1b+r2b), 
+            fights = n()/2,
+            combinedFights = sum(wins1+wins2+loss1+loss2+draw1+draw2+nc1+nc2)/(2*fights)) %>% 
   filter(fights > 50) %>%
   arrange(-average_lvl) %>%
   View()
 
 
+saveRDS(filtfights, "./metrics-5/filtfights.rds")
+saveRDS(fightMetrics, "./metrics-5/fights.rds")
