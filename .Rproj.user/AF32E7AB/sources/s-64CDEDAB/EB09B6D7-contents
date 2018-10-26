@@ -1,0 +1,36 @@
+library(purrr)
+library(dplyr)
+library(data.table)
+library(comperank)
+
+eloprob <- function(r1, r2, res, K=150) {
+  prob_win <- 1/(1 + 10^((r1 - r2)/400))
+  return(c(r1 + K * (res - prob_win), 
+           r2 - K * (res - prob_win)))
+}
+
+add_elo_ratings(ncaa2005, 1000)
+
+ncaa <- as_widecr(ncaa2005)
+ncaa <- ncaa %>%
+  mutate(res = ifelse(score1 > score2, 1, ifelse(score1 == score2, 0.5, 0)),
+         r1b = NA,
+         r2b = NA, 
+         r1a = NA, 
+         r2a = NA,
+         game = sample(10))
+
+ncaa <- ncaa %>% 
+  arrange(game) %>%
+  group_by(player1) %>%
+  mutate(r1b = ifelse(row_number()==1, 1000, NA)) %>%
+  group_by(player2) %>%
+  mutate(r2b = ifelse(row_number()==1, 1000, NA)) %>%
+  ungroup()
+
+
+ncaa %>%
+  mutate(r1a = eloprob(r1b, r2b, res)[1])
+
+
+

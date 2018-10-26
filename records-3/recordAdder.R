@@ -1,5 +1,5 @@
-if (!require("dplyr")) install.packages("dplyr")
-library(dplyr)
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
 if (!require("data.table")) install.packages("data.table")
 library(data.table)
 
@@ -33,7 +33,7 @@ fights[, nc2 := nc2a + nc2b]
 # Remove intermediate variables
 fights[, c("draw1a", "draw1b", "draw2a", "draw2b", "nc1a", "nc1b", "nc2a", "nc2b") := NULL]
 
-
+fights <- fights %>% as.tibble()
 
 winCar <- fights %>%
   filter(Result == "win") %>%

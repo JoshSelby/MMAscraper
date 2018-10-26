@@ -36,8 +36,8 @@ fightMetrics[,
                               rollmaxr((Result=="win")*r2b, 5))), # Highest rated fighter defeated in last 5 fights
             koLosses1 = lag(cumsum(Result == "loss" & 
                                   (Method=="TKO"|Method=="KO"))), # number of KO losses
-            diff1_5 = lag(c(cumsum((r1b-r2b)[1:4]),
-                            rollsumr((r1b-r2b), 5)))
+            diff1_5 = lag(c(cumsum((r1b-r2b)[1:4]/1:4),
+                            rollmeanr((r1b-r2b), 5)))
         ),
         by=Link1]
 
@@ -54,16 +54,16 @@ fightMetrics[,
                                    rollmaxr((Result=="loss")*r1b, 5))),
              koLosses2 = lag(cumsum(Result == "win" & 
                                       (Method=="TKO"|Method=="KO"))),
-             diff2_5 = lag(c(cumsum((r2b-r1b)[1:4]),
-                             rollsumr((r2b-r1b), 5)))
+             diff2_5 = lag(c(cumsum((r2b-r1b)[1:4]/1:4),
+                             rollmeanr((r2b-r1b), 5)))
         ),
         by=Link2]
 
 
 # Check with reem fights
-fighter <- fightMetrics[grepl("Colby", Link1)]
+fighter <- fightMetrics[grepl("Colby-Cov", Link1)]
 
-fightMetrics %>%
+fighter %>%
   select(-Method, -Method_d, -Event, -Fighter1, -Fighter2, -R, -Time, -Referee,
          -wins1, -wins2, -loss1, -loss2, -draw1, -draw2, -nc1, -nc2) %>% 
   View()
