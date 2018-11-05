@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1540566449938.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "24|26|28|2|\n128|29|139|0|\n149|41|211|0|\n150|25|152|2|\n153|24|157|2|\n158|26|162|2|\n",
+    "hash" : "1023669494",
+    "id" : "131B9F72",
+    "lastKnownWriteTime" : 1540928241,
+    "last_content_update" : 1540928241080,
+    "path" : "~/GitHub/MMAscraper/scrape-odds-7/oddsScraper.R",
+    "project_path" : "scrape-odds-7/oddsScraper.R",
+    "properties" : {
+        "cursorPosition" : "217,0",
+        "scrollLine" : "128",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

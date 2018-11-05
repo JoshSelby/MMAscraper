@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1540831151873.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3426766668",
+    "id" : "C44CF095",
+    "lastKnownWriteTime" : 1540846510,
+    "last_content_update" : 1540846510318,
+    "path" : "~/GitHub/MMAscraper/raw-data-1/parallel-scraper.R",
+    "project_path" : "raw-data-1/parallel-scraper.R",
+    "properties" : {
+        "cursorPosition" : "188,2",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
