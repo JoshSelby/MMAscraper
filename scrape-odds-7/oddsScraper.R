@@ -212,7 +212,6 @@ eventOddsScraper <- function(eventLink) {
 }
 
 
-
 odds_list <- readRDS("./scrape-odds-7/odds_List.RDS")
 
 # If you already have a list of all events, this is faster

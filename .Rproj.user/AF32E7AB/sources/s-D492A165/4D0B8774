@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1543951009322.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4D0B8774",
+    "lastKnownWriteTime" : 8389754659302220320,
+    "last_content_update" : 1543951009322,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "FEF99983",
+        "caption" : "fightMetrics",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=fightMetrics&cache_key=FEF99983",
+        "displayedObservations" : "447490",
+        "environment" : "",
+        "object" : "fightMetrics",
+        "preview" : "0",
+        "totalObservations" : "447490",
+        "variables" : "39"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

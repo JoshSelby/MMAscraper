@@ -1,5 +1,6 @@
 library(tidyverse)
 library(rvest)
+library(data.table)
 
 # Get all fights you already scraped
 fights <- readRDS(file = "./clean-data-2/fights_clean.rds")

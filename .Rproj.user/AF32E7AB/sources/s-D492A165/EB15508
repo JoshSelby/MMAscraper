@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1543951281543.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EB15508",
+    "lastKnownWriteTime" : 32651569751457901,
+    "last_content_update" : 1543951281543,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "3BCACFD5",
+        "caption" : "filtfights",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=filtfights&cache_key=3BCACFD5",
+        "displayedObservations" : 15762,
+        "environment" : "",
+        "object" : "filtfights",
+        "preview" : 0,
+        "totalObservations" : 15762,
+        "variables" : 40
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

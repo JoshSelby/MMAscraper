@@ -18,7 +18,7 @@ train <- filtfights2 %>%
 test <- anti_join(filtfights2, train)
 
 
-model <- glm(Result2 ~ r1b + r2b + wins1 + wins2 + fightLag1 + 
+model <- glm(Result2 ~ r1b + r2b + wins1 + wins2 + fightLag1 + fightLag2 + 
              oppRat1_5 + oppRat2_5 + koLosses1 + koLosses2, 
              family = binomial(link="logit"), data = train)
 
@@ -30,3 +30,4 @@ fitted.results <- ifelse(fitted.results > 0.5,1,0)
 misClasificError <- mean(fitted.results != test$Result2, na.rm = TRUE)
 print(paste('Accuracy',1-misClasificError))
 table("predicted" = fitted.results, "actual" = test$Result2)
+
