@@ -14,9 +14,9 @@ while(length(odds_list$toSearch) > 0) {
   odds_list <- bind_odds(odds_list, oddsScraper(odds_list$toSearch[1]))
 }
 
-saveRDS(odds_list, "./scrape-odds-7/data/odds_list.RDS")
+saveRDS(odds_list, "./scrape-odds-7/odds_list.RDS")
 
-odds_list <- readRDS("./scrape-odds-7/data/odds_list.RDS")
+odds_list <- readRDS("./scrape-odds-7/odds_list.RDS")
 
 pastOdds <- tibble()
 for (i in 1:length(odds_list$searched_events)) {
@@ -27,7 +27,7 @@ for (i in 1:length(odds_list$searched_events)) {
 pastOdds <- pastOdds %>% filter(Date < today())
 
 
-saveRDS(pastOdds, "./scrape-odds-7/data/pastOdds.RDS")
+saveRDS(pastOdds, "./scrape-odds-7/pastOdds.RDS")
   
 
 

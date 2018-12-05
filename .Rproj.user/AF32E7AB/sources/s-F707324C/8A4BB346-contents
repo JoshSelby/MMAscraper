@@ -1,0 +1,122 @@
+library(tidyverse)
+library(data.table)
+library(rvest)
+library(lubridate)
+
+odds_list <- readRDS("./scrape-odds-7/odds_List.RDS")
+
+odds <- odds_list$odds %>% as.tibble()
+
+futureOdds <- odds %>% filter(Date >= today())
+pastOdds <- odds %>% filter(Date < today())
+
+# Scrapes all fights from a given Event
+eventOddsScraper <- function(eventLink) {
+  eventPage <- tryCatch({
+    read_html(paste0("https://www.bestfightodds.com", eventLink))
+  },
+  error=function(cond) {
+    message(cond)
+    no_errors = FALSE
+    return(eventPage)
+  },
+  warning=function(cond) {
+    message(cond)
+    no_errors = FALSE
+    return(eventPage)
+  })
+  
+  if(eventPage %>%
+     html_nodes("td") %>%
+     html_text() %>%
+     .[1] %>%
+     grepl("No betting lines available for this event", .)) return(tibble())
+  
+  
+  fighters <- eventPage %>% 
+    html_nodes("tr th a") %>%
+    html_attr("href") %>%
+    grep("fighters", ., value=T) %>%
+    head(., length(.)/2) %>%
+    gsub("/fighters/", "", .)
+  
+  if(length(fighters) == 0) return(tibble())
+  
+  books <- eventPage %>% 
+    html_nodes("thead a") %>%
+    html_text()
+  
+  odds <- eventPage %>%
+    html_nodes(".odd td:nth-child(-n+14), .even td:nth-child(-n+14)") %>%
+    html_text() %>%
+    gsub("[^[:digit:]-]", "", .) %>%
+    as.numeric() %>%
+    matrix(ncol = length(books), 
+           nrow = length(fighters),
+           byrow=T,
+           dimnames = list(fighters, books))
+  
+  # ### Pulls last day odds were updated ###
+  # date <- eventPage %>%
+  #   html_nodes(".table-last-changed span") %>%
+  #   html_attr("title") %>%
+  #   sub("(\\d{4}).*", "\\1", .) %>%
+  #   sub("( \\d{,2})\\w{2}", "\\1", .) %>%
+  #   as.Date(format = "%b %d %Y")
+  
+  ### Pulls date listed on event page (warning, missing year) ###
+  date <- eventPage %>%
+    html_nodes(".table-header-date") %>%
+    html_text() %>%
+    as.Date("%B %d") %>%
+    ifelse(. < today(), . %m+% years(1), .) %>%
+    as.Date()
+  
+  if(length(date) == 0) return(tibble())
+
+  x <- 1:length(fighters)
+  oppIndex <- x-1 + 2*(x %% 2)
+  
+  odds_tbl <- tibble(fighter = fighters, 
+                     opponent = fighters[oppIndex], 
+                     eventName = eventPage %>% 
+                       html_nodes(".table-header a") %>% 
+                       html_text(),
+                     eventLink = eventLink, 
+                     Date = date) %>%
+    cbind(odds %>% as.tibble)
+  
+  return(odds_tbl)
+}
+
+# Scrape front page of bestfightodds 
+mainPage <- tryCatch({
+  read_html("https://www.bestfightodds.com")
+  },
+  error=function(cond) {
+    message(cond)
+    no_errors = FALSE
+    return(eventPage)
+  },
+  warning=function(cond) {
+    message(cond)
+    no_errors = FALSE
+    return(eventPage)
+    }
+  )
+
+# Get links for future Events
+futureEvents <- mainPage %>% 
+  html_nodes(".table-header a") %>% 
+  html_attr("href")
+
+futureOdds <- tibble()
+for (i in 1:length(futureEvents)) {
+  futureOdds <- rbind(futureOdds, eventOddsScraper(futureEvents[i]))
+  print(i)
+}
+
+rm(futureEvents, mainPage)
+
+saveRDS(pastOdds, "./scrape-odds-7/pastOdds.RDS")
+saveRDS(futureOdds, "./scrape-odds-7/futureOdds.RDS")

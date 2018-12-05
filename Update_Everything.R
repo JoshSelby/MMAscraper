@@ -7,4 +7,8 @@ source('./metrics-5/metrics.R', echo=TRUE)
 source('./metrics-5/events.R', echo=TRUE)
 source('./model-6/model.R', echo=TRUE)
 
+source('./scrape-odds-7/futureOdds.R', echo=TRUE)
+source('./scrape-odds-7/updateOdds.R', echo=TRUE)
+
+
 
