@@ -27,11 +27,12 @@ rm(fights1, fights2)
 # Create new metrics
 fightMetrics[, 
         ':='(fightLag1 = as.numeric(c(0, diff(Date))), # Days since last fight
+            fightLag1_5 = as.numeric(c(0, cumsum(diff(Date[1:5]) %>% as.numeric()), diff(Date, 5))),
             ratIncrease1 = c(0, diff(r1b)), # Rating increase since last fight
             ratIncrease1_3 = c(0, cumsum(diff(r1b[1:3])), 
                                diff(r1b, 3)), # Rating increase from 3 fights ago
             oppRat1_5 = lag(c(cumsum(r2b[1:4])/1:4,
-                              rollmeanr(r2b, 5))), # Average rating of last 3 opponents
+                              rollmeanr(r2b, 5))), # Average rating of last 5 opponents
             highestDef1_5 = lag(c(cummax(((Result=="win")*r2b)[1:4]), 
                               rollmaxr((Result=="win")*r2b, 5))), # Highest rated fighter defeated in last 5 fights
             koLosses1 = lag(cumsum(Result == "loss" & 
@@ -45,6 +46,7 @@ fightMetrics[,
 
 fightMetrics[, 
         ':='(fightLag2 = as.numeric(c(0, diff(Date))),
+             fightLag2_5 = as.numeric(c(0, cumsum(diff(Date[1:5]) %>% as.numeric()), diff(Date, 5))),
              ratIncrease2 = c(0, diff(r2b)),
              ratIncrease2_3 = c(0, cumsum(diff(r2b[1:3])), 
                                 diff(r2b, 3)),
@@ -60,7 +62,7 @@ fightMetrics[,
         by=Link2]
 
 
-# Check with reem fights
+# Check with colby fights
 fighter <- fightMetrics[grepl("Colby-Cov", Link1)]
 
 fighter %>%

@@ -9,7 +9,7 @@ library(tidyverse)
 
 
 # Start our search with Chael P. Sonnen. Can replace this with ANY fighter's Sherdog link.
-link = "Chael-Sonnen-4112"
+link = "/fighter/Chael-Sonnen-4112"
 
 # Scrapes a single page and creates list
 scrape <- function(link) {
@@ -23,14 +23,14 @@ scrape <- function(link) {
   library(xml2)
   
   # Initialize scraper
-  searched_links <- c()
+  searched_links <- tibble(link = character(), birthday = date())
   links_to_search <- c()
   
   no_errors = TRUE
   # read the webpage page of the fighter that we are interested in
   fighter_page <- tryCatch({
     link %>%
-      paste0("http://www.sherdog.com/fighter/", .) %>%
+      paste0("http://www.sherdog.com/", .) %>%
       read_html()
   }, 
     error=function(cond) {
@@ -73,6 +73,11 @@ scrape <- function(link) {
     # use CSS selector to extract relevant entries from html
     html_nodes(".fn") %>%
     # turn the html output into simple text fields
+    html_text()
+  
+  # Fighter Birthday
+  fighter_birthday <- fighter_page %>% 
+    html_nodes(".birthday span:nth-child(1)") %>%
     html_text()
   
   # Extract fight history from page, wrap text to form a table
@@ -126,28 +131,28 @@ scrape <- function(link) {
     select(Fighter1, Result, Fighter2=Fighter, Method, Method_d, R, Time, 
            Referee, Event, Date, Link1, Link2) %>%
     # Remove rows which are already in final table
-    subset(!(Link2 %in% searched_links))
+    subset(!(Link2 %in% searched_links$link))
     
   
   if (no_errors == TRUE) {
     searched_links <- searched_links %>% 
-      append(link) %>% 
+      add_row(link = link, birthday = fighter_birthday) %>% 
       unique
-    links_to_search <- fighter_links[fighter_links != "javascript:void();"]
+    links_to_search <- fighter_links[fighter_links != "javascript:void();"] %>% unique()
   }
   
   return(list("fights" = fighter_tbl,
-              "searched" = searched_links %>% tibble(),
+              "searched" = searched_links,
               "toSearch" = links_to_search))
   
 }
 
 # Combines the scraped results
 bind <- function(a, b) {
-  fighter_tbl = rbind(a[[1]], b[[1]])
-  searched = rbind(a[[2]], b[[2]])
+  fighter_tbl = rbind(a[[1]], b[[1]]) %>% unique
+  searched = rbind(a[[2]], b[[2]]) %>% unique
   toSearch = append(a[[3]], b[[3]]) %>% 
-    setdiff(searched$searched_links)
+    setdiff(searched$link) %>% unique
   
   return(list("fights" = fighter_tbl, "searched" = searched, "toSearch" = toSearch))
 }
@@ -159,7 +164,7 @@ parScrap <- function() {
   
   # Initialize fights table
   fights_list <- list("fights" = NULL,
-                      "searched" = tibble("searched_links" = as.character()),
+                      "searched" = tibble("searched" = character(), "birthday" = date()),
                       "toSearch" = link)
   
   # Will run until all fighters to scrape are exausted.
@@ -178,7 +183,7 @@ parScrap <- function() {
                                .maxcombine=2, .export=c("link", "scrape"), 
                                .options.snow = opts) %dopar% {
                                  scrape(link2)
-                               }
+                               } %>% bind(fights_list, .)
       fights_list <- bind(fights_list, fights_list2)
     }))
     rm(fights_list2)
@@ -192,3 +197,5 @@ parScrap <- function() {
 if(exists("fights_list")) {
   saveRDS(fights_list, file = "~/GitHub/MMAscraper/raw-data-1/fights_table.rds")
 }
+
+
