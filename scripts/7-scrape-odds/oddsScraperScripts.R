@@ -39,6 +39,7 @@ eventOddsScraper <- function(eventLink) {
     html_text() %>%
     gsub("[^[:digit:]-]", "", .) %>%
     as.numeric() %>%
+    head(length(books) * length(fighters)) %>%
     matrix(ncol = length(books), 
            nrow = length(fighters),
            byrow=T,

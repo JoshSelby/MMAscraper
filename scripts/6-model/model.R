@@ -1,7 +1,7 @@
 library(tidyverse)
 library(data.table)
 
-filtfightsOdds <- readRDS(file = "./append-odds-8/data/filtfightsOdds.rds")
+filtfightsOdds <- readRDS(file = "./scripts/8-append-odds/data/filtfightsOdds.rds")
 
 filtfights2Odds <- filtfightsOdds %>%
   filter(Result != "draw" & r1b > r2b|

@@ -3,9 +3,9 @@ library(tidyverse)
 library(stringr)
 library(fuzzyjoin)
 
-pastOdds <- readRDS("./scrape-odds-7/data/pastOdds.RDS")
-futureOdds <- readRDS("./scrape-odds-7/data/futureOdds.RDS")
-filtfights <- readRDS(file = "./metrics-5/filtfights.rds")
+pastOdds <- readRDS("./scripts/7-scrape-odds/data/pastOdds.RDS")
+futureOdds <- readRDS("./scripts/7-scrape-odds/data/futureOdds.RDS")
+filtfights <- readRDS(file = "./scripts/5-metrics/data/filtfights.rds")
 
 # Events with duplicate links
 dupedEvents <- pastOdds %>% 
@@ -67,20 +67,5 @@ pastOdds <- pastOdds %>%
   mutate(fighter1regex = strsplit(fighterLink1s, "") %>% unlist %>% paste(collapse = ".*") %>% paste0(., ".*"),
          fighter2regex = strsplit(fighterLink2s, "") %>% unlist %>% paste(collapse = ".*") %>% paste0(., ".*"))
 
-pastOdds <- pastOdds %>%
-  mutate(Date2 = Date)
-
-filtfightsOdds <- regex_inner_join(filtfights2, pastOdds, by = c("fighter1Name" = "fighter1regex", "fighter2Name" = "fighter2regex")) %>%
-  filter(Date >= Date2 - 1 & Date <= Date2 + 1) %>%
-  select(colnames(filtfights), '5Dimes') %>%
-  rbind(filtfightsOdds)
-
-
-filtfights2 <- anti_join(filtfights, filtfightsOdds, by = "match_id")
-
-
-filtfightsOdds <- inner_join(filtfightsOdds, filtfightsOdds, by=c("match_id" = "match_id", "Link1" = "Link2"), suffix = c("", ".y")) %>%
-  select(colnames(filtfightsOdds), `5Dimes.y`)
-
-saveRDS(filtfightsOdds, file = "./append-odds-8/data/filtfightsOdds.rds")
+saveRDS(filtfightsOdds, file = "./scripts/8-append-odds/data/filtfightsOdds.rds")
 

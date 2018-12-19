@@ -33,6 +33,15 @@ eventDates <- archivePage %>%
   gsub("([[:alpha:]]* )(\\d*)(\\D{2})(.*)", "\\1\\2\\4", .) %>%
   as.Date("%b %d %Y")
 
+
+updateOdds <- tibble()
+
 for (i in which(eventLinks %in% pastOdds$eventLink == FALSE)) {
-  eventOddsScraper(eventLinks[i])
+  updateOdds <- rbind(updateOdds, eventOddsScraper(eventLinks[i]))
+  print(i)
 }
+
+pastOdds <- rbind(updateOdds, pastOdds)
+
+
+saveRDS(pastOdds, "./scripts/7-scrape-odds/data/pastOdds.RDS")
