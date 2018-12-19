@@ -24,11 +24,12 @@ events <- tibble(Event = unique(fightMetrics$Event),
 fightMetrics <- fightMetrics %>% full_join(events)
 
 
-
+# Both fighters must have at least 3 career fights
 filtfights <- fightMetrics %>%
-  filter(wins1 + loss1 + draw1 >= 5,
-         wins2 + loss2 + draw2 >= 5,
-         Org %in% c("ACB", "Bellator", "Dana White's Tuesday Night Contender Series", "FNG", "Invicta FC", "KSW", "LFA", "M-1", "One Championship", 
+  filter(wins1 + loss1 + draw1 >= 3,
+         wins2 + loss2 + draw2 >= 3,
+         Org %in% c("ACB", "Bellator", "Dana White's Tuesday Night Contender Series", "FNG", "Golden Boy MMA",
+                    "Invicta FC", "KSW", "LFA", "M-1", "One Championship", 
                     "Professional Fighters League", "Rizin", "Strikeforce", "UFC"),
          Date > "2010-01-01")
 
@@ -49,8 +50,7 @@ fightMetrics %>%
             fights = n()/2,
             combinedFights = sum(wins1+wins2+loss1+loss2+draw1+draw2+nc1+nc2)/(2*fights)) %>% 
   filter(fights > 25) %>%
-  arrange(-average_lvl) %>%
-  View()
+  arrange(-average_lvl)
 
 
 saveRDS(filtfights, "./scripts/5-metrics/data/filtfights.rds")

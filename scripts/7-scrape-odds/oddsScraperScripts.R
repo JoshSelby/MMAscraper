@@ -1,5 +1,5 @@
 # Scrapes all fights from a given Event
-eventOddsScraper <- function(eventLink) {
+eventOddsScraper <- function(eventLink, future = "n") {
   eventPage <- tryCatch({
     read_html(paste0("https://www.bestfightodds.com", eventLink))
   },
@@ -63,6 +63,7 @@ eventOddsScraper <- function(eventLink) {
   
   # Provides date with correct year
   eventDate <- paste(date_md, substr(date_y, 1, 4)) %>% as.Date(format = "%b %d %Y")
+  if(future == "y" & eventDate < today()) eventDate <- eventDate %m+% months(12)
   
   x <- 1:length(fighters)
   oppIndex <- x-1 + 2*(x %% 2)

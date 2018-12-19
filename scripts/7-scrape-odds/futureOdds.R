@@ -28,7 +28,7 @@ futureEvents <- mainPage %>%
 
 futureOdds <- tibble()
 for (i in 1:length(futureEvents)) {
-  futureOdds <- rbind(futureOdds, eventOddsScraper(futureEvents[i]))
+  futureOdds <- rbind(futureOdds, eventOddsScraper(futureEvents[i], future = "y"))
   print(i)
 }
 

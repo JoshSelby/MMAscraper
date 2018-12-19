@@ -1,7 +1,7 @@
 library(data.table)
 library(tidyverse)
 library(stringr)
-library(fuzzyjoin)
+library(stringdist)
 
 pastOdds <- readRDS("./scripts/7-scrape-odds/data/pastOdds.RDS")
 futureOdds <- readRDS("./scripts/7-scrape-odds/data/futureOdds.RDS")
@@ -31,7 +31,7 @@ for (i in 1:length(dupedEvents)) {
 pastOdds <- pastOdds %>%
   filter(!(eventLink %in% wrongEvents))
 
-rm(wrongEvents, dupedEvents)
+rm(wrongEvents, dupedEvents, i)
 
 # Fix a few fighter's names, create stripped version of name
 pastOdds <- pastOdds %>% 
@@ -42,7 +42,14 @@ pastOdds <- pastOdds %>%
          fighter = ifelse(fighter == "Elizeu-Zaleski-5594", "Elizeu-Zaleski-Dos-Santos-6667", fighter),
          opponent = ifelse(opponent == "Elizeu-Zaleski-5594", "Elizeu-Zaleski-Dos-Santos-6667", opponent),
          fighterLink1s = gsub("(.*)(-\\d*$)", "\\1", fighter) %>% gsub("-", "", .) %>% tolower(),
-         fighterLink2s = gsub("(.*)(-\\d*$)", "\\1", opponent) %>% gsub("-", "", .) %>% tolower())
+         fighterLink2s = gsub("(.*)(-\\d*$)", "\\1", opponent) %>% gsub("-", "", .) %>% tolower(),
+         rownum = row_number(),
+         eventName = gsub(": ", " - ", eventName)) %>%
+  filter(!(fighter == "Al-Iaquinta-3221" & opponent == "Paul-Felder-5116") & 
+         !(fighter == "Paul-Felder-5116" & opponent == "Al-Iaquinta-3221") &
+         !(fighter == "John-Howard-692" & opponent == "Shamil-Gamzatov-6071") & 
+         !(fighter == "Shamil-Gamzatov-6071" & opponent == "John-Howard-692") &
+           Date >= "2010-01-01") # Since filtfights is also filtered from 2010
 
 filtfights <- filtfights %>%
   mutate(fighter1Name = gsub("(.*)(-\\d*$)", "\\1", Link1) %>% gsub("-", "", .) %>% tolower(),
@@ -54,18 +61,28 @@ for (i in 0:2) {
   pastOdds <- pastOdds %>%
     mutate(Date2 = Date - i + 1)
   
-  filtfightsOdds <- inner_join(filtfights, pastOdds, by = c("fighter1Name" = "fighterLink1s", "fighter2Name" = "fighterLink2s",
-                                          "Date" = "Date2")) %>%
-    select(colnames(filtfights), '5Dimes') %>%
+  filtfightsOdds <- inner_join(filtfights, pastOdds, by = c("fighter1Name" = "fighterLink1s", "Date" = "Date2")) %>%
+    select(colnames(filtfights), '5Dimes', 'rownum') %>%
     rbind(filtfightsOdds)
+  filtfightsOdds <- inner_join(filtfights, pastOdds, by = c("fighter2Name" = "fighterLink2s", "Date" = "Date2")) %>%
+    select(colnames(filtfights), '5Dimes', 'rownum') %>%
+    rbind(filtfightsOdds) %>%
+    unique
 }
 
-filtfights2 <- anti_join(filtfights, filtfightsOdds, by = "match_id")
+# Fights which are still not matched
+filtfightsNotMatched <- anti_join(filtfights, filtfightsOdds, by = "match_id")
+pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
 
-pastOdds <- pastOdds %>%
-  rowwise() %>%
-  mutate(fighter1regex = strsplit(fighterLink1s, "") %>% unlist %>% paste(collapse = ".*") %>% paste0(., ".*"),
-         fighter2regex = strsplit(fighterLink2s, "") %>% unlist %>% paste(collapse = ".*") %>% paste0(., ".*"))
+filtfightsOdds <- filtfightsOdds %>% 
+  select(-rownum)
+
+filtfightsOdds <- left_join(filtfightsOdds, filtfightsOdds %>% select(match_id, Link2, `5Dimes`), 
+                            by = c("Link1" = "Link2", "match_id" = "match_id")) %>%
+  as.tibble() %>%
+  rename(odds5Dimes1 = `5Dimes.x`,
+         odds5Dimes2 = `5Dimes.y`)
+  
 
 saveRDS(filtfightsOdds, file = "./scripts/8-append-odds/data/filtfightsOdds.rds")
 

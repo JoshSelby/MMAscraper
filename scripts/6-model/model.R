@@ -3,22 +3,22 @@ library(data.table)
 
 filtfightsOdds <- readRDS(file = "./scripts/8-append-odds/data/filtfightsOdds.rds")
 
-filtfights2Odds <- filtfightsOdds %>%
+filtfightsOdds2 <- filtfightsOdds %>%
   filter(Result != "draw" & r1b > r2b|
          (r1b == r2b & ratIncrease1_3 > ratIncrease2_3)) %>%
   mutate(eloWinProb = 1/(1+10^((r2b-r1b)/400)),
          Result2 = ifelse(Result == "win", 1, 0))
 
 set.seed(1)
-train <- filtfights2Odds %>%
-  sample_n(0.8*nrow(filtfights2Odds)) %>%
+train <- filtfightsOdds2 %>%
+  sample_n(0.8*nrow(filtfightsOdds2)) %>%
   select(-Method, -Method_d, -Event, -Date, -r1a, -r2a, -Fighter1, -Fighter2, -R, 
          -Time, -Referee, -nc1, -nc2)
 
-test <- anti_join(filtfights2Odds, train)
+test <- anti_join(filtfightsOdds2, train)
 
 
-model <- glm(Result2 ~ r1b + r2b + wins1 + wins2 + fightLag1 + fightLag2 + fightLag1_5 + fightLag2_5 +
+model <- glm(Result2 ~ r1b + r2b + wins1 + wins2 + Age1 + Age2 +
              oppRat1_5 + oppRat2_5 + koLosses1 + koLosses2, 
              family = binomial(link="logit"), data = train)
 
@@ -32,4 +32,6 @@ print(paste('Accuracy',1-misClasificError))
 table("predicted" = fitted.results, "actual" = test$Result2)
 
 
-filtfights2Odds$pred <- predict(model,newdata=filtfights2Odds,type='response')
+filtfightsOdds2$pred <- predict(model,newdata=filtfightsOdds2,type='response')
+
+filtfightsOdds2 %>% filter(Date >= "2018-01-01") %>% View()
