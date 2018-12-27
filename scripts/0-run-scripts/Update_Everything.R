@@ -10,7 +10,7 @@ source('./scripts/7-scrape-odds/futureOdds.R', echo=TRUE)
 source('./scripts/7-scrape-odds/updateOdds.R', echo=TRUE)
 source('./scripts/8-append-odds/matchOdds-filtfights.R', echo=TRUE)
 
-source('./model-6/model.R', echo=TRUE)
+source('./scripts/6-model/model.R', echo=TRUE)
 
 
 

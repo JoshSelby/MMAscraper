@@ -7,7 +7,8 @@ filtfightsOdds2 <- filtfightsOdds %>%
   filter(Result != "draw" & r1b > r2b|
          (r1b == r2b & ratIncrease1_3 > ratIncrease2_3)) %>%
   mutate(eloWinProb = 1/(1+10^((r2b-r1b)/400)),
-         Result2 = ifelse(Result == "win", 1, 0))
+         Result2 = ifelse(Result == "win", 1, 0),
+         dec)
 
 set.seed(1)
 train <- filtfightsOdds2 %>%
@@ -21,6 +22,7 @@ test <- anti_join(filtfightsOdds2, train)
 model <- glm(Result2 ~ r1b + r2b + wins1 + wins2 + Age1 + Age2 +
              oppRat1_5 + oppRat2_5 + koLosses1 + koLosses2, 
              family = binomial(link="logit"), data = train)
+
 
 
 summary(model)

@@ -70,6 +70,13 @@ for (i in 0:2) {
     unique
 }
 
+# Fix issues with two Dong Hyun Kim's fighting on UFC Fight Night 79
+filtfightsOdds <- filtfightsOdds %>%
+  filter(!(Link1 == "Dong-Hyun-Kim-16374" & Date == "2015-11-28" & `5Dimes` != -800 |
+         Link1 == "Dominic-Waters-68971" & Date == "2015-11-28" & `5Dimes` != 550 |
+         Link1 == "Dong-Hyun-Kim-21673" & Date == "2015-11-28" & `5Dimes` != 110 |
+         Link1 == "Dominique-Steele-47845" & Date == "2015-11-28" & `5Dimes` != -130))
+
 # Fights which are still not matched
 filtfightsNotMatched <- anti_join(filtfights, filtfightsOdds, by = "match_id")
 pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
