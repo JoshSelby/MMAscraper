@@ -7,8 +7,7 @@ filtfightsOdds2 <- filtfightsOdds %>%
   filter(Result != "draw" & r1b > r2b|
          (r1b == r2b & ratIncrease1_3 > ratIncrease2_3)) %>%
   mutate(eloWinProb = 1/(1+10^((r2b-r1b)/400)),
-         Result2 = ifelse(Result == "win", 1, 0),
-         dec)
+         Result2 = ifelse(Result == "win", 1, 0))
 
 set.seed(1)
 train <- filtfightsOdds2 %>%

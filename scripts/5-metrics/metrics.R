@@ -3,8 +3,11 @@ library(data.table)
 library(zoo)
 
 # Read in data
-fights <- readRDS(file = "./scripts/4-ratings/data/fightsElo.rds")
+fightsElo <- readRDS(file = "./scripts/4-ratings/data/fightsElo.rds")
+fights <- readRDS(file = "./scripts/3-records/data/fights_records.rds")
 
+fights <- full_join(fightsElo, fights) %>% 
+  arrange(match_id)
 
 # Double the data
 fights1 <- fights
@@ -21,7 +24,19 @@ fightMetrics <- full_join(fights1, fights2) %>%
   arrange(match_id) %>% 
   as.data.table()
 
-rm(fights1, fights2)
+rm(fights1, fights2, fightsElo, fights)
+
+fightMetrics[,
+       ':='(r1b = ifelse(is.na(r1b), lag(r1a), r1b),
+            r1a = ifelse(is.na(r1a), lag(r1a), r1a)
+       ),
+       by = Link1]
+
+fightMetrics[,
+       ':='(r2b = ifelse(is.na(r2b), lag(r2a), r2b),
+            r2a = ifelse(is.na(r2a), lag(r2a), r2a)
+       ),
+       by = Link2]
 
 
 # Create new metrics
@@ -62,8 +77,8 @@ fightMetrics[,
         by=Link2]
 
 
-# Check with colby fights
-fighter <- fightMetrics[grepl("Colby-Cov", Link1)]
+# Check with cormier fights
+fighter <- fightMetrics %>% filter(Fighter1 == "Daniel Cormier")
 
 fighter %>%
   select(-Method, -Method_d, -Event, -Fighter1, -Fighter2, -R, -Time, -Referee,
