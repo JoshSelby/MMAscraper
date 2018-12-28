@@ -1,24 +1,16 @@
-library(shiny)
-library(tidyverse)
-library(data.table)
-fightMetricsEvent <- readRDS("data/fightMetricsEvent.rds")
-filtfightsOdds <- readRDS("data/filtfightsOdds.rds")
+options(shiny.trace = F)  # cahnge to T for trace
+require(shiny)
+require(shinysky)
 
-fightMetricsEvent <- fightMetricsEvent %>%
-  select(Link1, Result, Link2, Date, Method, Method_d, R, Time, Referee, Org, Event, r1b, r2b, r1a, r2a, Age1, Age2)
-
-# Define server logic required to draw a histogram
-shinyServer(function(input, output) {
-
-  datasetInput <- reactive({
-    switch(input$data,
-           "filtfightsOdds" = filtfightsOdds,
-           "fightMetricsEvent" = fightMetricsEvent)
-  })
-
+shinyServer(function(input, output, session) {
   
-  output$table <- renderDataTable({
-    datasetInput()
+  # typeahead
+  observe({
+    input$thti
+    showshinyalert(session, "shinyalert3", sprintf("Typeahead Text Input Value: '%s'", 
+                                                   input$thti), "error")
   })
   
-})
+  
+  
+}) 
