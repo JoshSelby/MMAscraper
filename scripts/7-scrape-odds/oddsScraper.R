@@ -1,5 +1,6 @@
 library(tidyverse)
 library(rvest)
+library(lubridate)
 # 12/5/18: Run the oddsScraper loop again on line 172, will take ~1 hour. Need to remake the odds_list.
 
 source('./scripts/7-scrape-odds/oddsScraperScripts.R', echo=TRUE)
