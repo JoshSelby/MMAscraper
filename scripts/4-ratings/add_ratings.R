@@ -11,7 +11,7 @@ fights <- readRDS(file = "./scripts/3-records/data/fights_records.rds")
 
 # Change select fights from NC to Wins/Losses
 {
-  fights2 <- fights %>%
+  fights <- fights %>%
     mutate(Result2 = Result,
            Result2 = ifelse(Link1 == "Daniel-Cormier-52311" & Link2 == "Jon-Jones-27944" & Date == "2017-07-29", "loss", Result2),
            Result2 = ifelse(Link1 == "Anderson-Silva-1356" & Link2 == "Nick-Diaz-2831" & Date == "2015-01-31", "win", Result2),
@@ -46,7 +46,7 @@ fights <- readRDS(file = "./scripts/3-records/data/fights_records.rds")
 }
 
 
-fights2 <- fights2 %>%
+fights2 <- fights %>%
   filter(Result2 %in% c("win", "draw", "loss") & Method != "DQ") %>%
   mutate(score1 = ifelse(Result2 == "win", 1, 0.5),
          score1 = ifelse(Result2 == "loss", 0, score1),
@@ -59,10 +59,7 @@ fights2 <- as_widecr(fights2)
 # 150 was shown to be the optimal K
 elo <- add_elo_ratings(fights2, K=150, initial_ratings = 1000)
 
-fightsM <- fights %>%
-  filter(Result %in% c("win", "draw") & Method != "DQ")
-
-fightsElo <- full_join(fightsM, elo, by = c("match_id" = "game")) %>%
+fightsElo <- full_join(fights, elo, by = c("match_id" = "game")) %>%
   select(match_id, Link1, Result, Link2, Method, Method_d, Event, Date, 
          rating1Before, rating2Before, rating1After, rating2After) %>%
   rename(r1b = rating1Before, r2b = rating2Before, r1a = rating1After, r2a = rating2After) %>%
@@ -78,9 +75,9 @@ fightsEloLong <- fightsElo %>%
   rename(Link = Link1, rating = r1a) %>%
   arrange(Date)
 
-fights <- merge(fightsElo, fightsM) %>% 
+fightsElo <- merge(fightsElo, fights) %>% 
   arrange(match_id)
 
-rm(elo, fights2, fightsElo, fightsEloLong, fightsM)
+rm(elo, fights2, fights, fightsEloLong)
 
-saveRDS(fights, file = "./scripts/4-ratings/data/fightsElo.rds")
+saveRDS(fightsElo, file = "./scripts/4-ratings/data/fightsElo.rds")

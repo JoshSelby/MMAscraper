@@ -49,7 +49,7 @@ pastOdds <- pastOdds %>%
          !(fighter == "Paul-Felder-5116" & opponent == "Al-Iaquinta-3221") &
          !(fighter == "John-Howard-692" & opponent == "Shamil-Gamzatov-6071") & 
          !(fighter == "Shamil-Gamzatov-6071" & opponent == "John-Howard-692") &
-           Date >= "2010-01-01") # Since filtfights is also filtered from 2010
+           Date >= "2007-01-01") # Since filtfights is also filtered from 2007
 
 filtfights <- filtfights %>%
   mutate(fighter1Name = gsub("(.*)(-\\d*$)", "\\1", Link1) %>% gsub("-", "", .) %>% tolower(),

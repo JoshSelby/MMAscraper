@@ -28,10 +28,10 @@ fightMetrics <- fightMetrics %>% full_join(events)
 filtfights <- fightMetrics %>%
   filter(wins1 + loss1 + draw1 >= 3,
          wins2 + loss2 + draw2 >= 3,
-         Org %in% c("ACB", "Bellator", "Dana White's Tuesday Night Contender Series", "FNG", "Golden Boy MMA",
+         Org %in% c("ACB", "Bellator", "CWFC", "Dana White's Tuesday Night Contender Series", "FNG", "Golden Boy MMA",
                     "Invicta FC", "KSW", "LFA", "M-1", "One Championship", 
                     "Professional Fighters League", "Rizin", "Strikeforce", "UFC"),
-         Date > "2010-01-01")
+         Date >= "2009-01-01")
 
 # Highest skilled leagues
 filtfights %>% 

@@ -4,39 +4,43 @@ library(zoo)
 
 # Read in data
 fightsElo <- readRDS(file = "./scripts/4-ratings/data/fightsElo.rds")
-fights <- readRDS(file = "./scripts/3-records/data/fights_records.rds")
 
-fights <- full_join(fightsElo, fights) %>% 
-  arrange(match_id)
 
 # Double the data
-fights1 <- fights
-fights2 <- fights %>%
+fights1 <- fightsElo
+fights2 <- fightsElo %>%
   mutate(Result = ifelse(Result=="win", "loss", Result))
 
 colnames(fights2) <- fights2 %>% 
   colnames %>% 
   gsub(1,3,.) %>% 
   gsub(2,1,.) %>%
-  gsub(3,2,.)
+  gsub(3,2,.) %>%
+  gsub("Result1", "Result2", .)
 
 fightMetrics <- full_join(fights1, fights2) %>%
   arrange(match_id) %>% 
+  as.tibble()
+
+rm(fights1, fights2, fightsElo)
+
+fightMetrics <- fightMetrics %>%
+  group_by(Link1) %>%
+  mutate(r1b = ifelse(wins1+loss1+draw1+nc1==0, 1000, r1b),
+         r1a = ifelse(is.na(r1a), r1b, r1a),
+         r1b = na.locf(r1b),
+         r1a = na.locf(r1a)) %>%
+  ungroup()
+
+
+fightMetrics <- fightMetrics %>%
+  group_by(Link2) %>%
+  mutate(r2b = ifelse(wins2+loss2+draw2+nc2==0, 1000, r2b),
+         r2a = ifelse(is.na(r2a), r2b, r2a),
+         r2b = na.locf(r2b),
+         r2a = na.locf(r2a)) %>%
+  ungroup() %>%
   as.data.table()
-
-rm(fights1, fights2, fightsElo, fights)
-
-fightMetrics[,
-       ':='(r1b = ifelse(is.na(r1b), lag(r1a), r1b),
-            r1a = ifelse(is.na(r1a), lag(r1a), r1a)
-       ),
-       by = Link1]
-
-fightMetrics[,
-       ':='(r2b = ifelse(is.na(r2b), lag(r2a), r2b),
-            r2a = ifelse(is.na(r2a), lag(r2a), r2a)
-       ),
-       by = Link2]
 
 
 # Create new metrics
