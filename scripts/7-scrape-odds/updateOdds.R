@@ -6,7 +6,6 @@ library(lubridate)
 source('./scripts/7-scrape-odds/oddsScraperScripts.R', echo=TRUE)
 
 pastOdds <- readRDS("./scripts/7-scrape-odds/data/pastOdds.RDS")
-futureOdds <- readRDS("./scripts/7-scrape-odds/data/futureOdds.RDS")
 
 archivePage <- tryCatch({
   read_html("https://www.bestfightodds.com/archive")
@@ -43,5 +42,5 @@ for (i in which(eventLinks %in% pastOdds$eventLink == FALSE)) {
 
 pastOdds <- rbind(updateOdds, pastOdds)
 
-
+rm(archivePage, updateOdds, eventDates, eventLinks, i, bind_odds, eventOddsScraper, oddsScraper)
 saveRDS(pastOdds, "./scripts/7-scrape-odds/data/pastOdds.RDS")
