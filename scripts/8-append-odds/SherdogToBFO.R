@@ -214,15 +214,15 @@ rm(filtfightsOdds2, filtfights2)
 
 
 ##############
-Sherdog_to_BFO <- Sherdog_to_BFO %>%
-  rbind(c("Yuta-Sasaki-63070", "Ulka-Sasaki-8251"), 
-        c("Alexander-Volkanovski-101527", "Alex-Volkanovski-6723"),
-        c("Kayla-Harrison-237039","Kayla-Harrison-8276"),
-        c("Aaron-Pico-191127", "Aaron-Pico-7170"),
-        c("Kyle-Nelson-95383", "Kyle-Nelson-3633"),
-        c("Maria-de-Oliveira-Neta-207835", "Maria-Oliveira-7507"),
-        c("Sergei-Pavlovich-184051", "Sergey-Pavlovich-7219")
-        )
+# Sherdog_to_BFO <- Sherdog_to_BFO %>%
+#   rbind(c("Yuta-Sasaki-63070", "Ulka-Sasaki-8251"), 
+#         c("Alexander-Volkanovski-101527", "Alex-Volkanovski-6723"),
+#         c("Kayla-Harrison-237039","Kayla-Harrison-8276"),
+#         c("Aaron-Pico-191127", "Aaron-Pico-7170"),
+#         c("Kyle-Nelson-95383", "Kyle-Nelson-3633"),
+#         c("Maria-de-Oliveira-Neta-207835", "Maria-Oliveira-7507"),
+#         c("Sergei-Pavlovich-184051", "Sergey-Pavlovich-7219")
+#         )
 
 
 
