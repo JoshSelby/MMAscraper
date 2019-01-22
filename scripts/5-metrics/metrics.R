@@ -1,6 +1,7 @@
 library(tidyverse)
 library(data.table)
 library(zoo)
+library(RcppRoll)
 
 # Read in data
 fightsElo <- readRDS(file = "./scripts/4-ratings/data/fightsElo.rds")
@@ -27,18 +28,17 @@ rm(fights1, fights2, fightsElo)
 fightMetrics <- fightMetrics %>%
   group_by(Link1) %>%
   mutate(r1b = ifelse(wins1+loss1+draw1+nc1==0, 1000, r1b),
-         r1a = ifelse(is.na(r1a), r1b, r1a),
-         r1b = na.locf(r1b),
-         r1a = na.locf(r1a)) %>%
+         r1a = na.locf(r1a, na.rm = FALSE),
+         r1b = ifelse(is.na(r1b), r1a, r1b)
+         ) %>%
   ungroup()
 
 
 fightMetrics <- fightMetrics %>%
   group_by(Link2) %>%
   mutate(r2b = ifelse(wins2+loss2+draw2+nc2==0, 1000, r2b),
-         r2a = ifelse(is.na(r2a), r2b, r2a),
-         r2b = na.locf(r2b),
-         r2a = na.locf(r2a)) %>%
+         r2a = na.locf(r2a, na.rm = FALSE),
+         r2b = ifelse(is.na(r2b), r2a, r2b)) %>%
   ungroup() %>%
   as.data.table()
 
@@ -46,43 +46,55 @@ fightMetrics <- fightMetrics %>%
 # Create new metrics
 fightMetrics[, 
         ':='(fightLag1 = as.numeric(c(0, diff(Date))), # Days since last fight
-            fightLag1_5 = as.numeric(c(0, cumsum(diff(Date[1:5]) %>% as.numeric()), diff(Date, 5))),
-            ratIncrease1 = c(0, diff(r1b)), # Rating increase since last fight
-            ratIncrease1_3 = c(0, cumsum(diff(r1b[1:3])), 
-                               diff(r1b, 3)), # Rating increase from 3 fights ago
-            oppRat1_5 = lag(c(cumsum(r2b[1:4])/1:4,
-                              rollmeanr(r2b, 5))), # Average rating of last 5 opponents
-            highestDef1_5 = lag(c(cummax(((Result=="win")*r2b)[1:4]), 
-                              rollmaxr((Result=="win")*r2b, 5))), # Highest rated fighter defeated in last 5 fights
-            koLosses1 = lag(cumsum(Result == "loss" & 
-                                  (Method=="TKO"|Method=="KO"))), # number of KO losses
-            diff1_5 = lag(c(cumsum((r1b-r2b)[1:4]/1:4),
-                            rollmeanr((r1b-r2b), 5)))
+             fightLag1_5 = (Date - coalesce(shift(Date,5), first(Date))) %>% as.numeric(),
+             ratIncrease1 = c(0, diff(r1b)), # Rating increase since last fight
+             ratIncrease1_3 = r1b - coalesce(shift(r1b,3), first(r1b)), # Rating increase from 3 fights ago
+             oppRat1_5 = coalesce(cummean(r2b), roll_meanr(r2b, 5)) %>%
+              shift(), # Average rating of last 5 opponents
+             highestDef1_5 = coalesce(cummax(((Result=="win")*r2b)), roll_maxr((Result=="win")*r2b, 5)) %>%
+              shift(), # Highest rated fighter defeated in last 5 fights
+             koLosses1 = cumsum(Result == "loss" & (Method=="TKO"|Method=="KO")) %>%
+              shift(), # number of KO losses
+             diff1_5 = coalesce(cummean((r1b-r2b)), roll_meanr((r1b-r2b), 5)) %>% 
+               shift()
         ),
         by=Link1]
 
 
 
 fightMetrics[, 
-        ':='(fightLag2 = as.numeric(c(0, diff(Date))),
-             fightLag2_5 = as.numeric(c(0, cumsum(diff(Date[1:5]) %>% as.numeric()), diff(Date, 5))),
-             ratIncrease2 = c(0, diff(r2b)),
-             ratIncrease2_3 = c(0, cumsum(diff(r2b[1:3])), 
-                                diff(r2b, 3)),
-             oppRat2_5 = lag(c(cumsum(r1b[1:4])/1:4,
-                               rollmeanr(r1b, 5))),
-             highestDef2_5 = lag(c(cummax(((Result=="loss")*r1b)[1:4]), 
-                                   rollmaxr((Result=="loss")*r1b, 5))),
-             koLosses2 = lag(cumsum(Result == "win" & 
-                                      (Method=="TKO"|Method=="KO"))),
-             diff2_5 = lag(c(cumsum((r2b-r1b)[1:4]/1:4),
-                             rollmeanr((r2b-r1b), 5)))
+        ':='(fightLag2 = as.numeric(c(0, diff(Date))), 
+             fightLag2_5 = (Date - coalesce(shift(Date,5), first(Date))) %>% as.numeric(),
+             ratIncrease2 = c(0, diff(r2b)), 
+             ratIncrease2_3 = r2b - coalesce(shift(r2b,2), first(r2b)), 
+             oppRat2_5 = coalesce(cummean(r1b), roll_meanr(r1b, 5)) %>%
+               shift(), 
+             highestDef2_5 = coalesce(cummax(((Result=="win")*r1b)), roll_maxr((Result=="win")*r1b, 5)) %>%
+               shift(), 
+             koLosses2 = cumsum(Result == "win" & (Method=="TKO"|Method=="KO")) %>%
+               shift(), 
+             diff2_5 = coalesce(cummean((r2b-r1b)), roll_meanr((r2b-r1b), 5)) %>% 
+               shift()
         ),
         by=Link2]
 
+fightMetrics[wins1+loss1+draw1+nc1==0,
+             ':='(fightLag1 = NA,
+                  fightLag1_5 = NA,
+                  ratIncrease1 = NA,
+                  ratIncrease1_3 = NA,
+                  koLosses1 = 0)]
 
-# Check with cormier fights
-fighter <- fightMetrics %>% filter(Fighter1 == "Daniel Cormier")
+fightMetrics[wins2+loss2+draw2+nc2==0,
+             ':='(fightLag2 = NA,
+                  fightLag2_5 = NA,
+                  ratIncrease2 = NA,
+                  ratIncrease2_3 = NA,
+                  koLosses2 = 0)]
+
+
+# Check with Silva fights
+fighter <- fightMetrics %>% filter(Link1 == "Anderson-Silva-1356")
 
 fighter %>%
   select(-Method, -Method_d, -Event, -Fighter1, -Fighter2, -R, -Time, -Referee,
@@ -92,4 +104,6 @@ fighter %>%
 
 
 saveRDS(fightMetrics, file = "./scripts/5-metrics/data/fightMetrics.rds")
+
+rm(list=ls())
 

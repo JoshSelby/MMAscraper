@@ -78,6 +78,7 @@ fightsEloLong <- fightsElo %>%
 fightsElo <- merge(fightsElo, fights) %>% 
   arrange(match_id)
 
-rm(elo, fights2, fights, fightsEloLong)
 
 saveRDS(fightsElo, file = "./scripts/4-ratings/data/fightsElo.rds")
+
+rm(list=ls())

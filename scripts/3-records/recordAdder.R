@@ -68,6 +68,7 @@ fighterRecords <- winCar %>%
   full_join(ncCar) %>%
   mutate(matches = rowSums(.[2:5], na.rm=T))
 
-rm(drawCar, lossCar, winCar, ncCar, fighterRecords)
+
 saveRDS(fights, file = "./scripts/3-records/data/fights_records.rds")
+rm(list=ls())
 

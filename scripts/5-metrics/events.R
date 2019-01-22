@@ -55,3 +55,4 @@ fightMetrics %>%
 saveRDS(filtfights, "./scripts/5-metrics/data/filtfights.rds")
 saveRDS(fightMetrics, "./scripts/5-metrics/data/fightMetricsEvent.rds")
 saveRDS(fightMetrics, "./Shiny App/MatchPredictor/data/fightMetricsEvent.rds")
+rm(list=ls())

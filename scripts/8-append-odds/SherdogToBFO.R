@@ -61,6 +61,9 @@ filtfights <- filtfights %>%
          fighter2Name = gsub("(.*)(-\\d*$)", "\\1", Link2) %>% gsub("-", "", .) %>% tolower())
 
 
+Sherdog_to_BFO <- tibble(Sherdog = NA %>% as.character, 
+                         BFO = pastOdds %>% pull(fighter) %>% unique)
+
 # 1st round of matching by fighter name (lower case, no spaces)
 filtfightsOdds <- tibble()
 for (i in 0:2) {
@@ -75,10 +78,17 @@ for (i in 0:2) {
 }
 
 # Create Sher to BFO link table
-Sherdog_to_BFO <- filtfightsOdds %>% 
-  select(Link1, BFO1) %>%
-  rename(Sherdog = Link1, BFO = BFO1) %>%
-  unique()
+Sherdog_to_BFO <- left_join(Sherdog_to_BFO,
+                            filtfightsOdds %>% 
+                              select(Link1, BFO1) %>%
+                              rename(Sherdog = Link1, BFO = BFO1) %>%
+                              unique(),
+                            by = "BFO") %>%
+  mutate(Sherdog = coalesce(Sherdog.x, Sherdog.y)) %>% 
+  select(Sherdog, BFO)  %>%
+  mutate(Sherdog = ifelse(BFO=="Cm-Punk-6210", "Phil-Brooks-184933", Sherdog),
+         Sherdog = ifelse(BFO=="Kimbo-Slice-88", "Kevin-Ferguson-22388", Sherdog))
+
 
 filtfightsNotMatched <- anti_join(filtfights, filtfightsOdds, by = "match_id")
 pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
@@ -147,11 +157,17 @@ filtfightsOdds <- filtfightsOdds2 %>%
   select(-fighterLink1s, -fighterLink2s) %>%
   rbind(filtfightsOdds)
 
-Sherdog_to_BFO <- filtfightsOdds %>% 
-  select(Link1, BFO1) %>%
-  rename(Sherdog = Link1, BFO = BFO1) %>%
-  rbind(Sherdog_to_BFO) %>%
+Sherdog_to_BFO <- left_join(Sherdog_to_BFO,
+                            filtfightsOdds %>% 
+                              select(Link1, BFO1) %>%
+                              rename(Sherdog = Link1, BFO = BFO1) %>%
+                              unique(),
+                            by = "BFO") %>%
+  mutate(Sherdog = coalesce(Sherdog.x, Sherdog.y)) %>% 
+  select(Sherdog, BFO) %>%
   unique()
+
+
 
 filtfightsNotMatched <- anti_join(filtfights, filtfightsOdds, by = "match_id")
 pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
@@ -198,18 +214,27 @@ filtfightsOdds <- filtfightsOdds2 %>%
   rbind(filtfightsOdds) %>%
   unique()
 
+Sherdog_to_BFO <- left_join(Sherdog_to_BFO,
+                            filtfightsOdds %>% 
+                              select(Link1, BFO1) %>%
+                              rename(Sherdog = Link1, BFO = BFO1) %>%
+                              unique(),
+                            by = "BFO") %>%
+  mutate(Sherdog = coalesce(Sherdog.x, Sherdog.y)) %>% 
+  select(Sherdog, BFO) %>%
+  unique()
+
+
 filtfightsNotMatched <- anti_join(filtfights, filtfightsOdds, by = "match_id")
 pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
 
 rm(filtfightsOdds2, filtfights2)
 
-
-
-
-
-
-
-
+# These are BFO links that are associated with 2 Sherdog pages (mistakes)
+Sherdog_to_BFO %>% 
+  group_by(BFO) %>% 
+  summarise(num = n()) %>% 
+  filter(num>1)
 
 
 

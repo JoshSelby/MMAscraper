@@ -1,8 +1,8 @@
 {
-    "path" : "~/GitHub/MMAscraper/scripts/5-metrics",
+    "path" : "~/GitHub/MMAscraper/scripts/5-metrics/data",
     "sortOrder" : [
         {
-            "ascending" : false,
+            "ascending" : true,
             "columnIndex" : 2
         }
     ]
