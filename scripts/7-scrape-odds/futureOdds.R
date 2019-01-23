@@ -32,6 +32,6 @@ for (i in 1:length(futureEvents)) {
   print(i)
 }
 
-rm(futureEvents, mainPage, i, bind_odds, eventOddsScraper, oddsScraper)
-
 saveRDS(futureOdds, "./scripts/7-scrape-odds/data/futureOdds.RDS")
+
+rm(list=ls())

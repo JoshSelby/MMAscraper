@@ -172,3 +172,5 @@ fights_tbl2 <- clean(fights_tbl2)
 fights_tbl2 <- addBD(fights_tbl2, birthdayTable)
 fights <- full_join(fights, fights_tbl2)
 saveRDS(fights, file = "./scripts/2-clean-data/data/fights_clean.rds")
+
+rm(list=ls())

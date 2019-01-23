@@ -94,3 +94,5 @@ filtfightsOdds <- left_join(filtfightsOdds, filtfightsOdds %>% select(match_id, 
 saveRDS(filtfightsOdds, file = "./scripts/8-append-odds/data/filtfightsOdds.rds")
 saveRDS(filtfightsOdds, file = "./Shiny App/MatchPredictor/data/filtfightsOdds.rds")
 
+rm(list=ls())
+

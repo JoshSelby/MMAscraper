@@ -42,5 +42,6 @@ for (i in which(eventLinks %in% pastOdds$eventLink == FALSE)) {
 
 pastOdds <- rbind(updateOdds, pastOdds)
 
-rm(archivePage, updateOdds, eventDates, eventLinks, i, bind_odds, eventOddsScraper, oddsScraper)
 saveRDS(pastOdds, "./scripts/7-scrape-odds/data/pastOdds.RDS")
+
+rm(list=ls())
