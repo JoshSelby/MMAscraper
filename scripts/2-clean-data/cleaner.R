@@ -20,12 +20,20 @@ clean <- function(fightsRaw) {
   
   # Remove all fightsRaw where Link2 is an unknown fighter
   # Remove fight where Link1=Link2
-  # Remove Marcus Vinicius Cruz
+  # Remove Yanan Wu vs. Young Joon Lee
+  # Remove Marcus Vinicius Cruz (don't remember why)
   fightsRaw <- fightsRaw %>%
     filter(Fighter1!= "Unknown Fighter" & Fighter2 != "Unknown Fighter") %>%
     filter(Link1 != Link2) %>%
-    filter(Link1 != "/fighter/Marcus-Vinicius-Cruz-58601" & 
-             Link2 != "/fighter/Marcus-Vinicius-Cruz-58601")
+    filter(!(Link1 == "/fighter/Yanan-Wu-203195" & Link2 == "/fighter/Young-Joon-Lee-28961") &
+           !(Link1 == "/fighter/Young-Joon-Lee-28961" & Link2 == "/fighter/Yanan-Wu-203195") &
+           !(Link1 == "/fighter/Tayler-Smith-66489" & Link2 == "/fighter/Robert-Anderson-72701") & # Should be Taylor Smith
+           !(Link1 == "/fighter/Robert-Anderson-72701" & Link2 == "/fighter/Tayler-Smith-66489") &
+           !(Link1 == "/fighter/Bahman-Sharafi-260443" & Link2 == "/fighter/Alena-Ivanova-197853") & # Alena should be ELmar Dzhafarov
+           !(Link1 == "/fighter/Alena-Ivanova-197853" & Link2 == "/fighter/Bahman-Sharafi-260443") ) 
+  # %>%
+  #   filter(Link1 != "/fighter/Marcus-Vinicius-Cruz-58601" & 
+  #            Link2 != "/fighter/Marcus-Vinicius-Cruz-58601")
   
   
   # Remove Referee names from Method and Method_d columns
