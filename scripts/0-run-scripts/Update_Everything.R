@@ -10,6 +10,9 @@ source('./scripts/7-scrape-odds/futureOdds.R', echo=TRUE)
 source('./scripts/7-scrape-odds/updateOdds.R', echo=TRUE)
 source('./scripts/8-append-odds/matchOdds-filtfights.R', echo=TRUE)
 source('./scripts/8-append-odds/SherdogToBFO.R', echo=TRUE)
+source('./scripts/9-various-tables/Current Stats.R', echo=TRUE)
+source('./scripts/9-various-tables/Add Gender.R', echo=TRUE)
+
 
 source('./scripts/6-model/model.R', echo=TRUE)
 
