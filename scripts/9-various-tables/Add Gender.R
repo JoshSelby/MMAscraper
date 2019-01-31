@@ -43,3 +43,8 @@ femOpp <- setnames(femOpp[, {un <- unlist(.SD); as.list(un[order(un=='')])},
               .(grp = 1:nrow(femOpp))][, grp := NULL], names(femOpp))[]
 
 femOpp <- femOpp %>% group_by(Link1) %>% slice(1)
+
+femOpp$distance <- rowSums(!is.na(femOpp))-1
+
+
+saveRDS(fightersTable, "./scripts/9-various-tables/data/fightersTable.rds")

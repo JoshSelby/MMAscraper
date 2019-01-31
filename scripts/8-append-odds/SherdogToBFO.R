@@ -43,10 +43,25 @@ rm(wrongEvents, dupedEvents, i)
 pastOdds <- pastOdds %>% 
   mutate(fighter = ifelse(fighter == "Jacob-Volkman-1246", "Jacob-Volkmann-3471", fighter),
          opponent = ifelse(opponent == "Jacob-Volkman-1246", "Jacob-Volkmann-3471", opponent),
+         
          fighter = ifelse(fighter == "Luigi-Vandramini-8636", "Luigi-Vendramini-8636", fighter),
          opponent = ifelse(opponent == "Luigi-Vandramini-8636", "Luigi-Vendramini-8636", opponent),
+         
          fighter = ifelse(fighter == "Elizeu-Zaleski-5594", "Elizeu-Zaleski-Dos-Santos-6667", fighter),
          opponent = ifelse(opponent == "Elizeu-Zaleski-5594", "Elizeu-Zaleski-Dos-Santos-6667", opponent),
+         
+         fighter = ifelse(fighter == "Dong-Hyun-Kim-612" & opponent == "Thibault-Gouti-5531", "Dong-Hyun-Kim-6915", fighter),
+         opponent = ifelse(opponent == "Dong-Hyun-Kim-612" & fighter == "Thibault-Gouti-5531", "Dong-Hyun-Kim-6915", opponent),
+         
+         fighter = ifelse(fighter == "Dong-Hyun-Kim-612" & opponent == "Devonte-Smith-8473", "Dong-Hyun-Kim-6915", fighter),
+         opponent = ifelse(opponent == "Dong-Hyun-Kim-612" & fighter == "Devonte-Smith-8473", "Dong-Hyun-Kim-6915", opponent),
+         
+         fighter = ifelse(fighter == "Dong-Hyun-Kim-612" & opponent == "Damien-Brown-4589", "Dong-Hyun-Kim-6915", fighter),
+         opponent = ifelse(opponent == "Dong-Hyun-Kim-612" & fighter == "Damien-Brown-4589", "Dong-Hyun-Kim-6915", opponent),
+         
+         odds = ifelse(fighter == "Jake-Hager-8790" & opponent == "J-W-Kiser-8788", -680, odds),
+         odds = ifelse(opponent == "Jake-Hager-8790" & fighter == "J-W-Kiser-8788", 515, odds),
+         
          fighterLink1s = gsub("(.*)(-\\d*$)", "\\1", fighter) %>% gsub("-", "", .) %>% tolower(),
          fighterLink2s = gsub("(.*)(-\\d*$)", "\\1", opponent) %>% gsub("-", "", .) %>% tolower(),
          rownum = ceiling(row_number()/2),
@@ -94,47 +109,7 @@ filtfightsNotMatched <- anti_join(filtfights, filtfightsOdds, by = "match_id")
 pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
 
 
-# 2nd Round of Matching using the partial Sherdog_to_BFO table
-filtfights2 <- as.tibble()
-filtfightsOdds2 <- as.tibble()
-for (i in 0:2) {
-  pastOddsNotMatched <- pastOddsNotMatched %>%
-    mutate(Date2 = Date - i + 1)
-  
-  filtfights2 <- left_join(filtfightsNotMatched, Sherdog_to_BFO, by= c("Link1" = "Sherdog")) %>%
-    rename("BFO1" = "BFO") %>%
-    merge((left_join(filtfightsNotMatched, Sherdog_to_BFO, by= c("Link2" = "Sherdog")) %>%
-            rename("BFO2" = "BFO"))) %>%
-    rbind(filtfights2) %>%
-    arrange(match_id) %>%
-    distinct()
-  
-  
-  filtfightsOdds2a <- inner_join(filtfights2, pastOddsNotMatched, 
-                               by = c("BFO1" = "fighter","Date" = "Date2")) %>%
-    select(colnames(filtfights2), 'odds', 'rownum', 'BFO1', 'BFO2')
-  
-  filtfightsOdds2b <- inner_join(filtfights2, pastOddsNotMatched, 
-                                 by = c("BFO2" = "opponent","Date" = "Date2")) %>%
-    select(colnames(filtfights2), 'odds', 'rownum', 'BFO1', 'BFO2')
-  
-  filtfightsOdds2 <- rbind(filtfightsOdds2a, filtfightsOdds2b, filtfightsOdds2)
-  
-  rm(filtfightsOdds2a, filtfightsOdds2b)
-  
-}
-
-filtfightsOdds <- filtfightsOdds2 %>%
-  filter(!is.na(BFO1) & !is.na(BFO2)) %>%
-  rbind(filtfightsOdds)
-
-filtfightsNotMatched <- anti_join(filtfights, filtfightsOdds, by = "match_id")
-pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
-
-rm(filtfightsOdds2, filtfights2)
-
-
-# 3rd round of matching using stringdist logic
+# 2nd round of matching using stringdist logic
 filtfightsOdds2 <- as.tibble()
 for (i in 0:2) {
   pastOddsNotMatched <- pastOddsNotMatched %>%
@@ -175,8 +150,7 @@ pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
 rm(filtfightsOdds2)
 
 
-
-# 4th Round of Matching using the partial Sherdog_to_BFO table
+# 3rd Round of Matching using the partial Sherdog_to_BFO table
 filtfights2 <- as.tibble()
 filtfightsOdds2 <- as.tibble()
 for (i in 0:2) {
@@ -236,8 +210,8 @@ Sherdog_to_BFO %>%
   summarise(num = n()) %>% 
   filter(num>1)
 
-
-
+saveRDS(Sherdog_to_BFO, "./scripts/8-append-odds/data/Sherdog_to_BFO.RDS")
+saveRDS(filtfightsOdds, "./scripts/8-append-odds/data/filtfightOdds.RDS")
 ##############
 # Sherdog_to_BFO <- Sherdog_to_BFO %>%
 #   rbind(c("Yuta-Sasaki-63070", "Ulka-Sasaki-8251"), 

@@ -51,8 +51,10 @@ fightMetrics[,
              ratIncrease1_3 = r1b - coalesce(shift(r1b,3), first(r1b)), # Rating increase from 3 fights ago
              oppRat1_5 = coalesce(cummean(r2b), roll_meanr(r2b, 5)) %>%
               shift(), # Average rating of last 5 opponents
-             highestDef1_5 = coalesce(cummax(((Result=="win")*r2b)), roll_maxr((Result=="win")*r2b, 5)) %>%
+             highestWin1_5 = coalesce(cummax(((Result=="win")*r2b)), roll_maxr((Result=="win")*r2b, 5)) %>%
               shift(), # Highest rated fighter defeated in last 5 fights
+             lowestLoss1_5 = coalesce(cummin(((Result=="loss")*r2b)), roll_minr((Result=="loss")*r2b, 5)) %>%
+              shift(),
              koLosses1 = cumsum(Result == "loss" & (Method=="TKO"|Method=="KO")) %>%
               shift(), # number of KO losses
              diff1_5 = coalesce(cummean((r1b-r2b)), roll_meanr((r1b-r2b), 5)) %>% 
@@ -71,6 +73,8 @@ fightMetrics[,
                shift(), 
              highestDef2_5 = coalesce(cummax(((Result=="win")*r1b)), roll_maxr((Result=="win")*r1b, 5)) %>%
                shift(), 
+             lowestLoss2_5 = coalesce(cummin(((Result=="loss")*r1b)), roll_minr((Result=="loss")*r1b, 5)) %>%
+               shift(),
              koLosses2 = cumsum(Result == "win" & (Method=="TKO"|Method=="KO")) %>%
                shift(), 
              diff2_5 = coalesce(cummean((r2b-r1b)), roll_meanr((r2b-r1b), 5)) %>% 
