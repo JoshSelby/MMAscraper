@@ -8,7 +8,7 @@ filtfights <- readRDS(file = "./scripts/5-metrics/data/fightMetricsEvent.rds") %
   filter(Date >= "2007-06-16")
 
 pastOdds <- pastOdds %>% 
-  mutate(odds = coalesce(`5Dimes`, Bovada, `William H.`, SportBet, Pinnacle)) %>%
+  mutate(odds = coalesce(`5Dimes`, Bovada, `WilliamH`, SportBet, Pinnacle)) %>%
   select(1:5, odds)
 
 # Events with duplicate links
@@ -69,7 +69,8 @@ pastOdds <- pastOdds %>%
   filter(!(fighter %in% c("Al-Iaquinta-3221", "Paul-Felder-5116") & opponent %in% c("Al-Iaquinta-3221", "Paul-Felder-5116")) & 
          !(fighter %in% c("John-Howard-692", "Shamil-Gamzatov-6071") & opponent %in% c("John-Howard-692", "Shamil-Gamzatov-6071")) & 
          !(fighter %in% c("Bekbulat-Magomedov-6022", "Carl-Deaton-5200") & opponent %in% c("Bekbulat-Magomedov-6022", "Carl-Deaton-5200")) & 
-         !(fighter %in% c("Darrick-Minner-4482", "Timur-Valiev-4975") & opponent %in% c("Darrick-Minner-4482", "Timur-Valiev-4975")))
+         !(fighter %in% c("Darrick-Minner-4482", "Timur-Valiev-4975") & opponent %in% c("Darrick-Minner-4482", "Timur-Valiev-4975")) &
+         !is.na(odds) & odds > -5000)
 
 filtfights <- filtfights %>%
   mutate(fighter1Name = gsub("(.*)(-\\d*$)", "\\1", Link1) %>% gsub("-", "", .) %>% tolower(),
@@ -205,13 +206,17 @@ pastOddsNotMatched <- anti_join(pastOdds, filtfightsOdds, by = "rownum")
 rm(filtfightsOdds2, filtfights2)
 
 # These are BFO links that are associated with 2 Sherdog pages (mistakes)
-Sherdog_to_BFO %>% 
+mistakes <- Sherdog_to_BFO %>% 
   group_by(BFO) %>% 
   summarise(num = n()) %>% 
-  filter(num>1)
+  filter(num>1) %>%
+  pull(BFO)
+
+filtfightsOdds <- filtfightsOdds %>% 
+  filter(!(BFO1 %in% mistakes) & !(BFO2 %in% mistakes))
 
 saveRDS(Sherdog_to_BFO, "./scripts/8-append-odds/data/Sherdog_to_BFO.RDS")
-saveRDS(filtfightsOdds, "./scripts/8-append-odds/data/filtfightOdds.RDS")
+saveRDS(filtfightsOdds, "./scripts/8-append-odds/data/filtfightsOdds.RDS")
 ##############
 # Sherdog_to_BFO <- Sherdog_to_BFO %>%
 #   rbind(c("Yuta-Sasaki-63070", "Ulka-Sasaki-8251"), 

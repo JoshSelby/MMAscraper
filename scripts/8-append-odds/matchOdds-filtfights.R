@@ -88,7 +88,8 @@ filtfightsOdds <- left_join(filtfightsOdds, filtfightsOdds %>% select(match_id, 
                             by = c("Link1" = "Link2", "match_id" = "match_id")) %>%
   as.tibble() %>%
   rename(odds5Dimes1 = `5Dimes.x`,
-         odds5Dimes2 = `5Dimes.y`)
+         odds5Dimes2 = `5Dimes.y`) %>%
+  filter(!is.na(odds5Dimes1))
   
 
 saveRDS(filtfightsOdds, file = "./scripts/8-append-odds/data/filtfightsOdds.rds")

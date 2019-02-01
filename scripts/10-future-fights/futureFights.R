@@ -1,10 +1,13 @@
 library(tidyverse)
 library(stringr)
 library(stringdist)
+library(data.table)
+library(zoo)
+library(RcppRoll)
 
 fightersTable <- readRDS("./scripts/9-various-tables/data/fightersTable.rds")
 fightMetricsEvent <- readRDS("./scripts/5-metrics/data/fightMetricsEvent.rds")
-filtfightOdds <- readRDS("./scripts/8-append-odds/data/filtfightOdds.RDS")
+filtfightsOdds <- readRDS("./scripts/8-append-odds/data/filtfightsOdds.RDS")
 Sherdog_to_BFO <- readRDS("./scripts/8-append-odds/data/Sherdog_to_BFO.RDS")
 futureOdds <- readRDS("./scripts/7-scrape-odds/data/futureOdds.RDS")
 
@@ -44,16 +47,83 @@ Sherdog_to_BFO <- minitbl %>%
   full_join(Sherdog_to_BFO) %>%
   unique()
 
+# Manually change
+futureOdds <- futureOdds %>%
+  mutate(fighter = ifelse(fighter == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", fighter),
+         opponent = ifelse(opponent == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", opponent))
+
 rm(minitbl, availFighters, i, noSherdog)
 
 
 futureFights <- futureOdds %>% 
-  left_join(Sherdog_to_BFO, by=c("fighter" = "BFO")) %>%
-  left_join(Sherdog_to_BFO, by=c("opponent" = "BFO")) %>%
-  rename(Link1 = Sherdog.x, Link2 = Sherdog.y) %>%
-  left_join(fightersTable, by = c("Link1" = "Link")) %>%
-  left_join(fightersTable, by = c("Link2" = "Link")) %>%
-  mutate(record1 = paste(wins.x, loss.x, draw.x, NC.x, sep="-"),
-         record2 = paste(wins.y, loss.y, draw.y, NC.y, sep="-")) %>%
-  select(Link1, Link2, eventName, Date, rating.x, rating.y, record1, record2, `5Dimes`) %>%
-  rename(r1b = rating.x, r2b = rating.y, odds = `5Dimes`)
+  left_join(Sherdog_to_BFO, by=c("fighter" = "BFO"), suffix = c("1","2")) %>%
+  left_join(Sherdog_to_BFO, by=c("opponent" = "BFO"), suffix = c("1","2")) %>%
+  rename(Link1 = Sherdog1, Link2 = Sherdog2) %>%
+  left_join(fightersTable, by = c("Link1" = "Link"), suffix = c("1","2")) %>%
+  left_join(fightersTable, by = c("Link2" = "Link"), suffix = c("1","2")) %>%
+  select(Link1, Link2, eventName, Date, rating1, rating2, Birthday1, Birthday2, wins1, loss1, draw1, nc1, wins2, loss2, draw2, nc2, `5Dimes`) %>%
+  rename(r1b = rating1, r2b = rating2, odds = `5Dimes`, Event = eventName, BD1 = Birthday1, BD2 = Birthday2)
+
+
+
+lastFiveFights <- fightMetricsEvent %>%
+  filter(Link1 %in% futureFights$Link1)
+
+lastFiveFights <- fightMetricsEvent %>%
+  filter(match_id %in% lastFiveFights$match_id)
+
+
+futureFights <- lastFiveFights %>% 
+  full_join(futureFights) %>%
+  arrange(Date) %>%
+  as.data.table()
+
+futureFights[, 
+             ':='(fightLag1 = as.numeric(c(0, diff(Date))), # Days since last fight
+                  fightLag1_5 = (Date - coalesce(shift(Date,5), first(Date))) %>% as.numeric(),
+                  ratIncrease1 = c(0, diff(r1b)), # Rating increase since last fight
+                  ratIncrease1_3 = r1b - coalesce(shift(r1b,3), first(r1b)), # Rating increase from 3 fights ago
+                  oppRat1_5 = coalesce(cummean(r2b), roll_meanr(r2b, 5)) %>%
+                    shift(), # Average rating of last 5 opponents
+                  highestWin1_5 = coalesce(cummax(((Result=="win")*r2b)), roll_maxr((Result=="win")*r2b, 5)) %>%
+                    shift(), # Highest rated fighter defeated in last 5 fights
+                  lowestLoss1_5 = coalesce(cummin(((Result=="loss")*r2b)), roll_minr((Result=="loss")*r2b, 5)) %>%
+                    shift(), # Lowest rated fighter lost to in last 5 fights
+                  koLosses1 = cumsum(Result == "loss" & (Method=="TKO"|Method=="KO")) %>%
+                    shift(), # number of KO losses
+                  diff1_5 = coalesce(cummean((r1b-r2b)), roll_meanr((r1b-r2b), 5)) %>% 
+                    shift(),
+                  Age1 = interval(BD1, Date) %>% 
+                    time_length("years")
+             ),
+             by=Link1]
+
+futureFights[, 
+             ':='(fightLag2 = as.numeric(c(0, diff(Date))), 
+                  fightLag2_5 = (Date - coalesce(shift(Date,5), first(Date))) %>% as.numeric(),
+                  ratIncrease2 = c(0, diff(r2b)), 
+                  ratIncrease2_3 = r2b - coalesce(shift(r2b,2), first(r2b)), 
+                  oppRat2_5 = coalesce(cummean(r1b), roll_meanr(r1b, 5)) %>%
+                    shift(), 
+                  highestDef2_5 = coalesce(cummax(((Result=="win")*r1b)), roll_maxr((Result=="win")*r1b, 5)) %>%
+                    shift(), 
+                  lowestLoss2_5 = coalesce(cummin(((Result=="loss")*r1b)), roll_minr((Result=="loss")*r1b, 5)) %>%
+                    shift(),
+                  koLosses2 = cumsum(Result == "win" & (Method=="TKO"|Method=="KO")) %>%
+                    shift(), 
+                  diff2_5 = coalesce(cummean((r2b-r1b)), roll_meanr((r2b-r1b), 5)) %>% 
+                    shift(),
+                  Age2 = interval(BD2, Date) %>% 
+                    time_length("years")
+             ),
+             by=Link2]
+
+futureFights <- futureFights %>% 
+  as.tibble() %>%
+  filter(!is.na(odds)) %>%
+  select(-match_id, -Result, -Method, -Method_d, -r1a, -r2a, -Fighter1, -Fighter2, -R, -Time, -Referee, -Result2, -Org)
+
+
+saveRDS(futureFights, "./scripts/10-future-fights/data/futureFights.RDS")
+
+rm(list=ls())

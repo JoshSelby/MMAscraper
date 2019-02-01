@@ -40,6 +40,9 @@ for (i in which(eventLinks %in% pastOdds$eventLink == FALSE)) {
   print(i)
 }
 
+updateOdds <- updateOdds %>% 
+  rename(WilliamH = colnames(updateOdds)[13])
+
 pastOdds <- rbind(updateOdds, pastOdds)
 
 saveRDS(pastOdds, "./scripts/7-scrape-odds/data/pastOdds.RDS")

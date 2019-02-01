@@ -10,7 +10,8 @@ fightsElo <- readRDS(file = "./scripts/4-ratings/data/fightsElo.rds")
 # Double the data
 fights1 <- fightsElo
 fights2 <- fightsElo %>%
-  mutate(Result = ifelse(Result=="win", "loss", Result))
+  mutate(Result = ifelse(Result=="win", "loss", Result),
+         Result2 = ifelse(Result2 == "win", "loss", Result2))
 
 colnames(fights2) <- fights2 %>% 
   colnames %>% 

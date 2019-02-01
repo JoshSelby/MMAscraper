@@ -25,7 +25,9 @@ for (i in 1:length(odds_list$searched_events)) {
   print(i)
 }
 
-pastOdds <- pastOdds %>% filter(Date < today())
+pastOdds <- pastOdds %>% 
+  filter(Date < today()) %>% 
+  rename(WilliamH = colnames(pastOdds)[13])
 
 
 saveRDS(pastOdds, "./scripts/7-scrape-odds/data/pastOdds.RDS")
