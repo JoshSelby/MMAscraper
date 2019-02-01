@@ -62,7 +62,8 @@ futureFights <- futureOdds %>%
   left_join(fightersTable, by = c("Link1" = "Link"), suffix = c("1","2")) %>%
   left_join(fightersTable, by = c("Link2" = "Link"), suffix = c("1","2")) %>%
   select(Link1, Link2, eventName, Date, rating1, rating2, Birthday1, Birthday2, wins1, loss1, draw1, nc1, wins2, loss2, draw2, nc2, `5Dimes`) %>%
-  rename(r1b = rating1, r2b = rating2, odds = `5Dimes`, Event = eventName, BD1 = Birthday1, BD2 = Birthday2)
+  rename(r1b = rating1, r2b = rating2, odds = `5Dimes`, Event = eventName, BD1 = Birthday1, BD2 = Birthday2) %>%
+  mutate(rownum = ceiling(row_number()/2))
 
 
 
@@ -87,7 +88,8 @@ futureFights[,
                     shift(), # Average rating of last 5 opponents
                   highestWin1_5 = coalesce(cummax(((Result=="win")*r2b)), roll_maxr((Result=="win")*r2b, 5)) %>%
                     shift(), # Highest rated fighter defeated in last 5 fights
-                  lowestLoss1_5 = coalesce(cummin(((Result=="loss")*r2b)), roll_minr((Result=="loss")*r2b, 5)) %>%
+                  lowestLoss1_5 = coalesce(cummin(ifelse((Result=="loss")*r2b == 0, 10000,(Result=="loss")*r2b)), 
+                                           roll_minr(ifelse((Result=="loss")*r2b == 0, 10000,(Result=="loss")*r2b), 5)) %>%
                     shift(), # Lowest rated fighter lost to in last 5 fights
                   koLosses1 = cumsum(Result == "loss" & (Method=="TKO"|Method=="KO")) %>%
                     shift(), # number of KO losses
@@ -107,7 +109,8 @@ futureFights[,
                     shift(), 
                   highestDef2_5 = coalesce(cummax(((Result=="win")*r1b)), roll_maxr((Result=="win")*r1b, 5)) %>%
                     shift(), 
-                  lowestLoss2_5 = coalesce(cummin(((Result=="loss")*r1b)), roll_minr((Result=="loss")*r1b, 5)) %>%
+                  lowestLoss2_5 = coalesce(cummin(ifelse((Result=="win")*r1b == 0, 10000,(Result=="win")*r1b)), 
+                                           roll_minr(ifelse((Result=="win")*r1b == 0, 10000,(Result=="win")*r1b), 5)) %>%
                     shift(),
                   koLosses2 = cumsum(Result == "win" & (Method=="TKO"|Method=="KO")) %>%
                     shift(), 
