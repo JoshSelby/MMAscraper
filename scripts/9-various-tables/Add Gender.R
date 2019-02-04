@@ -48,3 +48,5 @@ femOpp$distance <- rowSums(!is.na(femOpp))-1
 
 
 saveRDS(fightersTable, "./scripts/9-various-tables/data/fightersTable.rds")
+
+rm(list = ls())

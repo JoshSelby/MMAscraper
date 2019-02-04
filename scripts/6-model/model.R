@@ -7,7 +7,8 @@ filtfightsOdds2 <- filtfightsOdds %>%
   filter(Result != "draw" & r1b > r2b|
          (r1b == r2b & ratIncrease1_3 > ratIncrease2_3)) %>%
   mutate(eloWinProb = 1/(1+10^((r2b-r1b)/400)),
-         Result2 = ifelse(Result == "win", 1, 0))
+         diffAge = Age1 - Age2,
+         ResultBin = ifelse(Result == "win", 1, 0))
 
 set.seed(1)
 train <- filtfightsOdds2 %>%
@@ -18,7 +19,7 @@ train <- filtfightsOdds2 %>%
 test <- anti_join(filtfightsOdds2, train)
 
 
-model <- glm(Result2 ~ r1b + r2b + wins1 + wins2 + Age1 + Age2 +
+model <- glm(ResultBin ~ eloWinProb + diffAge +
              oppRat1_5 + oppRat2_5 + koLosses1 + koLosses2, 
              family = binomial(link="logit"), data = train)
 
@@ -28,7 +29,7 @@ summary(model)
 
 fitted.results <- predict(model,newdata=test,type='response')
 fitted.results <- ifelse(fitted.results > 0.5,1,0)
-misClasificError <- mean(fitted.results != test$Result2, na.rm = TRUE)
+misClasificError <- mean(fitted.results != test$ResultBin, na.rm = TRUE)
 print(paste('Accuracy',1-misClasificError))
 table("predicted" = fitted.results, "actual" = test$Result2)
 

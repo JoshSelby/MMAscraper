@@ -2,6 +2,7 @@
 
 #source('./scripts/0-run-scripts/Initial Run.R', echo=TRUE)
 source('./scripts/1-raw-data/update-scraper.R', echo=TRUE)
+source('./scripts/quick-fixes.R', echo = TRUE)
 source('./scripts/3-records/recordAdder.R', echo=TRUE)
 source('./scripts/4-ratings/add_ratings.R', echo=TRUE)
 source('./scripts/5-metrics/metrics.R', echo=TRUE)

@@ -50,7 +50,8 @@ Sherdog_to_BFO <- minitbl %>%
 # Manually change
 futureOdds <- futureOdds %>%
   mutate(fighter = ifelse(fighter == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", fighter),
-         opponent = ifelse(opponent == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", opponent))
+         opponent = ifelse(opponent == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", opponent)) %>%
+  filter(fighter != "Alex-Gorgees-8767" & opponent != "Alex-Gorgees-8767")
 
 rm(minitbl, availFighters, i, noSherdog)
 
@@ -61,9 +62,9 @@ futureFights <- futureOdds %>%
   rename(Link1 = Sherdog1, Link2 = Sherdog2) %>%
   left_join(fightersTable, by = c("Link1" = "Link"), suffix = c("1","2")) %>%
   left_join(fightersTable, by = c("Link2" = "Link"), suffix = c("1","2")) %>%
-  select(Link1, Link2, eventName, Date, rating1, rating2, Birthday1, Birthday2, wins1, loss1, draw1, nc1, wins2, loss2, draw2, nc2, `5Dimes`) %>%
-  rename(r1b = rating1, r2b = rating2, odds = `5Dimes`, Event = eventName, BD1 = Birthday1, BD2 = Birthday2) %>%
-  mutate(rownum = ceiling(row_number()/2))
+  mutate(rownum = ceiling(row_number()/2)) %>%
+  select(rownum, Link1, Link2, eventName, Date, rating1, rating2, Birthday1, Birthday2, wins1, loss1, draw1, nc1, wins2, loss2, draw2, nc2, `5Dimes`) %>%
+  rename(r1b = rating1, r2b = rating2, odds = `5Dimes`, Event = eventName, BD1 = Birthday1, BD2 = Birthday2) 
 
 
 

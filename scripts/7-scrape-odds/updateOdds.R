@@ -40,8 +40,11 @@ for (i in which(eventLinks %in% pastOdds$eventLink == FALSE)) {
   print(i)
 }
 
-updateOdds <- updateOdds %>% 
-  rename(WilliamH = colnames(updateOdds)[13])
+if (length(colnames(updateOdds)) > 12) {
+  updateOdds <- updateOdds %>% 
+    rename(WilliamH = colnames(updateOdds)[13])
+}
+
 
 pastOdds <- rbind(updateOdds, pastOdds)
 
