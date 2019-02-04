@@ -79,6 +79,7 @@ futureFights <- lastFiveFights %>%
   arrange(Date) %>%
   as.data.table()
 
+
 futureFights[, 
              ':='(fightLag1 = as.numeric(c(0, diff(Date))), # Days since last fight
                   fightLag1_5 = (Date - coalesce(shift(Date,5), first(Date))) %>% as.numeric(),
@@ -86,10 +87,10 @@ futureFights[,
                   ratIncrease1_3 = r1b - coalesce(shift(r1b,3), first(r1b)), # Rating increase from 3 fights ago
                   oppRat1_5 = coalesce(cummean(r2b), roll_meanr(r2b, 5)) %>%
                     shift(), # Average rating of last 5 opponents
-                  highestWin1_5 = coalesce(cummax(((Result=="win")*r2b)), roll_maxr((Result=="win")*r2b, 5)) %>%
+                  highestWin1_5 = coalesce(roll_maxr((Result2=="win")*r2b, 5), cummax(((Result2=="win")*r2b))) %>%
                     shift(), # Highest rated fighter defeated in last 5 fights
-                  lowestLoss1_5 = coalesce(cummin(ifelse((Result=="loss")*r2b == 0, 10000,(Result=="loss")*r2b)), 
-                                           roll_minr(ifelse((Result=="loss")*r2b == 0, 10000,(Result=="loss")*r2b), 5)) %>%
+                  lowestLoss1_5 = coalesce(roll_minr(ifelse((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b), 5),
+                                           cummin(ifelse((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b))) %>%
                     shift(), # Lowest rated fighter lost to in last 5 fights
                   koLosses1 = cumsum(Result == "loss" & (Method=="TKO"|Method=="KO")) %>%
                     shift(), # number of KO losses
@@ -107,10 +108,10 @@ futureFights[,
                   ratIncrease2_3 = r2b - coalesce(shift(r2b,2), first(r2b)), 
                   oppRat2_5 = coalesce(cummean(r1b), roll_meanr(r1b, 5)) %>%
                     shift(), 
-                  highestDef2_5 = coalesce(cummax(((Result=="win")*r1b)), roll_maxr((Result=="win")*r1b, 5)) %>%
+                  highestWin2_5 = coalesce(roll_maxr((Result2=="win")*r1b, 5), cummax(((Result2=="win")*r1b))) %>%
                     shift(), 
-                  lowestLoss2_5 = coalesce(cummin(ifelse((Result=="win")*r1b == 0, 10000,(Result=="win")*r1b)), 
-                                           roll_minr(ifelse((Result=="win")*r1b == 0, 10000,(Result=="win")*r1b), 5)) %>%
+                  lowestLoss2_5 = coalesce(roll_minr(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b), 5),
+                                           cummin(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b))) %>%
                     shift(),
                   koLosses2 = cumsum(Result == "win" & (Method=="TKO"|Method=="KO")) %>%
                     shift(), 
@@ -121,9 +122,14 @@ futureFights[,
              ),
              by=Link2]
 
+
 futureFights <- futureFights %>% 
   as.tibble() %>%
   filter(!is.na(odds)) %>%
+  mutate(highestWin1_5 = ifelse(highestWin1_5==0, NA, highestWin1_5),
+         highestWin2_5 = ifelse(highestWin2_5==0, NA, highestWin2_5),
+         lowestLoss1_5 = ifelse(lowestLoss1_5==10000, NA, lowestLoss1_5),
+         lowestLoss2_5 = ifelse(lowestLoss2_5==10000, NA, lowestLoss2_5)) %>%
   select(-match_id, -Result, -Method, -Method_d, -r1a, -r2a, -Fighter1, -Fighter2, -R, -Time, -Referee, -Result2, -Org)
 
 
