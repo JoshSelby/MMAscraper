@@ -5,7 +5,7 @@ fightMetricsEvents <- readRDS("./scripts/5-metrics/data/fightMetricsEvent.rds")
 futureFights <- readRDS("./scripts/10-future-fights/data/futureFights.RDS")
 
 test <- filtfightsOdds %>% 
-  filter(Date > "2012-01-01" & Age1 <27 & Age2 > 33 & r1b < r2b & odds < 0 & Age2-Age1 < 8) %>%
+  filter(Date >= "2010-01-01" & Age2-Age1 >= 4 & Age2-Age1 <= 6 & r1b-r2b >= 140 & r1b-r2b <= 160 & odds <= -200) %>%
   select(Link1, Link2, Result, Method, Date, Event, odds, r1b, r2b, Age1, Age2, highestWin1_5, highestWin2_5) %>% 
   mutate(bet = 10,
          winnings = ifelse(Result %in% c("NC", "draw"), 0, ifelse(odds>0,ifelse(Result=="win", odds*bet/100, -bet),

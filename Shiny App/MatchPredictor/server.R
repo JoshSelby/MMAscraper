@@ -26,14 +26,14 @@ function(input, output) {
   dataset1_past <- reactive({
     fightMetricsEventOdds %>% 
       filter(Link1 == dataset1() %>% pull(Link1)) %>% 
-      select(Result, Fighter2, Date, Method, Method_d, Org, Date, r1b, r2b, odds) %>%
+      select(Result, Fighter2, Date, Method, Method_d, R, Org, Date, r1b, r2b, odds) %>%
       rename(Opponent = Fighter2)
   })
   
   dataset2_past <- reactive({
     fightMetricsEventOdds %>% 
       filter(Link1 == dataset1() %>% pull(Link2)) %>% 
-      select(Result, Fighter2, Date, Method, Method_d, Org, Date, r1b, r2b, odds) %>%
+      select(Result, Fighter2, Date, Method, Method_d, R, Org, Date, r1b, r2b, odds) %>%
       rename(Opponent = Fighter2)
   })
   
