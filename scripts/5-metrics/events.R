@@ -19,7 +19,8 @@ events <- tibble(Event = unique(fightMetrics$Event),
          Org = ifelse(grepl("^Fight Nights|^EFN - Fight Nights|^FNG - Fight Nights", Event), "FNG", Org),
          Org = ifelse(Org == "One FC", "One Championship", Org),
          Org = ifelse(grepl("Rizin", Event), "Rizin", Org),
-         Org = ifelse(Event == "EFN 50 - Emelianenko vs. Maldonado", "FNG", Org))
+         Org = ifelse(Event == "EFN 50 - Emelianenko vs. Maldonado", "FNG", Org),
+         Org = ifelse(grepl("Dana White", Org), "Dana White's TNCS", Org))
 
 
 fightMetrics <- fightMetrics %>% full_join(events)
@@ -27,7 +28,7 @@ fightMetrics <- fightMetrics %>% full_join(events)
 
 # Only select fights since 2009 in select organizations
 filtfights <- fightMetrics %>%
-  filter(Org %in% c("ACB", "Bellator", "CES MMA", "CWFC", "Dana White's Tuesday Night Contender Series", "FNG", "Golden Boy MMA",
+  filter(Org %in% c("ACB", "Bellator", "CES MMA", "CWFC", "Dana White's TNCS", "FNG", "Golden Boy MMA",
                     "Invicta FC", "KSW", "LFA", "M-1", "One Championship", "Professional Fighters League", "Rizin", 
                     "Strikeforce", "Titan FC", "UFC"),
          Date >= "2009-01-01")
@@ -54,5 +55,4 @@ fightMetrics %>%
 
 saveRDS(filtfights, "./scripts/5-metrics/data/filtfights.rds")
 saveRDS(fightMetrics, "./scripts/5-metrics/data/fightMetricsEvent.rds")
-saveRDS(fightMetrics, "./Shiny App/MatchPredictor/data/fightMetricsEvent.rds")
 rm(list=ls())

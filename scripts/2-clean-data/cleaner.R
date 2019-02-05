@@ -94,7 +94,16 @@ clean <- function(fightsRaw) {
            Method = gsub("Points", "Decision", Method),
            Method_d = gsub("Sttopage", "Stoppage", Method_d),
            Method_d = ifelse(Method == "Decision", gsub("Decision|Decision | Decision", "", Method_d), Method_d),
-           Method_d = gsub("Unaminous|Unaninous|Unanimmous", "Unanimous", Method_d)
+           Method_d = gsub("Unaminous|Unaninous|Unanimmous", "Unanimous", Method_d),
+           Method = ifelse(Method == "Submison", "Submission", Method),
+           Method = ifelse(Method == "Subission", "Submission", Method),
+           Method = ifelse(Method == "Desision", "Decision", Method),
+           Method = ifelse(Method == "K.o", "KO", Method),
+           Method = ifelse(Method == "K.o.", "KO", Method),
+           Method = ifelse(grepl("TKO", Method), "TKO", Method),
+           Method = ifelse(grepl("Division", Method), "Decision", Method),
+           Method = ifelse(grepl("Illegal", Method), "No Contest", Method)
+           
     )
   return(fights)
 }

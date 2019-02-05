@@ -5,7 +5,7 @@ library(stringdist)
 
 pastOdds <- readRDS("./scripts/7-scrape-odds/data/pastOdds.RDS")
 filtfights <- readRDS(file = "./scripts/5-metrics/data/fightMetricsEvent.rds") %>%
-  filter(Date >= "2007-06-16")
+  filter(Date > "2007-06-01")
 
 pastOdds <- pastOdds %>% 
   mutate(odds = coalesce(`5Dimes`, Bovada, `WilliamH`, SportBet, Pinnacle)) %>%
@@ -217,18 +217,15 @@ filtfightsOdds <- filtfightsOdds %>%
 
 saveRDS(Sherdog_to_BFO, "./scripts/8-append-odds/data/Sherdog_to_BFO.RDS")
 saveRDS(filtfightsOdds, "./scripts/8-append-odds/data/filtfightsOdds.RDS")
-##############
-# Sherdog_to_BFO <- Sherdog_to_BFO %>%
-#   rbind(c("Yuta-Sasaki-63070", "Ulka-Sasaki-8251"), 
-#         c("Alexander-Volkanovski-101527", "Alex-Volkanovski-6723"),
-#         c("Kayla-Harrison-237039","Kayla-Harrison-8276"),
-#         c("Aaron-Pico-191127", "Aaron-Pico-7170"),
-#         c("Kyle-Nelson-95383", "Kyle-Nelson-3633"),
-#         c("Maria-de-Oliveira-Neta-207835", "Maria-Oliveira-7507"),
-#         c("Sergei-Pavlovich-184051", "Sergey-Pavlovich-7219")
-#         )
+saveRDS(filtfightsOdds, "./Shiny App/MatchPredictor/data/filtfightsOdds.RDS")
 
 
+fightMetricsEventOdds <- readRDS("~/GitHub/MMAscraper/scripts/5-metrics/data/fightMetricsEvent.rds") %>%
+  full_join(filtfightsOdds)
+
+saveRDS(fightMetricsEventOdds, "./Shiny App/MatchPredictor/data/fightMetricsEventOdds.rds")
+
+rm(list=ls())
 
 
 

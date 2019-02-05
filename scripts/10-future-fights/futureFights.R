@@ -1,5 +1,6 @@
 library(tidyverse)
 library(stringr)
+library(lubridate)
 library(stringdist)
 library(data.table)
 library(zoo)
@@ -51,7 +52,8 @@ Sherdog_to_BFO <- minitbl %>%
 futureOdds <- futureOdds %>%
   mutate(fighter = ifelse(fighter == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", fighter),
          opponent = ifelse(opponent == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", opponent)) %>%
-  filter(fighter != "Alex-Gorgees-8767" & opponent != "Alex-Gorgees-8767")
+  filter((fighter != "Alex-Gorgees-8767" & opponent != "Alex-Gorgees-8767") &
+         (fighter != "Ryan-Spann-3502" & opponent != "Ryan-Spann-3502"))
 
 rm(minitbl, availFighters, i, noSherdog)
 
@@ -63,7 +65,7 @@ futureFights <- futureOdds %>%
   left_join(fightersTable, by = c("Link1" = "Link"), suffix = c("1","2")) %>%
   left_join(fightersTable, by = c("Link2" = "Link"), suffix = c("1","2")) %>%
   mutate(rownum = ceiling(row_number()/2)) %>%
-  select(rownum, Link1, Link2, eventName, Date, rating1, rating2, Birthday1, Birthday2, wins1, loss1, draw1, nc1, wins2, loss2, draw2, nc2, `5Dimes`) %>%
+  select(rownum, Name1, Name2, eventName, Date, rating1, rating2, Birthday1, Birthday2, wins1, loss1, draw1, nc1, wins2, loss2, draw2, nc2, `5Dimes`, Link1, Link2) %>%
   rename(r1b = rating1, r2b = rating2, odds = `5Dimes`, Event = eventName, BD1 = Birthday1, BD2 = Birthday2) 
 
 
@@ -109,7 +111,7 @@ futureFights[,
                   ratIncrease2_3 = r2b - coalesce(shift(r2b,2), first(r2b)), 
                   oppRat2_5 = coalesce(cummean(r1b), roll_meanr(r1b, 5)) %>%
                     shift(), 
-                  highestWin2_5 = coalesce(roll_maxr((Result2=="win")*r1b, 5), cummax(((Result2=="win")*r1b))) %>%
+                  highestWin2_5 = coalesce(roll_maxr((Result2=="loss")*r1b, 5), cummax(((Result2=="loss")*r1b))) %>%
                     shift(), 
                   lowestLoss2_5 = coalesce(roll_minr(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b), 5),
                                            cummin(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b))) %>%
@@ -131,9 +133,12 @@ futureFights <- futureFights %>%
          highestWin2_5 = ifelse(highestWin2_5==0, NA, highestWin2_5),
          lowestLoss1_5 = ifelse(lowestLoss1_5==10000, NA, lowestLoss1_5),
          lowestLoss2_5 = ifelse(lowestLoss2_5==10000, NA, lowestLoss2_5)) %>%
+  mutate_at(c("r1b", "r2b", "wins1", "loss1", "draw1", "nc1", "wins2", "loss2", "draw2", "nc2", "fightLag1", "fightLag2", "rownum", "odds"),
+            as.integer) %>%
   select(-match_id, -Result, -Method, -Method_d, -r1a, -r2a, -Fighter1, -Fighter2, -R, -Time, -Referee, -Result2, -Org)
 
 
 saveRDS(futureFights, "./scripts/10-future-fights/data/futureFights.RDS")
+saveRDS(futureFights, "./Shiny App/MatchPredictor/data/futureFights.RDS")
 
 rm(list=ls())
