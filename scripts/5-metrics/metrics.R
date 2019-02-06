@@ -73,7 +73,7 @@ fightMetrics[,
              ratIncrease2_3 = r2b - coalesce(shift(r2b,2), first(r2b)), 
              oppRat2_5 = coalesce(cummean(r1b), roll_meanr(r1b, 5)) %>%
                shift(), 
-             highestWin2_5 = coalesce(roll_maxr((Result2=="win")*r1b, 5), cummax(((Result2=="win")*r1b))) %>%
+             highestWin2_5 = coalesce(roll_maxr((Result2=="loss")*r1b, 5), cummax(((Result2=="loss")*r1b))) %>%
                shift(), 
              lowestLoss2_5 = coalesce(roll_minr(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b), 5),
                                       cummin(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b))) %>%
