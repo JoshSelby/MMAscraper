@@ -21,18 +21,36 @@ with_plus <- function(x, ...) {
   }
 }
 
+line_to_per <- function(x) {
+  if (x < 0) {
+    return(-x/((-x + 100)))
+  } else {
+    return(100/(x+100))
+  }
+}
+
+odds_to_return <- function(x, bet=10) {
+  if (x < 0) {
+    return(bet/-x*100)
+  } else {
+    return(x*bet/100)
+  }
+}
+
 function(input, output) {
   
   dataset1 <- reactive({
     futureFights %>%
     mutate_at(c("Date", "BD1", "BD2"), as.character) %>%
-    filter(rownum == input$match_num) %>% head(1)
+    filter(rownum == input$match_num %>% 
+             gsub("(.*):(.*)", "\\1",.)) %>% head(1)
   })
   
   dataset2 <- reactive({
     futureFights %>%
       mutate_at(c("Date", "BD1", "BD2"), as.character) %>%
-      filter(rownum == input$match_num) %>% tail(1)
+      filter(rownum == input$match_num %>% 
+               gsub("(.*):(.*)", "\\1",.)) %>% tail(1)
   })
   
   dataset1_past <- reactive({
@@ -102,11 +120,19 @@ function(input, output) {
   })
   
   output$odds1 <- renderUI({
-    paste0("<b>Odds: </b>", dataset1() %>% pull(odds)) %>% HTML
+    odds1 <- dataset1() %>% pull(odds)
+    
+    paste0("<b>Odds: </b>", odds1, " (", odds1 %>% 
+             line_to_per() %>% round(3) %>% `*`(100), "%), Return on $10: $",
+           odds1 %>% odds_to_return() %>% round(2)) %>% HTML
   })
   
   output$odds2 <- renderUI({
-    paste0("<b>Odds: </b>", dataset2() %>% pull(odds)) %>% HTML
+    odds2 <- dataset2() %>% pull(odds)
+    
+    paste0("<b>Odds: </b>", odds2, " (", odds2 %>% 
+             line_to_per() %>% round(3)%>% `*`(100), "%), Return on $10: $",
+           odds2 %>% odds_to_return() %>% round(2)) %>% HTML
   })
   
   output$event <- renderUI({
@@ -128,7 +154,7 @@ function(input, output) {
   analyseData <-  reactive({
     filtfightsOdds %>%
       filter(eval(parse(text=input$filter_text))) %>%
-      select(Link1, Link2, Result, Method, Date, Event, odds, r1b, r2b, Age1, Age2, highestWin1_5, highestWin2_5) %>% 
+      select(Link1, Link2, Result, Method, Date, Event, odds, r1b, r2b, Age1, Age2, highestWin1_5, highestWin2_5, ratIncrease1, ratIncrease2) %>% 
       mutate(bet = 10,
              Age1 = round(Age1, 2),
              Age2 = round(Age2, 2),
@@ -140,8 +166,9 @@ function(input, output) {
     })
   
   output$dataset_filt <- renderDataTable({
-    analyseData()
-  })
+    analyseData()},
+    options = list(pageLength = 15)
+  )
   
   output$returns <- renderPrint({
     analyseData() %>%
@@ -152,5 +179,4 @@ function(input, output) {
               bet = mean(bet),
               ROI = paste0(round(sum(winnings)/(bet*n())*100, 2), "%"))
   })
-  
-}
+  }
