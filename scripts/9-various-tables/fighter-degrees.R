@@ -4,7 +4,7 @@ library(tidyverse)
 fightMetricsEvent <- readRDS("~/GitHub/MMAscraper/scripts/5-metrics/data/fightMetricsEvent.rds")
 
 searched <- c()
-toSearch <- "Mike-Wilkins-37446"
+toSearch <- "Artem-Lobov-73700"
 fighterOpp <- tibble(Link1 = as.character(NA), Link0 = toSearch)
 fighterOpp1 <- tibble()
 i= 1
@@ -47,4 +47,4 @@ fighterOpp <- fighterOpp %>% group_by(Link1) %>% slice(1)
 fighterOpp$distance <- rowSums(!is.na(fighterOpp))-1
 
 
-rm(list = ls())
+#rm(list = ls())
