@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 library(tidyverse)
 library(DT)
 
@@ -196,14 +197,32 @@ function(input, output) {
                        draw = 0)) %>%
       group_by(Method) %>%
       summarise(win = sum(win, na.rm = TRUE),
-                loss = sum(loss, na.rm = TRUE),
-                draw = sum(draw, na.rm = TRUE)) %>%
+                loss = sum(loss, na.rm = TRUE)) %>%
       arrange(match(Method, c("TKO/KO", "Submission", "Decision"))) %>%
       filter(Method %in% c("TKO/KO", "Submission", "Decision")) %>%
       datatable(options = list(dom = 't', ordering = F), rownames = F) %>%
       formatStyle("win", backgroundColor = "lawngreen") %>%
       formatStyle("loss", backgroundColor = "lightpink") 
   })
+  
+  observeEvent(dataset1_past(), {
+    if (any(c("draw", "NC") %in% pull(dataset1_past(), Result)))
+      show("drawNCTable1") else hide("drawNCTable1")
+  })
+  
+  output$drawNCTable1 <- renderDataTable({
+    dataset1_past() %>% 
+      mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
+      filter(!(Result %in% c("win", "loss"))) %>%
+      group_by(Result) %>% 
+      summarise(n=n()) %>%
+      datatable(options = list(dom = 't', ordering = F), 
+                colnames = NULL,
+                rownames = F) %>%
+      formatStyle("Result", target = "row", backgroundColor = "lightblue")
+  })
+  
+
   
   output$recordTable2 <- renderDataTable({
     dataset2_past() %>% 

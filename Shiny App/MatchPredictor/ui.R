@@ -2,6 +2,7 @@ navbarPage(
   title = "MMA Predictor",
   tabPanel("Matchups", 
     fluidPage(
+      useShinyjs(),
       h2(htmlOutput("event", container = span)),
       h3(htmlOutput("date", container = span)),
       splitLayout(
@@ -45,7 +46,12 @@ navbarPage(
               htmlOutput("record1"),
               htmlOutput("odds1")
             ),
-            dataTableOutput("recordTable1")
+            column(12, offset=0,
+              div(style = "padding: 0px 0px; margin:0%",
+                  dataTableOutput("recordTable1")),
+              div(style = "padding: 0px 0px; margin-top:-2em", 
+                  dataTableOutput("drawNCTable1")))
+            )
           ),
           div(dataTableOutput("pastFights1"), style = "font-size:70%")
           ),
