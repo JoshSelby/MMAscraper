@@ -17,4 +17,4 @@ source('./scripts/10-future-fights/futureFights.R', echo = TRUE)
 
 
 
-source('./scripts/6-model/model.R', echo=TRUE)
+#source('./scripts/6-model/model.R', echo=TRUE)

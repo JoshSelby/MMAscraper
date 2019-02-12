@@ -37,19 +37,29 @@ navbarPage(
         "))),
       splitLayout(
         verticalLayout(
-          h3(htmlOutput("name1")),
-          htmlOutput("rating1"),
-          htmlOutput("age1"),
-          htmlOutput("record1"),
-          htmlOutput("odds1"),
+          splitLayout(
+            verticalLayout(
+              h3(htmlOutput("name1")),
+              htmlOutput("rating1"),
+              htmlOutput("age1"),
+              htmlOutput("record1"),
+              htmlOutput("odds1")
+            ),
+            dataTableOutput("recordTable1")
+          ),
           div(dataTableOutput("pastFights1"), style = "font-size:70%")
           ),
         verticalLayout(
-          h3(htmlOutput("name2")),
-          htmlOutput("rating2"),
-          htmlOutput("age2"),
-          htmlOutput("record2"),
-          htmlOutput("odds2"),
+          splitLayout(
+            verticalLayout(
+              h3(htmlOutput("name2")),
+              htmlOutput("rating2"),
+              htmlOutput("age2"),
+              htmlOutput("record2"),
+              htmlOutput("odds2")
+            ),
+            dataTableOutput("recordTable2")
+          ),
           div(dataTableOutput("pastFights2"), style = "font-size:70%")
           ),
         cellArgs = list(style = "overflow-x: hidden; padding: 6px; border: 1px solid silver;")

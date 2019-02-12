@@ -26,32 +26,33 @@ noSherdog <- futureFights %>%
   pull(fighter)
 
 minitbl <- tibble()  
-for (i in 1:length(noSherdog)) {
-  minitbl <- tibble(Sherdog = availFighters, BFO = noSherdog[i]) %>%
-    mutate(availStrip = Sherdog %>% gsub("(.*)(-\\d*$)", "\\1", .) %>% gsub("-", "", .) %>% tolower(),
-           noSherstrip = BFO %>% gsub("(.*)(-\\d*$)", "\\1", .) %>% gsub("-", "", .) %>% tolower(),
-           dist = stringdist(availStrip, noSherstrip, method = 'qgram')) %>% 
-    arrange(dist) %>%
-    filter(dist == 0) %>%
-    select(Sherdog, BFO) %>%
-    rbind(minitbl)
+if (length(noSherdog)!=0) {
+  for (i in 1:length(noSherdog)) {
+    minitbl <- tibble(Sherdog = availFighters, BFO = noSherdog[i]) %>%
+      mutate(availStrip = Sherdog %>% gsub("(.*)(-\\d*$)", "\\1", .) %>% gsub("-", "", .) %>% tolower(),
+             noSherstrip = BFO %>% gsub("(.*)(-\\d*$)", "\\1", .) %>% gsub("-", "", .) %>% tolower(),
+             dist = stringdist(availStrip, noSherstrip, method = 'qgram')) %>% 
+      arrange(dist) %>%
+      filter(dist == 0) %>%
+      select(Sherdog, BFO) %>%
+      rbind(minitbl)
+  }
+  # Not a perfect match
+  noSherdog %>% setdiff(minitbl$BFO)
 }
-# Not a perfect match
-noSherdog %>% setdiff(minitbl$BFO)
+
 
 # Manually enter
-Sherdog_to_BFO <- minitbl %>% 
-  rbind(c("Marcos-Rosa-Mariano-182785", "Marcos-Rosa-8870"),
-        c("Raulian-Paiva-Frazao-167575", "Raulian-Paiva-8553"),
-        c("Geraldo-de-Freitas-Jr-107229", "Geraldo-De-Freitas-8898"),
-        c("Carlos-Felipe-185021", "Felipe-Colares-8897")) %>%
-  full_join(Sherdog_to_BFO) %>%
-  unique()
+# Sherdog_to_BFO <- minitbl %>% 
+#   rbind(c("Marcos-Rosa-Mariano-182785", "Marcos-Rosa-8870"),
+#         c("Raulian-Paiva-Frazao-167575", "Raulian-Paiva-8553"),
+#         c("Geraldo-de-Freitas-Jr-107229", "Geraldo-De-Freitas-8898"),
+#         c("Carlos-Felipe-185021", "Felipe-Colares-8897")) %>%
+#   full_join(Sherdog_to_BFO) %>%
+#   unique()
 
 # Manually change
 futureOdds <- futureOdds %>%
-  mutate(fighter = ifelse(fighter == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", fighter),
-         opponent = ifelse(opponent == "Dong-Hyun-Kim-612", "Dong-Hyun-Kim-6915", opponent)) %>%
   filter((fighter != "Alex-Gorgees-8767" & opponent != "Alex-Gorgees-8767") &
          (fighter != "Ryan-Spann-3502" & opponent != "Ryan-Spann-3502"))
 

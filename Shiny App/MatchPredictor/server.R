@@ -57,22 +57,16 @@ function(input, output) {
     fightMetricsEventOdds %>% 
       filter(Link1 == dataset1() %>% pull(Link1)) %>% 
       select(Result, Fighter2, Date, Method, Method_d, R, Org, Date, r1b, r2b, odds) %>%
-      rename(Opponent = Fighter2) %>%
-      datatable(options = list(pageLength = 25)) %>%
-      formatStyle("Result", 
-                  backgroundColor = styleEqual(c("win","draw","loss"),
-                                               c("lawngreen","silver","lightpink")))
+      mutate(Org = substr(Org, 1, 13)) %>%
+      rename(Opponent = Fighter2)
   })
   
   dataset2_past <- reactive({
     fightMetricsEventOdds %>% 
       filter(Link1 == dataset1() %>% pull(Link2)) %>% 
       select(Result, Fighter2, Date, Method, Method_d, R, Org, Date, r1b, r2b, odds) %>%
-      rename(Opponent = Fighter2) %>%
-      datatable(options = list(pageLength = 25)) %>%
-      formatStyle("Result", 
-                  backgroundColor = styleEqual(c("win","draw","loss"),
-                                               c("lawngreen","silver","lightpink")))
+      mutate(Org = substr(Org, 1, 13)) %>%
+      rename(Opponent = Fighter2)
   })
   
   output$name1 <- renderUI({
@@ -144,11 +138,21 @@ function(input, output) {
   })
   
   output$pastFights1 <- renderDataTable({
-    dataset1_past()
+    dataset1_past() %>%
+      datatable(options = list(pageLength = 25)) %>%
+      formatStyle("Result", 
+                  backgroundColor = styleEqual(c("win","draw","loss"),
+                                               c("lawngreen","silver","lightpink"))) %>%
+      formatStyle("odds", color = styleInterval(0, c("green", "red")))
   })
   
   output$pastFights2 <- renderDataTable({
-    dataset2_past()
+    dataset2_past() %>%
+      datatable(options = list(pageLength = 25)) %>%
+      formatStyle("Result", 
+                  backgroundColor = styleEqual(c("win","draw","loss"),
+                                               c("lawngreen","silver","lightpink"))) %>%
+      formatStyle("odds", color = styleInterval(0, c("green", "red")))
   })
   
   analyseData <-  reactive({
@@ -179,4 +183,46 @@ function(input, output) {
               bet = mean(bet),
               ROI = paste0(round(sum(winnings)/(bet*n())*100, 2), "%"))
   })
-  }
+  
+  output$recordTable1 <- renderDataTable({
+    dataset1_past() %>% 
+      mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
+      group_by(Method, Result) %>% 
+      summarise(n=n()) %>% 
+      spread(Result, n, fill = 0) %>%
+      full_join(tibble(Method = c("TKO/KO", "Submission", "Decision"), 
+                       win = 0, 
+                       loss = 0,
+                       draw = 0)) %>%
+      group_by(Method) %>%
+      summarise(win = sum(win, na.rm = TRUE),
+                loss = sum(loss, na.rm = TRUE),
+                draw = sum(draw, na.rm = TRUE)) %>%
+      arrange(match(Method, c("TKO/KO", "Submission", "Decision"))) %>%
+      filter(Method %in% c("TKO/KO", "Submission", "Decision")) %>%
+      datatable(options = list(dom = 't', ordering = F), rownames = F) %>%
+      formatStyle("win", backgroundColor = "lawngreen") %>%
+      formatStyle("loss", backgroundColor = "lightpink") 
+  })
+  
+  output$recordTable2 <- renderDataTable({
+    dataset2_past() %>% 
+      mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
+      group_by(Method, Result) %>% 
+      summarise(n=n()) %>% 
+      spread(Result, n, fill = 0) %>%
+      full_join(tibble(Method = c("TKO/KO", "Submission", "Decision"), 
+                       win = 0, 
+                       loss = 0,
+                       draw = 0)) %>%
+      group_by(Method) %>%
+      summarise(win = sum(win, na.rm = TRUE),
+                loss = sum(loss, na.rm = TRUE),
+                draw = sum(draw, na.rm = TRUE)) %>%
+      arrange(match(Method, c("TKO/KO", "Submission", "Decision"))) %>%
+      filter(Method %in% c("TKO/KO", "Submission", "Decision")) %>%
+      datatable(options = list(dom = 't', ordering = F), rownames = F) %>%
+      formatStyle("win", backgroundColor = "lawngreen") %>%
+      formatStyle("loss", backgroundColor = "lightpink") 
+  })
+}
