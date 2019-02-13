@@ -38,7 +38,7 @@ odds_to_return <- function(x, bet=10) {
   }
 }
 
-function(input, output) {
+function(input, output, session) {
   
   dataset1 <- reactive({
     futureFights %>%
@@ -200,12 +200,16 @@ function(input, output) {
                 loss = sum(loss, na.rm = TRUE)) %>%
       arrange(match(Method, c("TKO/KO", "Submission", "Decision"))) %>%
       filter(Method %in% c("TKO/KO", "Submission", "Decision")) %>%
-      datatable(options = list(dom = 't', ordering = F), rownames = F) %>%
+      datatable(options = list(dom = 't', ordering = F, columnDefs = list(list(className = 'dt-center', targets = 1:2)),
+        initComplete = JS(
+        "function(settings, json) {", 
+        "$(this.api().table().header()).find('th').css({'padding': '2px'});", 
+        "}")), rownames = F) %>%
       formatStyle("win", backgroundColor = "lawngreen") %>%
       formatStyle("loss", backgroundColor = "lightpink") 
   })
   
-  observeEvent(dataset1_past(), {
+  observeEvent(input$match_num, {
     if (any(c("draw", "NC") %in% pull(dataset1_past(), Result)))
       show("drawNCTable1") else hide("drawNCTable1")
   })
@@ -216,7 +220,7 @@ function(input, output) {
       filter(!(Result %in% c("win", "loss"))) %>%
       group_by(Result) %>% 
       summarise(n=n()) %>%
-      datatable(options = list(dom = 't', ordering = F), 
+      datatable(options = list(dom = 't', ordering = F, columnDefs = list(list(className = 'dt-center', targets = 1:1))), 
                 colnames = NULL,
                 rownames = F) %>%
       formatStyle("Result", target = "row", backgroundColor = "lightblue")

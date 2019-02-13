@@ -3,9 +3,11 @@ navbarPage(
   tabPanel("Matchups", 
     fluidPage(
       useShinyjs(),
+# Header ----
       h2(htmlOutput("event", container = span)),
       h3(htmlOutput("date", container = span)),
       splitLayout(
+# Inputs ----
         selectInput("match_num", 
                     label = "Choose a match to display",
                     choices = futureFights %>% 
@@ -36,7 +38,9 @@ navbarPage(
             overflow: visible;
           }
         "))),
+# Fighters ----
       splitLayout(
+# Fighter1 ----
         verticalLayout(
           splitLayout(
             verticalLayout(
@@ -49,12 +53,13 @@ navbarPage(
             column(12, offset=0,
               div(style = "padding: 0px 0px; margin:0%",
                   dataTableOutput("recordTable1")),
-              div(style = "padding: 0px 0px; margin-top:-2em", 
-                  dataTableOutput("drawNCTable1")))
-            )
+              div(style = "padding: 0px 0px; margin-top:-21px",
+                  dataTableOutput("drawNCTable1"))
+              )
+            ),
+          div(dataTableOutput("pastFights1"), style = "font-size:70%; padding: 10px")
           ),
-          div(dataTableOutput("pastFights1"), style = "font-size:70%")
-          ),
+# Fighter2 ----
         verticalLayout(
           splitLayout(
             verticalLayout(
@@ -63,14 +68,16 @@ navbarPage(
               htmlOutput("age2"),
               htmlOutput("record2"),
               htmlOutput("odds2")
-            ),
+              ),
             dataTableOutput("recordTable2")
-          ),
+            ),
           div(dataTableOutput("pastFights2"), style = "font-size:70%")
           ),
+# Fighter box styling ----
         cellArgs = list(style = "overflow-x: hidden; padding: 6px; border: 1px solid silver;")
         )
       )
     ),
+# Tab Panel ----
   tabPanel("Analyze Filtered Fights", div(dataTableOutput("dataset_filt"), style = "font-size:70%"))
   )
