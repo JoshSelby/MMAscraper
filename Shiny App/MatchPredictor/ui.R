@@ -38,46 +38,48 @@ navbarPage(
             overflow: visible;
           }
         "))),
-# Fighters ----
-      splitLayout(
-# Fighter1 ----
-        verticalLayout(
+# Records of Fighters ----
           splitLayout(
-            verticalLayout(
-              h3(htmlOutput("name1")),
-              htmlOutput("rating1"),
-              htmlOutput("age1"),
-              htmlOutput("record1"),
-              htmlOutput("odds1")
-            ),
-            column(12, offset=0,
-              div(style = "padding: 0px 0px; margin:0%",
-                  dataTableOutput("recordTable1")),
-              div(style = "padding: 0px 0px; margin-top:-21px",
-                  dataTableOutput("drawNCTable1"))
-              )
-            ),
-          div(dataTableOutput("pastFights1"), style = "font-size:70%; padding: 10px")
-          ),
-# Fighter2 ----
-        verticalLayout(
-          splitLayout(
-            verticalLayout(
-              h3(htmlOutput("name2")),
-              htmlOutput("rating2"),
-              htmlOutput("age2"),
-              htmlOutput("record2"),
-              htmlOutput("odds2")
+            splitLayout(
+              verticalLayout(
+                h3(htmlOutput("name1")),
+                htmlOutput("rating1"),
+                htmlOutput("age1"),
+                htmlOutput("record1"),
+                htmlOutput("odds1")
               ),
-            dataTableOutput("recordTable2")
+              column(9, offset=3,
+                     div(style = "font-size:75%; padding: 0px 0px; margin:0%",
+                         dataTableOutput("recordTable1")),
+                     div(style = "font-size:75%; padding: 0px 0px; margin-top:-21px",
+                         dataTableOutput("drawNCTable1"))
+                     )
             ),
-          div(dataTableOutput("pastFights2"), style = "font-size:70%")
-          ),
-# Fighter box styling ----
-        cellArgs = list(style = "overflow-x: hidden; padding: 6px; border: 1px solid silver;")
-        )
+            splitLayout(
+              verticalLayout(
+                h3(htmlOutput("name2")),
+                htmlOutput("rating2"),
+                htmlOutput("age2"),
+                htmlOutput("record2"),
+                htmlOutput("odds2")
+              ),
+              column(9, offset=3,
+                     div(style = "font-size:100%; padding:0px 0px; margin:0%",
+                         dataTableOutput("recordTable2")),
+                     div(style = "font-size:100%; padding:0px 0px; margin-top:-21px",
+                         dataTableOutput("drawNCTable2"))
+                     )
+              ),
+            cellArgs = list(style = "overflow-x: hidden; padding: 6px; border: 1px solid silver;")
+            ),
+# Past fights ----
+      splitLayout(
+        div(dataTableOutput("pastFights1"), style = "font-size:70%; padding: 6px"),
+        div(dataTableOutput("pastFights2"), style = "font-size:70%; padding: 6px"),
+        cellArgs = list(style = "overflow-x: hidden; padding: 2px; border: 1px solid silver; margin-top:-1px")
       )
-    ),
+    )
+  ),
 # Tab Panel ----
   tabPanel("Analyze Filtered Fights", div(dataTableOutput("dataset_filt"), style = "font-size:70%"))
-  )
+)

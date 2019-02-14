@@ -140,7 +140,7 @@ function(input, output, session) {
   
   output$pastFights1 <- renderDataTable({
     dataset1_past() %>%
-      datatable(options = list(pageLength = 25)) %>%
+      datatable(options = list(pageLength = 25, dom='tp')) %>%
       formatStyle("Result", 
                   backgroundColor = styleEqual(c("win","draw","loss"),
                                                c("lawngreen","silver","lightpink"))) %>%
@@ -149,7 +149,7 @@ function(input, output, session) {
   
   output$pastFights2 <- renderDataTable({
     dataset2_past() %>%
-      datatable(options = list(pageLength = 25)) %>%
+      datatable(options = list(pageLength = 25, dom='tp')) %>%
       formatStyle("Result", 
                   backgroundColor = styleEqual(c("win","draw","loss"),
                                                c("lawngreen","silver","lightpink"))) %>%
@@ -209,11 +209,6 @@ function(input, output, session) {
       formatStyle("loss", backgroundColor = "lightpink") 
   })
   
-  observeEvent(input$match_num, {
-    if (any(c("draw", "NC") %in% pull(dataset1_past(), Result)))
-      show("drawNCTable1") else hide("drawNCTable1")
-  })
-  
   output$drawNCTable1 <- renderDataTable({
     dataset1_past() %>% 
       mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
@@ -226,7 +221,10 @@ function(input, output, session) {
       formatStyle("Result", target = "row", backgroundColor = "lightblue")
   })
   
-
+  observeEvent(dataset1_past(), {
+    if (any(c("draw", "NC") %in% pull(dataset1_past(), Result)))
+      showElement("drawNCTable1") else hideElement("drawNCTable1")
+  })
   
   output$recordTable2 <- renderDataTable({
     dataset2_past() %>% 
@@ -240,12 +238,33 @@ function(input, output, session) {
                        draw = 0)) %>%
       group_by(Method) %>%
       summarise(win = sum(win, na.rm = TRUE),
-                loss = sum(loss, na.rm = TRUE),
-                draw = sum(draw, na.rm = TRUE)) %>%
+                loss = sum(loss, na.rm = TRUE)) %>%
       arrange(match(Method, c("TKO/KO", "Submission", "Decision"))) %>%
       filter(Method %in% c("TKO/KO", "Submission", "Decision")) %>%
-      datatable(options = list(dom = 't', ordering = F), rownames = F) %>%
+      datatable(options = list(dom = 't', ordering = F, columnDefs = list(list(className = 'dt-center', targets = 1:2)),
+                               initComplete = JS(
+                                 "function(settings, json) {", 
+                                 "$(this.api().table().header()).find('th').css({'padding': '2px'});", 
+                                 "}")), rownames = F) %>%
       formatStyle("win", backgroundColor = "lawngreen") %>%
-      formatStyle("loss", backgroundColor = "lightpink") 
+      formatStyle("loss", backgroundColor = "lightpink")
   })
+  
+  output$drawNCTable2 <- renderDataTable({
+    dataset2_past() %>% 
+      mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
+      filter(!(Result %in% c("win", "loss"))) %>%
+      group_by(Result) %>% 
+      summarise(n=n()) %>%
+      datatable(options = list(dom = 't', ordering = F, columnDefs = list(list(className = 'dt-center', targets = 1:1))), 
+                colnames = NULL,
+                rownames = F) %>%
+      formatStyle("Result", target = "row", backgroundColor = "lightblue")
+  })
+  
+  observeEvent(dataset2_past(), {
+    if (any(c("draw", "NC") %in% pull(dataset2_past(), Result)))
+      showElement("drawNCTable2") else hideElement("drawNCTable2")
+  })
+  
 }
