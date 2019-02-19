@@ -13,25 +13,25 @@ Sherdog_to_BFO <- readRDS("./scripts/8-append-odds/data/Sherdog_to_BFO.RDS")
 futureOdds <- readRDS("./scripts/7-scrape-odds/data/futureOdds.RDS")
 
 
-futureFights <- futureOdds %>% 
+futureFights <- futureOdds %>%
   left_join(Sherdog_to_BFO, by=c("fighter" = "BFO")) %>%
-  left_join(Sherdog_to_BFO, by=c("opponent" = "BFO")) 
+  left_join(Sherdog_to_BFO, by=c("opponent" = "BFO"))
 
-availFighters <- fightersTable %>% 
+availFighters <- fightersTable %>%
   pull(Link)
 
-noSherdog <- futureFights %>% 
-  select(fighter, Sherdog.x) %>% 
-  filter(is.na(Sherdog.x)) %>% 
+noSherdog <- futureFights %>%
+  select(fighter, Sherdog.x) %>%
+  filter(is.na(Sherdog.x)) %>%
   pull(fighter)
 
-minitbl <- tibble()  
+minitbl <- tibble()
 if (length(noSherdog)!=0) {
   for (i in 1:length(noSherdog)) {
     minitbl <- tibble(Sherdog = availFighters, BFO = noSherdog[i]) %>%
       mutate(availStrip = Sherdog %>% gsub("(.*)(-\\d*$)", "\\1", .) %>% gsub("-", "", .) %>% tolower(),
              noSherstrip = BFO %>% gsub("(.*)(-\\d*$)", "\\1", .) %>% gsub("-", "", .) %>% tolower(),
-             dist = stringdist(availStrip, noSherstrip, method = 'qgram')) %>% 
+             dist = stringdist(availStrip, noSherstrip, method = 'qgram')) %>%
       arrange(dist) %>%
       filter(dist == 0) %>%
       select(Sherdog, BFO) %>%
@@ -39,6 +39,11 @@ if (length(noSherdog)!=0) {
   }
   # Not a perfect match
   noSherdog %>% setdiff(minitbl$BFO)
+
+  #Manually enter
+  Sherdog_to_BFO <- minitbl %>%
+    full_join(Sherdog_to_BFO) %>%
+    unique()
 }
 
 
@@ -59,7 +64,7 @@ futureOdds <- futureOdds %>%
 rm(minitbl, availFighters, i, noSherdog)
 
 
-futureFights <- futureOdds %>% 
+futureFights <- futureOdds %>%
   left_join(Sherdog_to_BFO, by=c("fighter" = "BFO"), suffix = c("1","2")) %>%
   left_join(Sherdog_to_BFO, by=c("opponent" = "BFO"), suffix = c("1","2")) %>%
   rename(Link1 = Sherdog1, Link2 = Sherdog2) %>%
@@ -67,7 +72,7 @@ futureFights <- futureOdds %>%
   left_join(fightersTable, by = c("Link2" = "Link"), suffix = c("1","2")) %>%
   mutate(rownum = ceiling(row_number()/2)) %>%
   select(rownum, Name1, Name2, eventName, Date, rating1, rating2, Birthday1, Birthday2, wins1, loss1, draw1, nc1, wins2, loss2, draw2, nc2, `5Dimes`, Link1, Link2) %>%
-  rename(r1b = rating1, r2b = rating2, odds = `5Dimes`, Event = eventName, BD1 = Birthday1, BD2 = Birthday2) 
+  rename(r1b = rating1, r2b = rating2, odds = `5Dimes`, Event = eventName, BD1 = Birthday1, BD2 = Birthday2)
 
 
 
@@ -78,13 +83,13 @@ lastFiveFights <- fightMetricsEvent %>%
   filter(match_id %in% lastFiveFights$match_id)
 
 
-futureFights <- lastFiveFights %>% 
+futureFights <- lastFiveFights %>%
   full_join(futureFights) %>%
   arrange(Date) %>%
   as.data.table()
 
 
-futureFights[, 
+futureFights[,
              ':='(fightLag1 = as.numeric(c(0, diff(Date))), # Days since last fight
                   fightLag1_5 = (Date - coalesce(shift(Date,5), first(Date))) %>% as.numeric(),
                   ratIncrease1 = c(0, diff(r1b)), # Rating increase since last fight
@@ -98,36 +103,36 @@ futureFights[,
                     shift(), # Lowest rated fighter lost to in last 5 fights
                   koLosses1 = cumsum(Result == "loss" & (Method=="TKO"|Method=="KO")) %>%
                     shift(), # number of KO losses
-                  diff1_5 = coalesce(cummean((r1b-r2b)), roll_meanr((r1b-r2b), 5)) %>% 
+                  diff1_5 = coalesce(cummean((r1b-r2b)), roll_meanr((r1b-r2b), 5)) %>%
                     shift(),
-                  Age1 = interval(BD1, Date) %>% 
+                  Age1 = interval(BD1, Date) %>%
                     time_length("years")
              ),
              by=Link1]
 
-futureFights[, 
+futureFights[,
              ':='(fightLag2 = as.numeric(c(0, diff(Date))), 
                   fightLag2_5 = (Date - coalesce(shift(Date,5), first(Date))) %>% as.numeric(),
-                  ratIncrease2 = c(0, diff(r2b)), 
-                  ratIncrease2_3 = r2b - coalesce(shift(r2b,2), first(r2b)), 
+                  ratIncrease2 = c(0, diff(r2b)),
+                  ratIncrease2_3 = r2b - coalesce(shift(r2b,2), first(r2b)),
                   oppRat2_5 = coalesce(cummean(r1b), roll_meanr(r1b, 5)) %>%
-                    shift(), 
+                    shift(),
                   highestWin2_5 = coalesce(roll_maxr((Result2=="loss")*r1b, 5), cummax(((Result2=="loss")*r1b))) %>%
-                    shift(), 
+                    shift(),
                   lowestLoss2_5 = coalesce(roll_minr(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b), 5),
                                            cummin(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b))) %>%
                     shift(),
                   koLosses2 = cumsum(Result == "win" & (Method=="TKO"|Method=="KO")) %>%
-                    shift(), 
-                  diff2_5 = coalesce(cummean((r2b-r1b)), roll_meanr((r2b-r1b), 5)) %>% 
                     shift(),
-                  Age2 = interval(BD2, Date) %>% 
+                  diff2_5 = coalesce(cummean((r2b-r1b)), roll_meanr((r2b-r1b), 5)) %>%
+                    shift(),
+                  Age2 = interval(BD2, Date) %>%
                     time_length("years")
              ),
              by=Link2]
 
 
-futureFights <- futureFights %>% 
+futureFights <- futureFights %>%
   as.tibble() %>%
   filter(!is.na(odds)) %>%
   mutate(highestWin1_5 = ifelse(highestWin1_5==0, NA, highestWin1_5),
