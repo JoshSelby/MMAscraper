@@ -42,14 +42,14 @@ if (length(noSherdog)!=0) {
 }
 
 
-# Manually enter
-# Sherdog_to_BFO <- minitbl %>% 
-#   rbind(c("Marcos-Rosa-Mariano-182785", "Marcos-Rosa-8870"),
-#         c("Raulian-Paiva-Frazao-167575", "Raulian-Paiva-8553"),
-#         c("Geraldo-de-Freitas-Jr-107229", "Geraldo-De-Freitas-8898"),
-#         c("Carlos-Felipe-185021", "Felipe-Colares-8897")) %>%
-#   full_join(Sherdog_to_BFO) %>%
-#   unique()
+#Manually enter
+Sherdog_to_BFO <- minitbl %>%
+  rbind(c("Marcos-Rosa-Mariano-182785", "Marcos-Rosa-8870"),
+        c("Raulian-Paiva-Frazao-167575", "Raulian-Paiva-8553"),
+        c("Geraldo-de-Freitas-Jr-107229", "Geraldo-De-Freitas-8898"),
+        c("Carlos-Felipe-185021", "Felipe-Colares-8897")) %>%
+  full_join(Sherdog_to_BFO) %>%
+  unique()
 
 # Manually change
 futureOdds <- futureOdds %>%
