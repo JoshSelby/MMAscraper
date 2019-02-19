@@ -59,6 +59,9 @@ pastOdds <- pastOdds %>%
          fighter = ifelse(fighter == "Dong-Hyun-Kim-612" & opponent == "Damien-Brown-4589", "Dong-Hyun-Kim-6915", fighter),
          opponent = ifelse(opponent == "Dong-Hyun-Kim-612" & fighter == "Damien-Brown-4589", "Dong-Hyun-Kim-6915", opponent),
          
+         fighter = ifelse(fighter == "Thiago-Santos-2526" & grepl("Bellator", eventName), "Thiago-Santos-25089", fighter),
+         opponent = ifelse(opponent == "Thiago-Santos-2526" & grepl("Bellator", eventName), "Thiago-Santos-25089", opponent),
+         
          odds = ifelse(fighter == "Jake-Hager-8790" & opponent == "J-W-Kiser-8788", -680, odds),
          odds = ifelse(opponent == "Jake-Hager-8790" & fighter == "J-W-Kiser-8788", 515, odds),
          

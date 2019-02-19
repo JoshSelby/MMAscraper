@@ -49,9 +49,9 @@ navbarPage(
                 htmlOutput("odds1")
               ),
               column(9, offset=3,
-                     div(style = "font-size:75%; padding: 0px 0px; margin:0%",
+                     div(style = "padding: 0px 0px; margin:0%",
                          dataTableOutput("recordTable1")),
-                     div(style = "font-size:75%; padding: 0px 0px; margin-top:-21px",
+                     div(style = "padding: 0px 0px; margin-top:-21px",
                          dataTableOutput("drawNCTable1"))
                      )
             ),
