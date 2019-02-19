@@ -57,16 +57,22 @@ function(input, output, session) {
   dataset1_past <- reactive({
     fightMetricsEventOdds %>% 
       filter(Link1 == dataset1() %>% pull(Link1)) %>% 
-      select(Result, Fighter2, Date, Method, Method_d, R, Org, Date, r1b, r2b, odds) %>%
-      mutate(Org = substr(Org, 1, 13)) %>%
+      select(Result, Fighter2, Date, Method, Method_d, R, Org, Date, Age1, Age2, r1b, r2b, odds) %>%
+      mutate(Org = substr(Org, 1, 13),
+             Method_d = substr(Method_d, 1, 16),
+             Age1 = round(Age1, 1),
+             Age2 = round(Age2, 1)) %>%
       rename(Opponent = Fighter2)
   })
   
   dataset2_past <- reactive({
     fightMetricsEventOdds %>% 
       filter(Link1 == dataset1() %>% pull(Link2)) %>% 
-      select(Result, Fighter2, Date, Method, Method_d, R, Org, Date, r1b, r2b, odds) %>%
-      mutate(Org = substr(Org, 1, 13)) %>%
+      select(Result, Fighter2, Date, Method, Method_d, R, Org, Date, Age1, Age2, r1b, r2b, odds) %>%
+      mutate(Org = substr(Org, 1, 13),
+             Method_d = substr(Method_d, 1, 16),
+             Age1 = round(Age1, 1),
+             Age2 = round(Age2, 1)) %>%
       rename(Opponent = Fighter2)
   })
   
@@ -140,7 +146,7 @@ function(input, output, session) {
   
   output$pastFights1 <- renderDataTable({
     dataset1_past() %>%
-      datatable(options = list(pageLength = 25, dom='tp')) %>%
+      datatable(options = list(pageLength = 25, dom='tp', scrollX=TRUE)) %>%
       formatStyle("Result", 
                   backgroundColor = styleEqual(c("win","draw","loss"),
                                                c("lawngreen","silver","lightpink"))) %>%
@@ -149,7 +155,7 @@ function(input, output, session) {
   
   output$pastFights2 <- renderDataTable({
     dataset2_past() %>%
-      datatable(options = list(pageLength = 25, dom='tp')) %>%
+      datatable(options = list(pageLength = 25, dom='tp', scrollX=TRUE)) %>%
       formatStyle("Result", 
                   backgroundColor = styleEqual(c("win","draw","loss"),
                                                c("lawngreen","silver","lightpink"))) %>%

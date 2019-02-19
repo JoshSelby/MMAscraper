@@ -11,7 +11,7 @@ lastDate <- fights %>%
   arrange(Date) %>% 
   pull(Date) %>% 
   tail(1) %>%
-  -30
+  -10
 
 
 events_page <- read_html("http://www.sherdog.com/events/")

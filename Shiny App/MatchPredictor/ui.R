@@ -34,9 +34,13 @@ navbarPage(
         verbatimTextOutput("returns"),
         cellWidths = c("30%", "30%", "40%")
         ), 
-      tags$head(tags$style(HTML(".shiny-split-layout > div {
-            overflow: visible;
+      tags$head(
+        tags$style(HTML("
+          .shiny-split-layout > div {
+              overflow: visible;
           }
+          h2 { margin-top: 0;}
+          h3 { margin-top: 0;}
         "))),
 # Records of Fighters ----
           splitLayout(
@@ -50,9 +54,9 @@ navbarPage(
               ),
               column(9, offset=3,
                      div(style = "padding: 0px 0px; margin:0%",
-                         dataTableOutput("recordTable1")),
+                         dataTableOutput("recordTable1"), style = "zoom:0.9"),
                      div(style = "padding: 0px 0px; margin-top:-21px",
-                         dataTableOutput("drawNCTable1"))
+                         dataTableOutput("drawNCTable1"), style = "zoom:0.9")
                      )
             ),
             splitLayout(
@@ -65,17 +69,17 @@ navbarPage(
               ),
               column(9, offset=3,
                      div(style = "font-size:100%; padding:0px 0px; margin:0%",
-                         dataTableOutput("recordTable2")),
+                         dataTableOutput("recordTable2"), style = "zoom:0.9"),
                      div(style = "font-size:100%; padding:0px 0px; margin-top:-21px",
-                         dataTableOutput("drawNCTable2"))
+                         dataTableOutput("drawNCTable2"), style = "zoom:0.9")
                      )
               ),
-            cellArgs = list(style = "overflow-x: hidden; padding: 6px; border: 1px solid silver;")
+            cellArgs = list(style = "overflow-x:hidden; padding:6px; border:1px solid silver;")
             ),
 # Past fights ----
       splitLayout(
-        div(dataTableOutput("pastFights1"), style = "font-size:70%; padding: 6px"),
-        div(dataTableOutput("pastFights2"), style = "font-size:70%; padding: 6px"),
+        div(dataTableOutput("pastFights1"), style = "zoom:0.7; padding:6px"),
+        div(dataTableOutput("pastFights2"), style = "zoom:0.7; padding:6px"),
         cellArgs = list(style = "overflow-x: hidden; padding: 2px; border: 1px solid silver; margin-top:-1px")
       )
     )
