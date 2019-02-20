@@ -53,10 +53,10 @@ navbarPage(
                 htmlOutput("odds1")
               ),
               column(9, offset=3,
-                     div(style = "padding: 0px 0px; margin:0%",
-                         dataTableOutput("recordTable1"), style = "zoom:0.9"),
-                     div(style = "padding: 0px 0px; margin-top:-21px",
-                         dataTableOutput("drawNCTable1"), style = "zoom:0.9")
+                     div(style = "padding: 0px 0px; margin:0%; zoom:0.9",
+                         dataTableOutput("recordTable1")),
+                     div(style = "padding: 0px 0px; margin-top:-21px; zoom:0.9",
+                         dataTableOutput("drawNCTable1"))
                      )
             ),
             splitLayout(
@@ -68,10 +68,10 @@ navbarPage(
                 htmlOutput("odds2")
               ),
               column(9, offset=3,
-                     div(style = "font-size:100%; padding:0px 0px; margin:0%",
-                         dataTableOutput("recordTable2"), style = "zoom:0.9"),
-                     div(style = "font-size:100%; padding:0px 0px; margin-top:-21px",
-                         dataTableOutput("drawNCTable2"), style = "zoom:0.9")
+                     div(style = "padding:0px 0px; margin:0%; zoom:0.9",
+                         dataTableOutput("recordTable2")),
+                     div(style = "padding:0px 0px; margin-top:-21px; zoom:0.9",
+                         dataTableOutput("drawNCTable2"))
                      )
               ),
             cellArgs = list(style = "overflow-x:hidden; padding:6px; border:1px solid silver;")

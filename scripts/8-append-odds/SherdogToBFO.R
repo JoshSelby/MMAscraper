@@ -107,7 +107,8 @@ Sherdog_to_BFO <- left_join(Sherdog_to_BFO,
   select(Sherdog, BFO)  %>%
   mutate(Sherdog = ifelse(BFO=="Cm-Punk-6210", "Phil-Brooks-184933", Sherdog),
          Sherdog = ifelse(BFO=="Kimbo-Slice-88", "Kevin-Ferguson-22388", Sherdog)) %>%
-  rbind(c("Kai-KaraFrance-73692","Kai-Kara-France-8800"))
+  rbind(c("Kai-KaraFrance-73692","Kai-Kara-France-8800"),
+        c("Steven-Graham-110749","Steven-Graham-8801"))
 
 
 filtfightsNotMatched <- anti_join(filtfights, filtfightsOdds, by = "match_id")
