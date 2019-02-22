@@ -27,12 +27,17 @@ navbarPage(
                       unname()
                     ,
                     width = "100%"),
+        verticalLayout(
+          checkboxInput("swapFighter", "Check to swap fighter", value = FALSE),
+          checkboxInput("oddsCheck", "Check to analyze on odds", value = TRUE),
+          checkboxInput("ageCheck", "Check to analyze on age", value = TRUE),
+          checkboxInput("ratCheck", "Check to analyze on rating", value = TRUE)
+        ),
         textInput(inputId = "filter_text",
                   label = "Write in Custom Filter",
-                  value = "TRUE",
                   width = "100%"),
         verbatimTextOutput("returns"),
-        cellWidths = c("30%", "30%", "40%")
+        cellWidths = c("30%", "15%", "25%", "30%")
         ), 
       tags$head(
         tags$style(HTML("
@@ -41,6 +46,8 @@ navbarPage(
           }
           h2 { margin-top: 0;}
           h3 { margin-top: 0;}
+          .checkbox { margin-top: 0px; margin-bottom: 0px;}
+          div.form-group { margin-bottom: 0px; }
         "))),
 # Records of Fighters ----
           splitLayout(

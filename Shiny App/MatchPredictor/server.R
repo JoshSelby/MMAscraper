@@ -30,6 +30,14 @@ line_to_per <- function(x) {
   }
 }
 
+per_to_line <- function(x) {
+  if(x <= 0.5) {
+    return((1-x)/x * 100)
+  } else {
+    return(x/(1-x) * -100)
+  }
+}
+
 odds_to_return <- function(x, bet=10) {
   if (x < 0) {
     return(bet/-x*100)
@@ -75,6 +83,46 @@ function(input, output, session) {
              Age2 = round(Age2, 1)) %>%
       rename(Opponent = Fighter2)
   })
+  
+  observeEvent({dataset1()
+    input$swapFighter
+    input$oddsCheck
+    input$ageCheck
+    input$ratCheck}, {
+    if(input$swapFighter == FALSE) {
+      data <- dataset1()
+    } else { 
+      data <- dataset2()
+    }
+    Age1 <- data %>% pull(Age1)
+    Age2 <- data %>% pull(Age2)
+    r1b <- data %>% pull(r1b)
+    r2b <- data %>% pull(r2b)
+    winper <- line_to_per(data %>% pull(odds))
+    
+    if(input$oddsCheck == TRUE) {
+      oddsCheck <- paste0("between(odds, ",per_to_line(winper+0.05) %>% round(0),", ",
+                          per_to_line(winper-0.05) %>% round(0),")")
+    } else {
+      oddsCheck <- ""
+    }
+    if(input$ageCheck == TRUE) {
+      ageCheck <- paste0("between(Age1-Age2, ",round(Age1-Age2-2, 1),", ", round(Age1-Age2+2, 1),")")
+    } else {
+      ageCheck <- ""
+    }
+    if(input$ratCheck == TRUE) {
+      ratCheck <- paste0("between(r1b-r2b, ",round(r1b-r2b-50, 0),", ", round(r1b-r2b+50, 0),")")
+    } else {
+      ratCheck <- ""
+    }
+    
+    filtersToUse <- c(oddsCheck, ageCheck, ratCheck)[c(oddsCheck, ageCheck, ratCheck)!=""]
+    
+    updateTextInput(session, "filter_text", value = paste(filtersToUse, collapse = " & "))
+  })
+  
+
   
   output$name1 <- renderUI({
     dataset1() %>% pull(Name1)
