@@ -233,7 +233,7 @@ function(input, output, session) {
     analyseData() %>%
     summarise(avgWin = sum(winnings)/n(),
               wins = sum(Result=="win"),
-              count = n(),
+              count = sum(Result!="NC" & Result!= "draw"),
               winPer = paste0(round(wins/count * 100,2),"%"),
               bet = mean(bet),
               ROI = paste0(round(sum(winnings)/(bet*n())*100, 2), "%"))

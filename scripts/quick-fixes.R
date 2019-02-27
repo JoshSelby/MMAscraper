@@ -7,6 +7,7 @@ birthdayTable <- birthdayTable %>%
          birthday = if_else(link == "Cory-Sandhagen-112869", as.Date("1992-04-20"), birthday),
          birthday = if_else(link == "Daniel-Teymur-163939", as.Date("1988-02-03"), birthday),
          birthday = if_else(link == "Peter-Queally-81180", as.Date("1989-02-19"), birthday),
+         birthday = if_else(link == "Brendan-Allen-201703", as.Date("1995-12-28"), birthday),
          link=if_else(link=="Dong-Hyun-Kim-21673", "Dong-Hyun-Ma-21673", link)
          )
 
