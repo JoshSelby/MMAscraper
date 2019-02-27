@@ -7,20 +7,7 @@ source('./scripts/7-scrape-odds/oddsScraperScripts.R', echo=TRUE)
 
 pastOdds <- readRDS("./scripts/7-scrape-odds/data/pastOdds.RDS")
 
-archivePage <- tryCatch({
-  read_html("https://www.bestfightodds.com/archive")
-},
-error=function(cond) {
-  message(cond)
-  no_errors = FALSE
-  return(eventPage)
-},
-warning=function(cond) {
-  message(cond)
-  no_errors = FALSE
-  return(eventPage)
-}
-)
+archivePage <- read_html("https://www.bestfightodds.com/archive")
 
 eventLinks <- archivePage %>% 
   html_nodes("#page-content a") %>%

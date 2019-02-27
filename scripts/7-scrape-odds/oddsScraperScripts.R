@@ -1,18 +1,6 @@
 # Scrapes all fights from a given Event
 eventOddsScraper <- function(eventLink, future = "n") {
-  eventPage <- tryCatch({
-    read_html(paste0("https://www.bestfightodds.com", eventLink))
-  },
-  error=function(cond) {
-    message(cond)
-    no_errors = FALSE
-    return(eventPage)
-  },
-  warning=function(cond) {
-    message(cond)
-    no_errors = FALSE
-    return(eventPage)
-  })
+  eventPage <- read_html(paste0("https://www.bestfightodds.com", eventLink))
   
   if(eventPage %>%
      html_nodes("td") %>%
