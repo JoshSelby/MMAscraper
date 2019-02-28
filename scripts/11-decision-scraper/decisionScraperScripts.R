@@ -37,17 +37,28 @@ decisionScraper <- function(fightLink) {
   date <- fightPage %>% 
     html_nodes(":nth-child(5) .decision-top2") %>% 
     html_text() %>% 
-    gsub("(.*)(\\d{4}-\\d{2}-\\d{2})(.*)", "\\2", .)
+    gsub("(.*)(\\d{4}-\\d{2}-\\d{2})(.*)", "\\2", .) %>%
+    as.Date()
   
   fighter1 <- fightPage %>%
     html_nodes(".decision-top a") %>%
     html_text() %>%
-    trimws()
+    trimws() %>%
+    gsub("\\s", " ", .)
   
   fighter2 <- fightPage %>%
     html_nodes(".decision-bottom a") %>%
     html_text() %>%
-    trimws()
+    trimws() %>%
+    gsub("\\s", " ", .)
+  
+  fighter1Link <- fightPage %>%
+    html_nodes(".decision-top a") %>%
+    html_attr("href")
+  
+  fighter2Link <- fightPage %>%
+    html_nodes(".decision-bottom a") %>%
+    html_attr("href")
   
   mediaDecisions <- fightPage %>%
     html_nodes(".decision .external") %>%
@@ -75,7 +86,6 @@ decisionScraper <- function(fightLink) {
     as.numeric()
   
   fighter1winAttr <- winAttr(mean(fighter1Scores), mean(fighter2Scores), rounds)
-  print(fightLink)
-  return(tibble(date, fighter1, fighter2, f1Score = mean(fighter1Scores), f2Score = mean(fighter2Scores), rounds, fighter1winAttr, media = length(mediaDecisions), judge = length(judgeDecisions)))
+  return(tibble(date, fighter1, fighter2, f1Score = mean(fighter1Scores), f2Score = mean(fighter2Scores), rounds, fighter1winAttr, media = length(mediaDecisions), judge = length(judgeDecisions), fighter1Link, fighter2Link, eventLink))
     
 }

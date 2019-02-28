@@ -6,7 +6,7 @@ library(data.table)
 fights <- readRDS(file = "./scripts/2-clean-data/data/fights_clean.rds")
 
 
-# What's the most recent Date you have already scraped, minus 1 month
+# What's the most recent Date you have already scraped, minus 10 days
 lastDate <- fights %>% 
   arrange(Date) %>% 
   pull(Date) %>% 
@@ -61,51 +61,46 @@ event_tbl <- event_tbl %>%
 rm(events_page, events_pagei, i)
 ####################################################################
 
-fightInfo <- function(eventLinks) {
-  fights_tbl2 <<- tibble()
-  i = 1
-  for (link in eventLinks) {
-    event <- read_html(paste0("http://www.sherdog.com", link))
-    noRecords <- event %>% html_nodes("td .final_result") %>% html_text()
-    if (!(TRUE %in% (c("win", "draw", "loss") %in% noRecords))) {
-      print(paste(i, "Yet to Come"))
-      i = i+1
-      next;
-    } 
-    
-    fights_tbl <- event %>% html_nodes("td span") %>% html_text(T) %>% matrix(ncol = 5, byrow = T) %>% .[,-4] %>% matrix(ncol=4)
-    MethodReferee <- event %>% html_nodes("td:nth-child(5)") %>% html_text() %>% .[-(1:2)]
-    R <- event %>% html_nodes("td:nth-child(6)") %>% html_text()
-    Time <- event %>% html_nodes("td:nth-child(7)") %>% html_text()
-    Links <- event %>% html_nodes("td [itemprop=url]") %>% html_attr("href") %>% 
-      matrix(ncol=2, byrow = T) %>% as.tibble()
-    
-    fights_tbl <- as.tibble(fights_tbl) %>%
-      mutate(MethodReferee, R, Time) %>%
-      cbind(Links)
-    
-    # Featured Match
-    f3 <- event %>% html_nodes(".event [itemprop=name], .event .final_result") %>% html_text(T) %>% head(-1)
-    l4 <- event %>% html_nodes(".event tr td") %>% html_text(T) %>% 
-      sub("\\w* ", "", .) %>% .[c(3, 2, 4, 5)]
-    l2 <- event %>% html_nodes(".event [itemprop=url]") %>% html_attr("href")
-    
-
-    fights_tbl <- rbind(fights_tbl, c(f3,l4,l2))
-    colnames(fights_tbl)[c(1:4, 8:9)] <- c("Fighter1", "Result", "Fighter2", "Referee", "Link1", "Link2")
-      
-    fights_tbl <- fights_tbl %>% mutate(Event = event_tbl$Names[match(link, event_tbl$Links)],
-             Date = event_tbl$Dates[match(link, event_tbl$Links)])
-    
-    fights_tbl2 <<- rbind(fights_tbl, fights_tbl2)
-    
-    rm(event, fights_tbl, MethodReferee, R, Time, Links, f3, l4, l2, noRecords)
-    print(i)
-    i = i+1
-  }
+fightInfo <- function(link) {
+  
+  event <- read_html(paste0("http://www.sherdog.com", link))
+  noRecords <- event %>% html_nodes("td .final_result") %>% html_text()
+  if (!(TRUE %in% (c("win", "draw", "loss") %in% noRecords))) {
+    print(paste(i, "Yet to Come"))
+    return(tibble())
+  } 
+  
+  fights_tbl <- event %>% html_nodes("td span") %>% html_text(T) %>% matrix(ncol = 5, byrow = T) %>% .[,-4] %>% matrix(ncol=4)
+  MethodReferee <- event %>% html_nodes("td:nth-child(5)") %>% html_text() %>% .[-(1:2)]
+  R <- event %>% html_nodes("td:nth-child(6)") %>% html_text()
+  Time <- event %>% html_nodes("td:nth-child(7)") %>% html_text()
+  Links <- event %>% html_nodes("td [itemprop=url]") %>% html_attr("href") %>% 
+    matrix(ncol=2, byrow = T) %>% as.tibble()
+  
+  fights_tbl <- as.tibble(fights_tbl) %>%
+    mutate(MethodReferee, R, Time) %>%
+    cbind(Links)
+  
+  # Featured Match
+  f3 <- event %>% html_nodes(".event [itemprop=name], .event .final_result") %>% html_text(T) %>% head(-1)
+  l4 <- event %>% html_nodes(".event tr td") %>% html_text(T) %>% 
+    sub("\\w* ", "", .) %>% .[c(3, 2, 4, 5)]
+  l2 <- event %>% html_nodes(".event [itemprop=url]") %>% html_attr("href")
+  
+  
+  fights_tbl <- rbind(fights_tbl, c(f3,l4,l2))
+  colnames(fights_tbl)[c(1:4, 8:9)] <- c("Fighter1", "Result", "Fighter2", "Referee", "Link1", "Link2")
+  
+  fights_tbl <- fights_tbl %>% mutate(Event = event_tbl$Names[match(link, event_tbl$Links)],
+                                      Date = event_tbl$Dates[match(link, event_tbl$Links)])
+  return(fights_tbl)
 }
 
-fightInfo(event_tbl$Links)
+fights_tbl2 <- tibble()
+for (i in i:length(event_tbl$Links)) {
+  fights_tbl2 <- fightInfo(event_tbl$Links[i]) %>% rbind(fights_tbl2)
+}
+
 
 for (i in 1:nrow(fights_tbl2)) {
   fights_tbl2$MethodReferee[i] <- gsub(fights_tbl2$Referee[i], "", 
