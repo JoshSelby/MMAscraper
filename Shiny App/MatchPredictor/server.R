@@ -1,5 +1,6 @@
 library(shiny)
 library(shinyjs)
+library(shinysky)
 library(tidyverse)
 library(DT)
 
@@ -12,6 +13,11 @@ fightMetricsEventOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/d
          odds = as.integer(odds)) %>%
   arrange(desc(match_id))
 filtfightsOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/filtfightsOdds.rds")
+topFighters <- fightMetricsEventOdds %>% 
+  group_by(Link1, Fighter1) %>%
+  summarise(r1a = max(r1a)) %>%
+  arrange(desc(r1a)) %>% 
+  head(5000)
 
 # extra functions
 with_plus <- function(x, ...) {
@@ -194,7 +200,7 @@ function(input, output, session) {
     paste(dataset1() %>% pull(Date))
   })
   
-  output$pastFights1 <- renderDataTable({
+  output$pastFights1_a <- output$pastFights1 <- renderDataTable({
     dataset1_past() %>%
       datatable(options = list(pageLength = 25, dom='tp', scrollX=TRUE)) %>%
       formatStyle("Result", 
@@ -322,5 +328,8 @@ function(input, output, session) {
     if (any(c("draw", "NC") %in% pull(dataset2_past(), Result)))
       showElement("drawNCTable2") else hideElement("drawNCTable2")
   })
+  
+
+
   
 }
