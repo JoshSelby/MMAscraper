@@ -16,7 +16,7 @@ filtData <- filtfightsOdds %>%
 test <- filtfightsOdds %>% 
   rowwise() %>%
   mutate(winper = line_to_per(odds),
-    oddsCheck = paste0("between(odds, ",per_to_line(winper+0.05) %>% round(0),", ",
+    oddsCheck = paste0("between(odds, ",odds %>% round(0),", ",
                             per_to_line(winper-0.05) %>% round(0),")"),
     ageCheck = paste0("between(Age1-Age2, ",round(Age1-Age2-2, 1),", ", round(Age1-Age2+2, 1),")"),
     ratCheck = paste0("between(r1b-r2b, ",round(r1b-r2b-50, 0),", ", round(r1b-r2b+50, 0),")"),
@@ -28,7 +28,7 @@ test <- filtfightsOdds %>%
 
 for (i in 1:nrow(test)) {
   data <- filtData %>% 
-    filter(eval_tidy(parse_expr(paste(test[i, 57:60] %>% as.character, collapse=" & ")))) %>%
+    filter(eval_tidy(parse_expr(paste(test[i, 60:63] %>% as.character, collapse=" & ")))) %>%
     summarise(avgWin = sum(winnings)/n(),
               wins = sum(Result=="win"),
               count = n(),
@@ -49,14 +49,13 @@ test <- test %>%
   ungroup()
 
 test %>%
-  filter(Date>='2017-01-01' & count > 25 & Result %in% c("win", "loss")) %>%
-  group_by(ROI2 = ROI %>% cut(breaks=c(-500,-100,0,5,10,15,20,25,30,35,40,45,50,100,500)), odds>0) %>%
+  filter(Date>='2015-01-01' & count > 25 & Result %in% c("win", "loss")) %>%
+  group_by(dog = odds>0, ROI2 = ROI %>% cut(breaks=c(-500,-100,0,5,10,15,20,25,30,35,40,45,50,100,500))) %>%
   summarise(
     fights = n(),
     winnings = sum(winnings),
-    ROI = paste0(round(sum(winnings)/sum(bet)*100,2), "%"),
+    ROI = round(sum(winnings)/sum(bet)*100,2),
     winper = sum(Result=="win")/n()
-    
   )
 
 

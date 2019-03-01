@@ -7,7 +7,7 @@ library(lubridate)
 if (!require("Rcpp")) install.packages("Rcpp")
 library(Rcpp)
 
-fights <- readRDS(file = "./scripts/3-records/data/fights_records.rds")
+fights <- readRDS(file = "./scripts/11-decision-scraper/data/fights.RDS")
 
 # Change select fights from NC to Wins/Losses
 {
@@ -50,18 +50,27 @@ fights2 <- fights %>%
   filter(Result2 %in% c("win", "draw", "loss") & Method != "DQ") %>%
   mutate(score1 = ifelse(Result2 == "win", 1, 0.5),
          score1 = ifelse(Result2 == "loss", 0, score1),
-         score2 = 1-score1) %>%
+         score1 = ifelse(!is.na(fighter1winAttr), fighter1winAttr, score1),
+         score1 = ifelse(score1>1, 1, score1),
+         score2 = 1-score1,
+         Result2 = score1) %>%
   select(game = match_id, player1 = Link1, score1, player2 = Link2, score2)
 
 fights2 <- as_widecr(fights2)
 
+elo_rate_fun2 <- function (rating1, score1, rating2, score2, K = 150, ksi = 400) {
+  prob_win1 <- 1/(1 + 10^((rating2 - rating1)/ksi))
+  game_res1 <- score1/(score1+score2)
+  rating_delta <- K * (game_res1 - prob_win1)
+  c(rating1, rating2) + rating_delta * c(1, -1)
+}
 
 # 150 was shown to be the optimal K
-elo <- add_elo_ratings(fights2, K=150, initial_ratings = 1000)
+elo <- add_iterative_ratings(fights2, rate_fun=elo_rate_fun2, initial_ratings = 1000)
 
 fightsElo <- full_join(fights, elo, by = c("match_id" = "game")) %>%
   select(match_id, Link1, Result, Link2, Method, Method_d, Event, Date, 
-         rating1Before, rating2Before, rating1After, rating2After) %>%
+         rating1Before, rating2Before, rating1After, rating2After, score1) %>%
   rename(r1b = rating1Before, r2b = rating2Before, r1a = rating1After, r2a = rating2After) %>%
   mutate_at(.vars = vars(r1b:r2a),
             .funs = round)

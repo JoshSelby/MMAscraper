@@ -23,11 +23,25 @@ elo_win_prob <- function(rating1, rating2, ksi = 400, ...) {
   1 / (1 + 10^norm_rating_diff)
 }
 
-elo_fun_gen <- function(K, ksi = 400) {
-  function(rating1, score1, rating2, score2) {
-    comperank::elo(rating1, score1, rating2, score2, K = K, ksi = ksi)[1, ]
-  }
+elo_rate_fun2 <- function (rating1, score1, rating2, score2, K = 150, ksi = 400) {
+  prob_win1 <- 1/(1 + 10^((rating2 - rating1)/ksi))
+  game_res1 <- score1/(score1+score2)
+  rating_delta <- K * (game_res1 - prob_win1)
+  cbind(rating1 + rating_delta, rating2 - rating_delta)
 }
+
+elo_fun_gen <- function(K, ksi = 400) {
+    function(rating1, score1, rating2, score2) {
+      elo_rate_fun2(rating1, score1, rating2, score2, K = K, ksi = ksi)[1, ]
+    }
+  }
+
+
+# elo_fun_gen <- function(K, ksi = 400) {
+#   function(rating1, score1, rating2, score2) {
+#     comperank::elo(rating1, score1, rating2, score2, K = K, ksi = ksi)[1, ]
+#   }
+# }
 
 get_match_result <- function(score1, score2) {
   # There are no ties in snooker but this handles general case

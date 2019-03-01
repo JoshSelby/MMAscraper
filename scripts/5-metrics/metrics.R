@@ -4,14 +4,16 @@ library(zoo)
 library(RcppRoll)
 
 # Read in data
-fightsElo <- readRDS(file = "./scripts/4-ratings/data/fightsElo.rds")
+fightsElo <- readRDS(file = "./scripts/4-ratings/data/fightsElo.rds") %>%
+  rename(score=score1)
 
 
 # Double the data
 fights1 <- fightsElo
 fights2 <- fightsElo %>%
   mutate(Result = ifelse(Result=="win", "loss", Result),
-         Result2 = ifelse(Result2 == "win", "loss", Result2))
+         Result2 = ifelse(Result2 == "win", "loss", Result2),
+         score = 1-score)
 
 colnames(fights2) <- fights2 %>% 
   colnames %>% 
@@ -105,15 +107,6 @@ fightMetrics <- fightMetrics %>%
          highestWin2_5 = ifelse(highestWin2_5==0, NA, highestWin2_5),
          lowestLoss1_5 = ifelse(lowestLoss1_5==10000, NA, lowestLoss1_5),
          lowestLoss2_5 = ifelse(lowestLoss2_5==10000, NA, lowestLoss2_5))
-
-
-# Check with Silva fights
-fighter <- fightMetrics %>% filter(Link1 == "Anderson-Silva-1356")
-
-fighter %>%
-  select(-Method, -Method_d, -Event, -Fighter1, -Fighter2, -R, -Time, -Referee,
-         -wins1, -wins2, -loss1, -loss2, -draw1, -draw2, -nc1, -nc2) %>% 
-  View()
 
 
 

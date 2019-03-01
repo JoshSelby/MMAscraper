@@ -20,7 +20,11 @@ fights <- fights %>%
   mutate(Link1=ifelse(Link1=="Dong-Hyun-Kim-21673", "Dong-Hyun-Ma-21673", Link1),
          Link2=ifelse(Link2=="Dong-Hyun-Kim-21673", "Dong-Hyun-Ma-21673", Link2),
          Fighter1=ifelse(Link1=="Dong-Hyun-Ma-21673", "Dong Hyun Ma", Fighter1),
-         Fighter2=ifelse(Link2=="Dong-Hyun-Ma-21673", "Dong Hyun Ma", Fighter2)) %>%
+         Fighter2=ifelse(Link2=="Dong-Hyun-Ma-21673", "Dong Hyun Ma", Fighter2),
+         Link1=ifelse(Link1=="Cortney-CaseySanchez-91121", "Cortney-Casey-91121", Link1),
+         Link2=ifelse(Link2=="Cortney-CaseySanchez-91121", "Cortney-Casey-91121", Link2),
+         Link1=ifelse(Link1=="Holli-Salazar-243759", "Holli-Logan-243759", Link1),
+         Link2=ifelse(Link2=="Holli-Salazar-243759", "Holli-Logan-243759", Link2)) %>%
   filter(Event != "RITC - Rage in the Cage OKC 35" &
          Event != "NOH 5 - Horror Show: Sportowe Zaglebie vs. Reszta Swiata" &
          !(Event=="Rings - Rings/The Outsider - Ota Gymnasium Special" & Link1=="Keinosuke-Yoshinaga-31182"))
