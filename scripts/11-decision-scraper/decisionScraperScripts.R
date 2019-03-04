@@ -40,6 +40,10 @@ decisionScraper <- function(fightLink) {
     gsub("(.*)(\\d{4}-\\d{2}-\\d{2})(.*)", "\\2", .) %>%
     as.Date()
   
+  eventLink <- fightPage %>% 
+    html_nodes(".decision-top2 a") %>% 
+    html_attr("href")
+  
   fighter1 <- fightPage %>%
     html_nodes(".decision-top a") %>%
     html_text() %>%

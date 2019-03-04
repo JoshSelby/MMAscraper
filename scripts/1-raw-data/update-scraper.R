@@ -97,6 +97,7 @@ fightInfo <- function(link) {
 }
 
 fights_tbl2 <- tibble()
+i=1
 for (i in i:length(event_tbl$Links)) {
   fights_tbl2 <- fightInfo(event_tbl$Links[i]) %>% rbind(fights_tbl2)
 }
