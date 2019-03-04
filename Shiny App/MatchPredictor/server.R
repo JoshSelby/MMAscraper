@@ -6,16 +6,21 @@ library(DT)
 
 # read datasets
 futureFights <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/futureFights.RDS")
+
 fightMetricsEventOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/fightMetricsEventOdds.rds") %>%
   mutate(Date = as.character(Date),
          r1b = as.integer(r1b),
          r2b = as.integer(r2b),
          odds = as.integer(odds)) %>%
   arrange(desc(match_id))
+
 filtfightsOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/filtfightsOdds.rds")
+
 topFighters <- fightMetricsEventOdds %>% 
   group_by(Link1, Fighter1) %>%
-  summarise(r1a = max(r1a)) %>%
+  arrange(desc(Date)) %>%
+  slice(1) %>%
+  select(Link1, Fighter1, r1a) %>%
   arrange(desc(r1a)) %>% 
   head(5000)
 
@@ -73,11 +78,12 @@ function(input, output, session) {
       filter(Link1 == dataset1() %>% pull(Link1)) %>% 
       select(Result, score, Fighter2, Date, Method, Method_d, R, Org, Date, Age1, Age2, r1b, r2b, odds) %>%
       mutate(Org = substr(Org, 1, 13),
+             Fighter2 = substr(Fighter2, 1, 20), 
              Method_d = substr(Method_d, 1, 16),
              Age1 = round(Age1, 1),
              Age2 = round(Age2, 1),
              score = round(score, 2)) %>%
-      rename(Opponent = Fighter2)
+      dplyr::rename(Opponent = Fighter2)
   })
   
   dataset2_past <- reactive({
@@ -85,11 +91,12 @@ function(input, output, session) {
       filter(Link1 == dataset1() %>% pull(Link2)) %>% 
       select(Result, score, Fighter2, Date, Method, Method_d, R, Org, Date, Age1, Age2, r1b, r2b, odds) %>%
       mutate(Org = substr(Org, 1, 13),
+             Fighter2 = substr(Fighter2, 1, 20), 
              Method_d = substr(Method_d, 1, 16),
              Age1 = round(Age1, 1),
              Age2 = round(Age2, 1),
              score = round(score, 2)) %>%
-      rename(Opponent = Fighter2)
+      dplyr::rename(Opponent = Fighter2)
   })
   
   observeEvent({dataset1()
@@ -200,7 +207,7 @@ function(input, output, session) {
     paste(dataset1() %>% pull(Date))
   })
   
-  output$pastFights1_a <- output$pastFights1 <- renderDataTable({
+  output$pastFights1 <- renderDataTable({
     dataset1_past() %>%
       datatable(options = list(pageLength = 25, dom='tp', scrollX=TRUE)) %>%
       formatStyle("Result", 
@@ -329,7 +336,5 @@ function(input, output, session) {
       showElement("drawNCTable2") else hideElement("drawNCTable2")
   })
   
-
-
   
 }
