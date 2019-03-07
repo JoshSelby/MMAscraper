@@ -20,6 +20,7 @@ topFighters <- fightMetricsEventOdds %>%
   group_by(Link1, Fighter1) %>%
   arrange(desc(Date)) %>%
   slice(1) %>%
+  mutate(Link1 = gsub("-", " ", Link1)) %>%
   select(Link1, Fighter1, r1a) %>%
   arrange(desc(r1a)) %>% 
   head(5000)
