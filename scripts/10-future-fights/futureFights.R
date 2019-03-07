@@ -25,6 +25,7 @@ noSherdog <- futureFights %>%
   filter(is.na(Sherdog.x)) %>%
   pull(fighter)
 
+i=1
 minitbl <- tibble()
 if (length(noSherdog)!=0) {
   for (i in 1:length(noSherdog)) {

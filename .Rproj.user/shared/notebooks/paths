@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:/Users/anort/Documents/GitHub/MMAscraper/./scripts/1-raw-data/update-scraper.R="ACD40FB8"
 C:/Users/anort/Documents/GitHub/MMAscraper/./scripts/10-future-fights/futureFights.R="F1EC7896"
 C:/Users/anort/Documents/GitHub/MMAscraper/./scripts/11-decision-scraper/appendDecision.R="4C1ABC44"
@@ -9,3 +10,9 @@ C:/Users/anort/Documents/GitHub/MMAscraper/Shiny App/MatchPredictor/server.R="BF
 C:/Users/anort/Documents/GitHub/MMAscraper/Shiny App/MatchPredictor/ui.R="6D496C0D"
 C:/Users/anort/Documents/GitHub/MMAscraper/scripts/0-run-scripts/Initial Run.R="1E441F41"
 C:/Users/anort/Documents/GitHub/MMAscraper/scripts/11-decision-scraper/decisionScraper.R="41AA2EE5"
+=======
+C:/Users/anorth/Documents/GitHub/MMAscraper/./scripts/10-future-fights/futureFights.R="E23A6908"
+C:/Users/anorth/Documents/GitHub/MMAscraper/./scripts/7-scrape-odds/futureOdds.R="E5823842"
+C:/Users/anorth/Documents/GitHub/MMAscraper/Shiny App/MatchPredictor/server.R="F9E0215F"
+C:/Users/anorth/Documents/GitHub/MMAscraper/Shiny App/MatchPredictor/ui.R="ACBAC399"
+>>>>>>> d40bfa90b8bd8a8ac7fa4b98ab294bb891edc715
