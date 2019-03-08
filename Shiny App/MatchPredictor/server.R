@@ -36,27 +36,21 @@ with_plus <- function(x, ...) {
 }
 
 line_to_per <- function(x) {
-  if (x < 0) {
-    return(-x/((-x + 100)))
-  } else {
-    return(100/(x+100))
-  }
+  return(if_else(x < 0,
+                 -x/((-x + 100)),
+                 100/(x+100)))
 }
 
 per_to_line <- function(x) {
-  if(x <= 0.5) {
-    return((1-x)/x * 100)
-  } else {
-    return(x/(1-x) * -100)
-  }
+  return(if_else(x <= 0.5,
+                 (1-x)/x * 100,
+                 x/(1-x) * -100))
 }
 
 odds_to_return <- function(x, bet=10) {
-  if (x < 0) {
-    return(bet/-x*100)
-  } else {
-    return(x*bet/100)
-  }
+  return(if_else(x < 0, 
+                 bet/-x*100,
+                 x*bet/100))
 }
 
 function(input, output, session) {
@@ -230,8 +224,8 @@ function(input, output, session) {
   analyseData <-  reactive({
     filtfightsOdds %>%
       filter(eval(parse(text=input$filter_text))) %>%
-      select(Link1, Link2, Result, Method, Date, Event, odds, r1b, r2b, Age1, Age2, highestWin1_5, highestWin2_5, ratIncrease1, ratIncrease2) %>% 
-      mutate(bet = 10,
+      select(Link1, Link2, Result, Method, score, Date, Event, odds, r1b, r2b, Age1, Age2, highestWin1_5, highestWin2_5, ratIncrease1, ratIncrease2) %>% 
+      mutate(bet = 100/odds_to_return(odds,10),
              Age1 = round(Age1, 2),
              Age2 = round(Age2, 2),
              winnings = ifelse(Result %in% c("NC", "draw"), 0, ifelse(odds>0,ifelse(Result=="win", odds*bet/100, -bet),
@@ -248,12 +242,12 @@ function(input, output, session) {
   
   output$returns <- renderPrint({
     analyseData() %>%
-    summarise(avgWin = sum(winnings)/n(),
-              wins = sum(Result=="win"),
-              count = sum(Result!="NC" & Result!= "draw"),
-              winPer = paste0(round(wins/count * 100,2),"%"),
-              bet = mean(bet),
-              ROI = paste0(round(sum(winnings)/(bet*n())*100, 2), "%"))
+    summarise(wins = sum(Result == "win"),
+              count = sum(!is.na(score)),
+              winPer = paste0(round(wins/count * 100,2), "%"),
+              totalBet = sum(bet * !is.na(score)),
+              totalWinnings = sum(winnings),
+              ROI = round(totalWinnings/totalBet*100,2))
   })
   
   output$recordTable1 <- renderDataTable({
