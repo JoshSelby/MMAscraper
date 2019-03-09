@@ -94,8 +94,8 @@ futureFights[,
                     shift(), # Average rating of last 5 opponents
                   highestWin1_5 = coalesce(roll_maxr((Result2=="win")*r2b, 5), cummax(((Result2=="win")*r2b))) %>%
                     shift(), # Highest rated fighter defeated in last 5 fights
-                  lowestLoss1_5 = coalesce(roll_minr(if_else((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b), 5),
-                                           cummin(if_else((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b))) %>%
+                  lowestLoss1_5 = coalesce(roll_minr(ifelse((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b), 5),
+                                           cummin(ifelse((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b))) %>%
                     shift(), # Lowest rated fighter lost to in last 5 fights
                   koLosses1 = cumsum(Result == "loss" & (Method=="TKO"|Method=="KO")) %>%
                     shift(), # number of KO losses
@@ -115,8 +115,8 @@ futureFights[,
                     shift(),
                   highestWin2_5 = coalesce(roll_maxr((Result2=="loss")*r1b, 5), cummax(((Result2=="loss")*r1b))) %>%
                     shift(),
-                  lowestLoss2_5 = coalesce(roll_minr(if_else((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b), 5),
-                                           cummin(if_else((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b))) %>%
+                  lowestLoss2_5 = coalesce(roll_minr(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b), 5),
+                                           cummin(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b))) %>%
                     shift(),
                   koLosses2 = cumsum(Result == "win" & (Method=="TKO"|Method=="KO")) %>%
                     shift(),
@@ -131,10 +131,10 @@ futureFights[,
 futureFights <- futureFights %>%
   as.tibble() %>%
   filter(!is.na(odds)) %>%
-  mutate(highestWin1_5 = if_else(highestWin1_5==0, NA_real_, highestWin1_5),
-         highestWin2_5 = if_else(highestWin2_5==0, NA_real_, highestWin2_5),
-         lowestLoss1_5 = if_else(lowestLoss1_5==10000, NA_real_, lowestLoss1_5),
-         lowestLoss2_5 = if_else(lowestLoss2_5==10000, NA_real_, lowestLoss2_5)) %>%
+  mutate(highestWin1_5 = ifelse(highestWin1_5==0, NA, highestWin1_5),
+         highestWin2_5 = ifelse(highestWin2_5==0, NA, highestWin2_5),
+         lowestLoss1_5 = ifelse(lowestLoss1_5==10000, NA, lowestLoss1_5),
+         lowestLoss2_5 = ifelse(lowestLoss2_5==10000, NA, lowestLoss2_5)) %>%
   mutate_at(c("r1b", "r2b", "wins1", "loss1", "draw1", "nc1", "wins2", "loss2", "draw2", "nc2", "fightLag1", "fightLag2", "rownum", "odds"),
             as.integer) %>%
   select(-match_id, -Result, -Method, -Method_d, -r1a, -r2a, -Fighter1, -Fighter2, -R, -Time, -Referee, -Result2, -Org)
