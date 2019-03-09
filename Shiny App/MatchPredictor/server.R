@@ -1,8 +1,8 @@
+library(tidyverse)
+library(DT)
 library(shiny)
 library(shinyjs)
 library(shinysky)
-library(tidyverse)
-library(DT)
 
 # read datasets
 futureFights <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/futureFights.RDS")
@@ -228,8 +228,8 @@ function(input, output, session) {
       mutate(bet = 100/odds_to_return(odds,10),
              Age1 = round(Age1, 2),
              Age2 = round(Age2, 2),
-             winnings = ifelse(Result %in% c("NC", "draw"), 0, ifelse(odds>0,ifelse(Result=="win", odds*bet/100, -bet),
-                                                                      ifelse(Result=="win", -100/odds * bet, -bet))) %>%
+             winnings = if_else(Result %in% c("NC", "draw"), 0, if_else(odds>0,if_else(Result=="win", odds*bet/100, -bet),
+                                                                      if_else(Result=="win", -100/odds * bet, -bet))) %>%
                round(2)
       ) %>%
       arrange(desc(Date))
@@ -252,7 +252,7 @@ function(input, output, session) {
   
   output$recordTable1 <- renderDataTable({
     dataset1_past() %>% 
-      mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
+      mutate(Method = if_else(grepl("KO", Method),"TKO/KO",Method)) %>% 
       group_by(Method, Result) %>% 
       summarise(n=n()) %>% 
       spread(Result, n, fill = 0) %>%
@@ -276,7 +276,7 @@ function(input, output, session) {
   
   output$drawNCTable1 <- renderDataTable({
     dataset1_past() %>% 
-      mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
+      mutate(Method = if_else(grepl("KO", Method),"TKO/KO",Method)) %>% 
       filter(!(Result %in% c("win", "loss"))) %>%
       group_by(Result) %>% 
       summarise(n=n()) %>%
@@ -293,7 +293,7 @@ function(input, output, session) {
   
   output$recordTable2 <- renderDataTable({
     dataset2_past() %>% 
-      mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
+      mutate(Method = if_else(grepl("KO", Method),"TKO/KO",Method)) %>% 
       group_by(Method, Result) %>% 
       summarise(n=n()) %>% 
       spread(Result, n, fill = 0) %>%
@@ -317,7 +317,7 @@ function(input, output, session) {
   
   output$drawNCTable2 <- renderDataTable({
     dataset2_past() %>% 
-      mutate(Method = ifelse(grepl("KO", Method),"TKO/KO",Method)) %>% 
+      mutate(Method = if_else(grepl("KO", Method),"TKO/KO",Method)) %>% 
       filter(!(Result %in% c("win", "loss"))) %>%
       group_by(Result) %>% 
       summarise(n=n()) %>%

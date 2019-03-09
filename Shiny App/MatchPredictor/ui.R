@@ -29,7 +29,7 @@ navbarPage(
                     width = "100%"),
         verticalLayout(
           checkboxInput("swapFighter", "Check to swap fighter", value = FALSE),
-          checkboxInput("oddsCheck", "Check to analyze on odds", value = FALSE),
+          checkboxInput("oddsCheck", "Check to analyze on odds", value = TRUE),
           checkboxInput("ageCheck", "Check to analyze on age", value = TRUE),
           checkboxInput("ratCheck", "Check to analyze on rating", value = TRUE)
         ),
