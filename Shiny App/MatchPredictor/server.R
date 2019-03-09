@@ -250,6 +250,7 @@ function(input, output, session) {
   })
   
   output$recordTable1 <- renderDataTable({
+    
     dataset1_past() %>% 
       mutate(Method = if_else(grepl("KO", Method),"TKO/KO",Method)) %>% 
       group_by(Method, Result) %>% 
