@@ -9,6 +9,11 @@ birthdayTable <- birthdayTable %>%
          birthday = if_else(link == "Peter-Queally-81180", as.Date("1989-02-19"), birthday),
          birthday = if_else(link == "Brendan-Allen-201703", as.Date("1995-12-28"), birthday),
          birthday = if_else(link == "Valerie-Loureda-313891", as.Date("1998-07-19"), birthday),
+         birthday = if_else(link == "Molly-McCann-150485", as.Date("1990-05-04"), birthday),
+         birthday = if_else(link == "Priscila-Cachoeira-227399", as.Date("1988-08-19"), birthday),
+         birthday = if_else(link == "Danny-Henry-59830", as.Date("1988-07-17"), birthday),
+         birthday = if_else(link == "Nicolae-Negumereanu-237147", as.Date("1994-09-04"), birthday),
+         birthday = if_else(link == "Cortney-Casey-91121", as.Date("1987-05-05"), birthday),
          link=if_else(link=="Dong-Hyun-Kim-21673", "Dong-Hyun-Ma-21673", link)
          )
 
@@ -23,6 +28,8 @@ fights <- fights %>%
          Fighter2=ifelse(Link2=="Dong-Hyun-Ma-21673", "Dong Hyun Ma", Fighter2),
          Link1=ifelse(Link1=="Cortney-CaseySanchez-91121", "Cortney-Casey-91121", Link1),
          Link2=ifelse(Link2=="Cortney-CaseySanchez-91121", "Cortney-Casey-91121", Link2),
+         Fighter1=ifelse(Link1=="Cortney-CaseySanchez-91121", "Cortney Casey", Fighter1),
+         Fighter2=ifelse(Link2=="Cortney-CaseySanchez-91121", "Cortney Casey", Fighter2),
          Link1=ifelse(Link1=="Holli-Salazar-243759", "Holli-Logan-243759", Link1),
          Link2=ifelse(Link2=="Holli-Salazar-243759", "Holli-Logan-243759", Link2)) %>%
   filter(Event != "RITC - Rage in the Cage OKC 35" &

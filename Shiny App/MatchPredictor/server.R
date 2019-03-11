@@ -27,34 +27,23 @@ topFighters <- fightMetricsEventOdds %>%
 # extra functions
 with_plus <- function(x, ...) {
   if (x > 0) {
-    sprintf(fmt = "+%s", format(x, ...))
-  } else {
-    x
+    return(sprintf(fmt = "+%s", format(x, ...)))
+  }
+  else {
+    return(x)
   }
 }
 
 line_to_per <- function(x) {
-  if (x < 0) {
-    return(-x/((-x + 100)))
-  } else {
-    return(100/(x+100))
-  }
+  return(if_else(x < 0, -x/((-x + 100)), 100/(x+100)))
 }
 
 per_to_line <- function(x) {
-  if(x <= 0.5) {
-    return((1-x)/x * 100)
-  } else {
-    return(x/(1-x) * -100)
-  }
+  return(if_else(x <= 0.5, (1-x)/x * 100, x/(1-x) * -100))
 }
 
 odds_to_return <- function(x, bet=10) {
-  if (x < 0) {
-    return(bet/-x*100)
-  } else {
-    return(x*bet/100)
-  }
+  return(if_else(x < 0, bet/-x*100, x*bet/100))
 }
 
 function(input, output, session) {
