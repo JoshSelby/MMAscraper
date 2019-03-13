@@ -95,8 +95,8 @@ navbarPage(
   tabPanel("Analyze Filtered Fights", div(dataTableOutput("dataset_filt"), style = "font-size:70%")),
   tabPanel("Compare Fighters",  {
     splitLayout(
-      textInput.typeahead(id = "fighter1Search", placeholder = "PLACEHOLDERTEXT", 
-                          local = topFighters, valueKey = "Link1", tokens = c(1:5000), 
+      textInput.typeahead(id = "fighter1Search", placeholder = "PLACEHOLDERTEXT",
+                          local = topFighters, valueKey = "Link1", tokens = c(1:5000),
                           template = HTML("{{Fighter1}}, {{r1a}}")
                 )
     )

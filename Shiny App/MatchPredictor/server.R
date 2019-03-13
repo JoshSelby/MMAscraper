@@ -1,8 +1,9 @@
-library(tidyverse)
-library(DT)
+detach("package:tidyverse")
 library(shiny)
 library(shinyjs)
 library(shinysky)
+library(tidyverse)
+library(DT)
 
 # read datasets
 futureFights <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/futureFights.RDS")
