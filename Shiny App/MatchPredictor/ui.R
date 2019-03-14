@@ -4,41 +4,47 @@ navbarPage(
     fluidPage(
       useShinyjs(),
 # Header ----
-      h2(htmlOutput("event", container = span)),
-      h3(htmlOutput("date", container = span)),
       splitLayout(
-# Inputs ----
-        selectInput("match_num", 
-                    label = "Choose a match to display",
-                    choices = futureFights %>% 
-                      select(rownum, Name1, Name2, Date, Event) %>% 
-                      mutate(Date = as.character(Date),
-                             Event = gsub("(.*):(.*)", "\\1", Event)) %>%
-                      split(futureFights$rownum) %>% 
-                      lapply(function(x)
-                        x %>% 
-                          head(1) %>% 
-                          as.character %>% 
-                          paste(collapse = "$") %>% 
-                          gsub(pattern = "(.*)\\$(.*)\\$(.*)\\$(.*)\\$(.*)",
-                               replacement = "\\1: \\5 - \\2 vs. \\3 (\\4)")
-                      ) %>%  
-                      unlist() %>%
-                      unname()
-                    ,
-                    width = "100%"),
         verticalLayout(
-          checkboxInput("swapFighter", "Check to swap fighter", value = FALSE),
-          checkboxInput("oddsCheck", "Check to analyze on odds", value = TRUE),
-          checkboxInput("ageCheck", "Check to analyze on age", value = TRUE),
-          checkboxInput("ratCheck", "Check to analyze on rating", value = TRUE)
+          h2(htmlOutput("event", container = span)),
+          h3(htmlOutput("date", container = span)),
+          splitLayout(
+            # Inputs ----
+            selectInput("match_num", 
+                        label = "Choose a match to display",
+                        choices = futureFights %>% 
+                          select(rownum, Name1, Name2, Date, Event) %>% 
+                          mutate(Date = as.character(Date),
+                                 Event = gsub("(.*):(.*)", "\\1", Event)) %>%
+                          split(futureFights$rownum) %>% 
+                          lapply(function(x)
+                            x %>% 
+                              head(1) %>% 
+                              as.character %>% 
+                              paste(collapse = "$") %>% 
+                              gsub(pattern = "(.*)\\$(.*)\\$(.*)\\$(.*)\\$(.*)",
+                                   replacement = "\\1: \\5 - \\2 vs. \\3 (\\4)")
+                          ) %>%  
+                          unlist() %>%
+                          unname()
+                        ,
+                        width = "100%"),
+            verticalLayout(
+              checkboxInput("swapFighter", "Check to swap fighter", value = FALSE),
+              checkboxInput("oddsCheck", "Check to analyze on odds", value = TRUE),
+              checkboxInput("ageCheck", "Check to analyze on age", value = TRUE),
+              checkboxInput("ratCheck", "Check to analyze on rating", value = TRUE)
+            ),
+            textInput(inputId = "filter_text",
+                      label = "Write in Custom Filter",
+                      width = "100%"),
+            verbatimTextOutput("returns"),
+            cellWidths = c("35%", "15%", "25%", "24%")
+          )
         ),
-        textInput(inputId = "filter_text",
-                  label = "Write in Custom Filter",
-                  width = "100%"),
-        verbatimTextOutput("returns"),
-        cellWidths = c("30%", "15%", "25%", "30%")
-        ), 
+        plotlyOutput("eloGraph", height = "200px"),
+        cellWidths = c("70%", "30%")
+      ),
       tags$head(
         tags$style(HTML("
           .shiny-split-layout > div {

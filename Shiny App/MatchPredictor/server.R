@@ -1,51 +1,4 @@
-detach("package:tidyverse")
-library(shiny)
-library(shinyjs)
-library(shinysky)
-library(tidyverse)
-library(DT)
-
-# read datasets
-futureFights <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/futureFights.RDS")
-
-fightMetricsEventOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/fightMetricsEventOdds.rds") %>%
-  mutate(Date = as.character(Date),
-         r1b = as.integer(r1b),
-         r2b = as.integer(r2b),
-         odds = as.integer(odds)) %>%
-  arrange(desc(match_id))
-
-filtfightsOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/filtfightsOdds.rds")
-
-topFighters <- fightMetricsEventOdds %>% 
-  group_by(Link1, Fighter1) %>%
-  arrange(desc(Date)) %>%
-  slice(1) %>%
-  select(Link1, Fighter1, r1a) %>%
-  arrange(desc(r1a)) %>% 
-  head(5000)
-
-# extra functions
-with_plus <- function(x, ...) {
-  if (x > 0) {
-    return(sprintf(fmt = "+%s", format(x, ...)))
-  }
-  else {
-    return(x)
-  }
-}
-
-line_to_per <- function(x) {
-  return(if_else(x < 0, -x/((-x + 100)), 100/(x+100)))
-}
-
-per_to_line <- function(x) {
-  return(if_else(x <= 0.5, (1-x)/x * 100, x/(1-x) * -100))
-}
-
-odds_to_return <- function(x, bet=10) {
-  return(if_else(x < 0, bet/-x*100, x*bet/100))
-}
+source('~/GitHub/MMAscraper/Shiny App/MatchPredictor/scriptsForApp.R', echo=TRUE)
 
 function(input, output, session) {
   
@@ -240,8 +193,7 @@ function(input, output, session) {
               wins = sum(Result=="win"),
               count = sum(Result!="NC" & Result!= "draw"),
               winPer = paste0(round(wins/count * 100,2),"%"),
-              bet = mean(bet),
-              ROI = paste0(round(sum(winnings)/(bet*n())*100, 2), "%"))
+              ROI = paste0(round(sum(winnings)/(mean(bet)*n())*100, 2), "%"))
   })
   
   output$recordTable1 <- renderDataTable({
@@ -325,6 +277,19 @@ function(input, output, session) {
   observeEvent(dataset2_past(), {
     if (any(c("draw", "NC") %in% pull(dataset2_past(), Result)))
       showElement("drawNCTable2") else hideElement("drawNCTable2")
+  })
+  
+  output$eloGraph <- renderPlotly({
+    fighter1 <- dataset1() %>% pull(Name1)
+    fighter2 <- dataset2() %>% pull(Name1)
+    g <- graphFighters(c(fighter1, fighter2))
+    ggplotly(g) %>% 
+      layout(legend = list(x=0, y=1, font=list(size = 8), tracegroupgap = 7), 
+             xaxis = list(title=""), 
+             yaxis = list(title=""),
+             margin = list(l=0,r=0,b=0,t=0, pad = 0)) %>%
+      config(displayModeBar = F)
+      
   })
   
   
