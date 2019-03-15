@@ -65,7 +65,7 @@ function(input, output, session) {
       oddsCheck <- ""
     }
     if(input$ageCheck == TRUE) {
-      ageCheck <- paste0("between(Age1-Age2, ",round(Age1-Age2-2, 1),", ", round(Age1-Age2+2, 1),")")
+      ageCheck <- paste0("between(Age1-Age2, ",round(Age1-Age2-1.5, 1),", ", round(Age1-Age2+1.5, 1),")")
     } else {
       ageCheck <- ""
     }
@@ -171,12 +171,13 @@ function(input, output, session) {
   analyseData <-  reactive({
     filtfightsOdds %>%
       filter(eval(parse(text=input$filter_text))) %>%
-      select(Link1, Link2, Result, Method, Date, Event, odds, r1b, r2b, Age1, Age2, highestWin1_5, highestWin2_5, ratIncrease1, ratIncrease2) %>% 
+      select(Link1, Link2, Result2, Method, Date, Event, odds, r1b, r2b, Age1, Age2, highestWin1_5, highestWin2_5, ratIncrease1, ratIncrease2) %>% 
+      filter(Result2 %in% c("win", "loss")) %>%
       mutate(bet = 10,
              Age1 = round(Age1, 2),
              Age2 = round(Age2, 2),
-             winnings = if_else(Result %in% c("NC", "draw"), 0, if_else(odds>0,if_else(Result=="win", odds*bet/100, -bet),
-                                                                      if_else(Result=="win", -100/odds * bet, -bet))) %>%
+             winnings = if_else(Result2 %in% c("NC", "draw"), 0, if_else(odds>0,if_else(Result2=="win", odds*bet/100, -bet),
+                                                                      if_else(Result2=="win", -100/odds * bet, -bet))) %>%
                round(2)
       ) %>%
       arrange(desc(Date))
@@ -190,9 +191,9 @@ function(input, output, session) {
   output$returns <- renderPrint({
     analyseData() %>%
     summarise(avgWin = sum(winnings)/n(),
-              wins = sum(Result=="win"),
-              count = sum(Result!="NC" & Result!= "draw"),
-              winPer = paste0(round(wins/count * 100,2),"%"),
+              wins = sum(Result2=="win"),
+              count = n(),
+              winPer = ifelse(count==0, NA, paste0(round(wins/count * 100,2),"%")),
               ROI = paste0(round(sum(winnings)/(mean(bet)*n())*100, 2), "%"))
   })
   

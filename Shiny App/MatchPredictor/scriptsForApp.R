@@ -78,5 +78,4 @@ graphFighters <- function(fighterNames, title=NULL) {
   #   filter(Fighter1 %in% fighterNames)
   
 }
-g <- graphFighters(c("Darren Till", "Jorge Masvidal"))
-ggplotly(g)
+
