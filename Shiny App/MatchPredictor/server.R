@@ -92,13 +92,15 @@ function(input, output, session) {
   
   output$rating1 <- renderUI({
     paste0("<b>Rating: </b>", dataset1() %>% pull(r1b), 
-           " (", dataset1() %>% pull(ratIncrease1) %>% with_plus, ")") %>% 
+           " (", dataset1() %>% pull(ratIncrease1) %>% with_plus, ")",
+           " (", dataset1() %>% pull(ratIncrease1_3) %>% with_plus, ")") %>% 
       HTML
     })
   
   output$rating2 <- renderUI({
     paste0("<b>Rating: </b>", dataset2() %>% pull(r1b), 
-           " (", dataset2() %>% pull(ratIncrease1) %>% with_plus, ")") %>% 
+           " (", dataset2() %>% pull(ratIncrease1) %>% with_plus, ")",
+           " (", dataset2() %>% pull(ratIncrease1_3) %>% with_plus, ")") %>% 
       HTML
     })
   

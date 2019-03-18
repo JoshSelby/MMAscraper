@@ -5,7 +5,7 @@ source('~/GitHub/MMAscraper/Shiny App/MatchPredictor/scriptsForApp.R', echo=TRUE
 
 
 filtData <- filtfightsOdds %>%
-  select(Link1, Link2, Result2, Method, Date, Event, odds, r1b, r2b, Age1, Age2, ratIncrease1, ratIncrease2) %>% 
+  select(Link1, Link2, Result2, Method, Date, Event, odds, r1b, r2b, Age1, Age2, ratIncrease1, ratIncrease2, ratIncrease1_3, ratIncrease2_3) %>% 
   filter(Result2 %in% c("win", "loss")) %>%
   mutate(bet = 10,
          winnings = ifelse(Result2 %in% c("NC", "draw"), 0, ifelse(odds>0,ifelse(Result2=="win", odds*bet/100, -bet),
@@ -24,7 +24,9 @@ test <- filtfightsOdds %>%
                             per_to_line(winper-0.05) %>% round(0),")"),
     ageCheck = paste0("between(Age1-Age2, ",round(Age1-Age2-1.5, 1),", ", round(Age1-Age2+1.5, 1),")"),
     ratCheck = paste0("between(r1b-r2b, ",round(r1b-r2b-50, 0),", ", round(r1b-r2b+50, 0),")"),
-    datCheck = paste0("Date < ", "'",Date,"'"),
+    trendCheck = paste0("between(ratIncrease1_3-ratIncrease2_3, ",round(ratIncrease1_3-ratIncrease2_3-50, 0),", ", 
+                        round(ratIncrease1_3-ratIncrease2_3+50, 0),")"),
+    dateCheck = paste0("Date < ", "'",Date,"'"),
     ROI = NA,
     count = NA
   ) %>%
@@ -33,7 +35,7 @@ test <- filtfightsOdds %>%
 
 for (i in 1:nrow(test)) {
   data <- filtData %>% 
-    filter(eval_tidy(parse_expr(paste(test[i, 61:63] %>% as.character, collapse=" & ")))) %>%
+    filter(eval_tidy(parse_expr(paste(test[i, 61:64] %>% as.character, collapse=" & ")))) %>%
     summarise(avgWin = sum(winnings)/n(),
               wins = sum(Result2=="win"),
               count = n(),
@@ -55,7 +57,7 @@ test <- test %>%
 
 test %>%
   filter(Date >= '2015-01-01' & count > 25 & Result %in% c("win", "loss")) %>%
-  group_by(year(Date), first = ROI<0 & winPerSimFight - line_to_per(odds)  > 0.25 | ROI >0 & winPerSimFight - line_to_per(odds)  > 0.08) %>%
+  group_by(first = ROI<0 & winPerSimFight - line_to_per(odds)  > 0.25 | ROI >0 & winPerSimFight - line_to_per(odds)  > 0.08) %>%
   summarise(
     fights = n(),
     winnings = sum(winnings),
@@ -63,5 +65,11 @@ test %>%
     winper = sum(Result=="win")/n()
   )
 
+
+test %>% filter(odds>0, year(Date) == 2019, ROI > 5, count > 25) %>% View
+
+
+
+#first = ROI<0 & winPerSimFight - line_to_per(odds)  > 0.25 | ROI >0 & winPerSimFight - line_to_per(odds)  > 0.08
 
 
