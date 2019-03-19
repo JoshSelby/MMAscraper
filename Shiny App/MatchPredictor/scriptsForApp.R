@@ -52,7 +52,7 @@ odds_to_return <- function(x, bet=10) {
 
 
 ######
-graphFighters <- function(fighterNames, title=NULL) {
+graphFighters <- function(fighterNames, title=NULL, opponent=FALSE) {
   Fighters <- fightMetricsEventOdds %>% 
     filter(Fighter1 %in% fighterNames) %>% 
     group_by(Link1, Fighter1) %>% 
@@ -62,13 +62,15 @@ graphFighters <- function(fighterNames, title=NULL) {
     slice(1) %>% 
     pull(Link1)
   
-  g <- ggplot(fightMetricsEventOdds %>% 
+  ggplot(fightMetricsEventOdds %>% 
                 mutate(Date = as.Date(Date)) %>%
-                rename(Rating = r1a, Fighter = Fighter1) %>%
+                rename(Rating = r1a, Fighter = Fighter1, Opponent = r2b) %>%
                 filter(Link1 %in% Fighters),
-              aes(x = Date, y = Rating, col = Fighter)) + 
-    geom_line() + 
-    geom_point() + 
+              aes(x = Date)) + 
+    geom_line(aes(y=Rating, col=Fighter)) +
+    geom_point(aes(y=Rating, col=Fighter)) +
+    {if(opponent) geom_point(aes(y=Opponent, col=Fighter, shape = 1))} +
+    scale_shape_identity() +
     scale_x_date(breaks = function(x) seq.Date(from=min(x), to=max(x), by="2 years"), date_labels = "%Y") +
     xlab("Date") +
     ylab("Elo Rating") +
