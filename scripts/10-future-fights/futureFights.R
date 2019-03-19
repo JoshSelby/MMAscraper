@@ -12,6 +12,11 @@ filtfightsOdds <- readRDS("./scripts/8-append-odds/data/filtfightsOdds.RDS")
 Sherdog_to_BFO <- readRDS("./scripts/8-append-odds/data/Sherdog_to_BFO.RDS")
 futureOdds <- readRDS("./scripts/7-scrape-odds/data/futureOdds.RDS")
 
+futureOdds <- futureOdds %>% 
+  filter((opponent == "John-Makdessi-2163" & fighter == "Jesus-Pinedo-8714") |
+           (fighter == "John-Makdessi-2163" & opponent == "Jesus-Pinedo-8714") |
+           !grepl("John-Makdessi|Jesus-Pinedo",paste(fighter,opponent)))
+
 
 futureFights <- futureOdds %>%
   left_join(Sherdog_to_BFO, by=c("fighter" = "BFO")) %>%
