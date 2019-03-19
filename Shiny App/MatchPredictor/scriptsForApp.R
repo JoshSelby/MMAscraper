@@ -1,4 +1,6 @@
-detach("package:tidyverse")
+if("tidyverse" %in% (.packages())){
+  detach("package:tidyverse", unload=TRUE) 
+}
 library(shiny)
 library(shinyjs)
 library(shinysky)
