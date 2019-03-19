@@ -222,6 +222,10 @@ mistakes <- Sherdog_to_BFO %>%
 filtfightsOdds <- filtfightsOdds %>% 
   filter(!(BFO1 %in% mistakes) & !(BFO2 %in% mistakes))
 
+
+Sherdog_to_BFO <- Sherdog_to_BFO %>% 
+  rbind(c("Fernando-Rodrigues-Jr-119259", "Fernando-Rodrigues-8983"))
+
 saveRDS(Sherdog_to_BFO, "./scripts/8-append-odds/data/Sherdog_to_BFO.RDS")
 saveRDS(filtfightsOdds, "./scripts/8-append-odds/data/filtfightsOdds.RDS")
 saveRDS(filtfightsOdds, "./Shiny App/MatchPredictor/data/filtfightsOdds.RDS")

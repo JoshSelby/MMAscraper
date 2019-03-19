@@ -144,6 +144,7 @@ futureFights <- futureFights %>%
   select(-match_id, -Result, -Method, -Method_d, -r1a, -r2a, -Fighter1, -Fighter2, -R, -Time, -Referee, -Result2, -Org)
 
 
+saveRDS(Sherdog_to_BFO, "./scripts/8-append-odds/data/Sherdog_to_BFO.RDS")
 saveRDS(futureFights, "./scripts/10-future-fights/data/futureFights.RDS")
 saveRDS(futureFights, "./Shiny App/MatchPredictor/data/futureFights.RDS")
 

@@ -285,13 +285,14 @@ function(input, output, session) {
   output$eloGraph <- renderPlotly({
     fighter1 <- dataset1() %>% pull(Name1)
     fighter2 <- dataset2() %>% pull(Name1)
-    g <- graphFighters(c(fighter1, fighter2))
-    ggplotly(g) %>% 
-      layout(legend = list(x=0, y=1, font=list(size = 8), tracegroupgap = 7), 
-             xaxis = list(title=""), 
+    g <- graphFighters(c(fighter1, fighter2), opponent = FALSE)
+    ggplotly(g) %>%
+      layout(legend = list(x=0, y=1, font=list(size = 8), tracegroupgap = 7),
+             xaxis = list(title=""),
              yaxis = list(title=""),
              margin = list(l=0,r=0,b=0,t=0, pad = 0)) %>%
       config(displayModeBar = F)
+    
       
   })
   
