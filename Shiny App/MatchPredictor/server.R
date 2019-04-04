@@ -291,7 +291,7 @@ function(input, output, session) {
              xaxis = list(title=""),
              yaxis = list(title=""),
              margin = list(l=0,r=0,b=0,t=0, pad = 0)) %>%
-      config(displayModeBar = F)
+      plotly::config(displayModeBar = F)
     
       
   })

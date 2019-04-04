@@ -20,33 +20,44 @@ filtData <- filtfightsOdds %>%
 test <- filtfightsOdds %>% 
   rowwise() %>%
   mutate(winper = line_to_per(odds),
-    oddsCheck = paste0("between(odds, ",odds %>% round(0),", ",
+    oddsCheck = paste0("between(odds, ",per_to_line(winper+0.05) %>% round(0),", ",
                             per_to_line(winper-0.05) %>% round(0),")"),
     ageCheck = paste0("between(Age1-Age2, ",round(Age1-Age2-1.5, 1),", ", round(Age1-Age2+1.5, 1),")"),
     ratCheck = paste0("between(r1b-r2b, ",round(r1b-r2b-50, 0),", ", round(r1b-r2b+50, 0),")"),
-    trendCheck = paste0("between(ratIncrease1_3-ratIncrease2_3, ",round(ratIncrease1_3-ratIncrease2_3-50, 0),", ", 
-                        round(ratIncrease1_3-ratIncrease2_3+50, 0),")"),
     dateCheck = paste0("Date < ", "'",Date,"'"),
-    ROI = NA,
-    count = NA
+    trendCheck = paste0("between(ratIncrease1_3-ratIncrease2_3, ",round(ratIncrease1_3-ratIncrease2_3-50, 0),", ", 
+                        round(ratIncrease1_3-ratIncrease2_3+50, 0),")")
   ) %>%
   arrange(match_id)
 
 
 for (i in 1:nrow(test)) {
   data <- filtData %>% 
-    filter(eval_tidy(parse_expr(paste(test[i, 61:64] %>% as.character, collapse=" & ")))) %>%
+    filter(eval_tidy(parse_expr(paste(test[i, 61:63] %>% as.character, collapse=" & ")))) %>%
     summarise(avgWin = sum(winnings)/n(),
               wins = sum(Result2=="win"),
               count = n(),
               winPerSimFight = ifelse(count==0, NA, wins/count),
               ROI = round(sum(winnings)/(mean(bet)*n())*100, 2))
-  test$winPerSimFight[i] <- data %>% pull(winPerSimFight)
-  test$ROI[i] <- data %>% pull(ROI)
-  test$count[i] <- data %>% pull(count)
+  test$winPerSimFight3[i] <- data %>% pull(winPerSimFight)
+  test$ROI3[i] <- data %>% pull(ROI)
+  test$count3[i] <- data %>% pull(count)
   print(i)
 }
 
+for (i in 1:nrow(test)) {
+  data <- filtData %>% 
+    filter(eval_tidy(parse_expr(paste(test[i, 60:63] %>% as.character, collapse=" & ")))) %>%
+    summarise(avgWin = sum(winnings)/n(),
+              wins = sum(Result2=="win"),
+              count = n(),
+              winPerSimFight = ifelse(count==0, NA, wins/count),
+              ROI = round(sum(winnings)/(mean(bet)*n())*100, 2))
+  test$winPerSimFight4[i] <- data %>% pull(winPerSimFight)
+  test$ROI4[i] <- data %>% pull(ROI)
+  test$count4[i] <- data %>% pull(count)
+  print(i)
+}
 
 
 test <- test %>%
@@ -56,8 +67,9 @@ test <- test %>%
   ungroup()
 
 test %>%
-  filter(Date >= '2015-01-01' & count > 25 & Result %in% c("win", "loss")) %>%
-  group_by(first = ROI<0 & winPerSimFight - line_to_per(odds)  > 0.25 | ROI >0 & winPerSimFight - line_to_per(odds)  > 0.08) %>%
+  filter(Date >= '2015-01-01' & count4 > 20 & Result %in% c("win", "loss")) %>%
+  group_by(((ROI3>3 | ROI4>3) & odds>0) |
+             (ROI3>10 & odds<0)) %>%
   summarise(
     fights = n(),
     winnings = sum(winnings),
@@ -65,8 +77,8 @@ test %>%
     winper = sum(Result=="win")/n()
   )
 
-
-test %>% filter(odds>0, year(Date) == 2019, ROI > 5, count > 25) %>% View
+test %>% filter(((ROI3>3 | ROI4>3) & odds>0) |
+                  (ROI3>10 & odds<0), year(Date) == 2019, ROI > 5, count > 25) %>% View
 
 
 
