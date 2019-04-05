@@ -7,10 +7,10 @@ fightMetrics <- readRDS(file = "./scripts/5-metrics/data/fightMetrics.rds")
 events <- tibble(Event = unique(fightMetrics$Event),
                  Org = gsub(" -.*", "", Event)) %>% 
   mutate(Org = ifelse(Org == "UFC", gsub(".* -", "", Event), Org),
-         Org = ifelse(grepl("^UFC - The Ultimate Fighter|^UFC \\d+|^UFC Fight Night|^UFC Live \\d|UFC on Fox \\d+|^UFC on Fuel TV \\d+|^UFC on FX", Event),
+         Org = ifelse(grepl("^UFC - The Ultimate Fighter|^UFC \\d+|^UFC Fight Night|^UFC Live \\d|UFC on Fox \\d+|^UFC on Fuel TV \\d+|^UFC on FX|^UFC on ESPN", Event),
                       "UFC", Org),
          Org = ifelse(grepl("Underground Fight Club", Event), "Underground Fight Club", Org),
-         Org = ifelse(grepl("Bellator Fighting Championships|Bellator MMA|^Bellator \\d{3}", Event), "Bellator", Org),
+         Org = ifelse(grepl("Bellator Fighting Championships|Bellator MMA|^Bellator \\d{3}|Bellator Newcastle", Event), "Bellator", Org),
          Org = gsub(" \\d+$", "", Org),
          Org = ifelse(grepl("^M-1", Event), "M-1", Org),
          Org = ifelse(grepl("^Strikeforce", Event), "Strikeforce", Org),
