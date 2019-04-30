@@ -12,22 +12,23 @@ library(DT)
 # read datasets
 futureFights <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/futureFights.RDS")
 
-fightMetricsEventOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/fightMetricsEventOdds.rds") %>%
+fightMetricsEventOdds2 <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/fightMetricsEventOdds.rds") %>%
   mutate(Date = as.character(Date),
          r1b = as.integer(r1b),
          r2b = as.integer(r2b),
          odds = as.integer(odds)) %>%
-  arrange(desc(match_id))
+  arrange(desc(match_id)) %>%
+  right_join(futureFights %>% select(Link1))
 
 filtfightsOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/filtfightsOdds.rds")
 
-topFighters <- fightMetricsEventOdds %>% 
-  group_by(Link1, Fighter1) %>%
-  arrange(desc(Date)) %>%
-  slice(1) %>%
-  select(Link1, Fighter1, r1a) %>%
-  arrange(desc(r1a)) %>% 
-  head(5000)
+# topFighters <- fightMetricsEventOdds %>% 
+#   group_by(Link1, Fighter1) %>%
+#   arrange(desc(Date)) %>%
+#   slice(1) %>%
+#   select(Link1, Fighter1, r1a) %>%
+#   arrange(desc(r1a)) %>% 
+#   head(5000)
 
 # extra functions
 with_plus <- function(x, ...) {
