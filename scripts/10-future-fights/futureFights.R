@@ -49,9 +49,6 @@ if (length(noSherdog)!=0) {
   #Manually enter
   Sherdog_to_BFO <- minitbl %>%
     full_join(Sherdog_to_BFO) %>%
-    rbind(c("Claudio-Henrique-da-Silva-25830", "Claudio-Silva-8585"),
-          c("Nicolae-Negumereanu-237147", "Nick-Negumereanu-8967"),
-          c("Saparbek-Safarov-76834", "Saparbeg-Safarov-8578")) %>%
     unique()
 }
 

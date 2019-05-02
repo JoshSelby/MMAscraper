@@ -68,11 +68,12 @@ test <- test %>%
            round(2)) %>%
   ungroup()
 
+# What is my ROI?
 test %>%
-  filter(Date >= '2015-01-01' & count3 > 50 & Result %in% c("win", "loss")) %>%
-  group_by(
-    (((ROI3>=3 | ROI4>=3) & odds>0) | (ROI3>=10 & odds<0)) &
-    ROI3 > -11) %>%
+  filter(Date >= '2015-01-01' & count3 > 50 & count4 > 0 & Result %in% c("win", "loss")) %>%
+  filter((((ROI3>=3 | ROI4>=3) & odds>0) | (ROI3>=10 & odds<0)) &
+      ROI3 > -11 & !between(odds, -200, -151)) %>% 
+  group_by(odds=cut(odds, breaks=c(-10000,-400,-300,-200,-150,100,150,200,250,300,400,500,1000),right=F)) %>%
   summarise(
     fights = n(),
     winnings = sum(winnings),
@@ -80,8 +81,14 @@ test %>%
     winper = sum(Result=="win")/n()
   )
 
+
+# Fights in 2019 I should have bet on
 test %>% filter((((ROI3>=3 | ROI4>=3) & odds>0) | (ROI3>=10 & odds<0)) &
-                  ROI3 > -11, year(Date) == 2019, count3 > 50) %>% View
+                  ROI3 > -11, year(Date) == 2019, count3 > 50) %>% 
+  arrange(desc(match_id)) %>% 
+  select(Fighter1, Result, Fighter2, Date, Event, score, odds, r1b, r2b, Age1, 
+         Age2, bet, winnings, winper, count4, ROI3, ROI4) %>% 
+  View
 
 
 
@@ -139,5 +146,5 @@ for (i in 1:nrow(test2)) {
 test2 %>% 
   filter((((ROI3>3 | ROI4>3) & odds>0) |(ROI3>10 & odds<0)) & ROI3 > -11,
          year(Date) == 2019, count3 > 50) %>% 
-  select(Link1, Link2, Date, Event, odds, r1b, r2b, Age1, Age2, bet, potWinnings, winper, ROI3, ROI4) %>% 
+  select(Link1, Link2, Date, Event, odds, r1b, r2b, Age1, Age2, bet, potWinnings, winper, count4, ROI3, ROI4) %>% 
   View

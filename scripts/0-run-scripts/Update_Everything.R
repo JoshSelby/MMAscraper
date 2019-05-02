@@ -17,6 +17,7 @@ source('./scripts/9-various-tables/Add Gender.R', echo = TRUE)
 source('./scripts/7-scrape-odds/futureOdds.R', echo=TRUE)
 source('./scripts/10-future-fights/futureFights.R', echo = TRUE)
 
+source('./scripts/9-various-tables/ROI-analyse.R', echo=TRUE)
 
 
 #source('./scripts/6-model/model.R', echo=TRUE)
