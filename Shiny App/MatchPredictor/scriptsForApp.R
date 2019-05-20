@@ -22,13 +22,13 @@ fightMetricsEventOdds2 <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/
 
 filtfightsOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/filtfightsOdds.rds")
 
-# topFighters <- fightMetricsEventOdds %>% 
-#   group_by(Link1, Fighter1) %>%
-#   arrange(desc(Date)) %>%
-#   slice(1) %>%
-#   select(Link1, Fighter1, r1a) %>%
-#   arrange(desc(r1a)) %>% 
-#   head(5000)
+topFighters <- fightMetricsEventOdds2 %>%
+  group_by(Link1, Fighter1) %>%
+  arrange(desc(Date)) %>%
+  slice(1) %>%
+  select(Link1, Fighter1, r1a) %>%
+  arrange(desc(r1a)) %>%
+  head(5000)
 
 # extra functions
 with_plus <- function(x, ...) {
@@ -56,7 +56,7 @@ odds_to_return <- function(x, bet=10) {
 
 ######
 graphFighters <- function(fighterNames, title=NULL, opponent=FALSE) {
-  Fighters <- fightMetricsEventOdds %>% 
+  Fighters <- fightMetricsEventOdds2 %>% 
     filter(Fighter1 %in% fighterNames) %>% 
     group_by(Link1, Fighter1) %>% 
     summarise(maxRat = max(r1a)) %>% 
@@ -65,7 +65,7 @@ graphFighters <- function(fighterNames, title=NULL, opponent=FALSE) {
     slice(1) %>% 
     pull(Link1)
   
-  ggplot(fightMetricsEventOdds %>% 
+  ggplot(fightMetricsEventOdds2 %>% 
                 mutate(Date = as.Date(Date)) %>%
                 rename(Rating = r1a, Fighter = Fighter1, Opponent = r2b) %>%
                 filter(Link1 %in% Fighters),

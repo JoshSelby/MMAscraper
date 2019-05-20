@@ -90,6 +90,14 @@ test %>% filter((((ROI3>=3 | ROI4>=3) & odds>0) | (ROI3>=10 & odds<0)) &
          Age2, bet, winnings, winper, count4, ROI3, ROI4) %>% 
   View
 
+test %>% filter((((ROI3>=3 | ROI4>=3) & odds>0) | (ROI3>=10 & odds<0)) &
+                  ROI3 > -11, year(Date) == 2019, count3 > 50) %>% 
+  arrange(desc(match_id)) %>% 
+  select(Fighter1, Result, Fighter2, Date, Event, score, odds, r1b, r2b, Age1, 
+         Age2, bet, winnings, winper, count4, ROI3, ROI4) %>% 
+  group_by(Event,Date) %>% summarise(num=n(), winnings=sum(winnings)) %>%
+  arrange(desc(Date)) %>%
+  View
 
 
 ############### Find the best future fights to bet on
