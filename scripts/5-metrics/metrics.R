@@ -11,8 +11,8 @@ fightsElo <- readRDS(file = "./scripts/4-ratings/data/fightsElo.rds") %>%
 # Double the data
 fights1 <- fightsElo
 fights2 <- fightsElo %>%
-  mutate(Result = ifelse(Result=="win", "loss", Result),
-         Result2 = ifelse(Result2 == "win", "loss", Result2),
+  mutate(Result = if_else(Result=="win", "loss", Result),
+         Result2 = if_else(Result2 == "win", "loss", Result2),
          score = 1-score)
 
 colnames(fights2) <- fights2 %>% 
@@ -30,18 +30,20 @@ rm(fights1, fights2, fightsElo)
 
 fightMetrics <- fightMetrics %>%
   group_by(Link1) %>%
-  mutate(r1b = ifelse(wins1+loss1+draw1+nc1==0, 1000, r1b),
+  mutate(r1b = if_else(wins1+loss1+draw1+nc1==0, 1000, r1b),
          r1a = na.locf(r1a, na.rm = FALSE),
-         r1b = ifelse(is.na(r1b), r1a, r1b)
+         r1b = if_else(is.na(r1b), r1a, r1b),
+         r1a = if_else(is.na(r1a), r1b, r1a)
          ) %>%
   ungroup()
 
 
 fightMetrics <- fightMetrics %>%
   group_by(Link2) %>%
-  mutate(r2b = ifelse(wins2+loss2+draw2+nc2==0, 1000, r2b),
+  mutate(r2b = if_else(wins2+loss2+draw2+nc2==0, 1000, r2b),
          r2a = na.locf(r2a, na.rm = FALSE),
-         r2b = ifelse(is.na(r2b), r2a, r2b)) %>%
+         r2b = if_else(is.na(r2b), r2a, r2b),
+         r2a = if_else(is.na(r2a), r2b, r2a)) %>%
   ungroup() %>%
   as.data.table()
 
@@ -56,8 +58,8 @@ fightMetrics[,
               shift(), # Average rating of last 5 opponents
              highestWin1_5 = coalesce(roll_maxr((Result2=="win")*r2b, 5), cummax(((Result2=="win")*r2b))) %>%
                shift(), # Highest rated fighter defeated in last 5 fights
-             lowestLoss1_5 = coalesce(roll_minr(ifelse((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b), 5),
-                                      cummin(ifelse((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b))) %>%
+             lowestLoss1_5 = coalesce(roll_minr(if_else((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b), 5),
+                                      cummin(if_else((Result2=="loss")*r2b == 0, 10000,(Result2=="loss")*r2b))) %>%
                shift(), # Lowest rated fighter lost to in last 5 fights
              koLosses1 = cumsum(Result == "loss" & (Method=="TKO"|Method=="KO")) %>%
               shift(), # number of KO losses
@@ -77,8 +79,8 @@ fightMetrics[,
                shift(), 
              highestWin2_5 = coalesce(roll_maxr((Result2=="loss")*r1b, 5), cummax(((Result2=="loss")*r1b))) %>%
                shift(), 
-             lowestLoss2_5 = coalesce(roll_minr(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b), 5),
-                                      cummin(ifelse((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b))) %>%
+             lowestLoss2_5 = coalesce(roll_minr(if_else((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b), 5),
+                                      cummin(if_else((Result2=="win")*r1b == 0, 10000,(Result2=="win")*r1b))) %>%
                shift(),
              koLosses2 = cumsum(Result == "win" & (Method=="TKO"|Method=="KO")) %>%
                shift(), 
@@ -103,10 +105,10 @@ fightMetrics[wins2+loss2+draw2+nc2==0,
 
 fightMetrics <- fightMetrics %>%
   as.tibble() %>%
-  mutate(highestWin1_5 = ifelse(highestWin1_5==0, NA, highestWin1_5),
-         highestWin2_5 = ifelse(highestWin2_5==0, NA, highestWin2_5),
-         lowestLoss1_5 = ifelse(lowestLoss1_5==10000, NA, lowestLoss1_5),
-         lowestLoss2_5 = ifelse(lowestLoss2_5==10000, NA, lowestLoss2_5))
+  mutate(highestWin1_5 = if_else(highestWin1_5==0, NA, highestWin1_5),
+         highestWin2_5 = if_else(highestWin2_5==0, NA, highestWin2_5),
+         lowestLoss1_5 = if_else(lowestLoss1_5==10000, NA, lowestLoss1_5),
+         lowestLoss2_5 = if_else(lowestLoss2_5==10000, NA, lowestLoss2_5))
 
 
 
