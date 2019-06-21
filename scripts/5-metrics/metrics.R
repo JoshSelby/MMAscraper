@@ -105,10 +105,10 @@ fightMetrics[wins2+loss2+draw2+nc2==0,
 
 fightMetrics <- fightMetrics %>%
   as.tibble() %>%
-  mutate(highestWin1_5 = if_else(highestWin1_5==0, NA, highestWin1_5),
-         highestWin2_5 = if_else(highestWin2_5==0, NA, highestWin2_5),
-         lowestLoss1_5 = if_else(lowestLoss1_5==10000, NA, lowestLoss1_5),
-         lowestLoss2_5 = if_else(lowestLoss2_5==10000, NA, lowestLoss2_5))
+  mutate(highestWin1_5 = if_else(highestWin1_5==0, NA_real_, highestWin1_5),
+         highestWin2_5 = if_else(highestWin2_5==0, NA_real_, highestWin2_5),
+         lowestLoss1_5 = if_else(lowestLoss1_5==10000, NA_real_, lowestLoss1_5),
+         lowestLoss2_5 = if_else(lowestLoss2_5==10000, NA_real_, lowestLoss2_5))
 
 
 

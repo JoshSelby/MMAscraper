@@ -4,10 +4,10 @@ library(tidyverse)
 fightMetricsEventOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/fightMetricsEventOdds.rds")
 
 fightMetricsEventOdds %>%
-  filter(grepl("Jon-Jones", Link1)) %>% pull(Link1) %>% unique
+  filter(grepl("Mike-Wilkins", Link1)) %>% pull(Link1) %>% unique
 
 searched <- c()
-toSearch <- "Jon-Jones-27944"
+toSearch <- "Mike-Wilkins-37446"
 fighterOpp <- tibble(Link1 = as.character(NA), Link0 = toSearch)
 fighterOpp1 <- tibble()
 i= 1
