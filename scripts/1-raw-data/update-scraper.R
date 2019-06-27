@@ -1,6 +1,9 @@
 library(tidyverse)
 library(rvest)
 library(data.table)
+library(RSQLite)
+
+mydb <- dbConnect(RSQLite::SQLite(), "MMA-db.sqlite")
 
 # Get all fights you already scraped
 fights <- readRDS(file = "./scripts/2-clean-data/data/fights_clean.rds")
