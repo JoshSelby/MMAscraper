@@ -40,8 +40,7 @@ fights <- readRDS(file = "./scripts/11-decision-scraper/data/fights.RDS")
            Result2 = ifelse(Link1 == "Francisco-Rivera-11908" & Link2 == "Roland-Delorme-37351" & Date == "2012-07-21", "win", Result2),
            Result2 = ifelse(Link1 == "Chris-Clements-13469" & Link2 == "Matt-Riddle-34072" & Date == "2012-07-21", "loss", Result2),
            Result2 = ifelse(Link1 == "Brandon-Vera-4886" & Link2 == "Thiago-Silva-14396" & Date == "2011-01-01", "loss", Result2),
-           Result2 = ifelse(Link1 == "Dong-Hyun-Kim-16374" & Link2 == "Karo-Parisyan-5153" & Date == "2009-01-31", "loss", Result2),
-           Result2 = ifelse(Link1 == "Brandon-Vera-4886" & Link2 == "Thiago-Silva-14396" & Date == "2011-01-01", "loss", Result2)
+           Result2 = ifelse(Link1 == "Dong-Hyun-Kim-16374" & Link2 == "Karo-Parisyan-5153" & Date == "2009-01-31", "loss", Result2)
     )
 }
 
