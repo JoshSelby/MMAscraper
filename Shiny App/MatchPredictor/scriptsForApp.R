@@ -22,13 +22,6 @@ fightMetricsEventOdds2 <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/
 
 filtfightsOdds <- readRDS("~/GitHub/MMAscraper/Shiny App/MatchPredictor/data/filtfightsOdds.rds")
 
-topFighters <- fightMetricsEventOdds2 %>%
-  group_by(Link1, Fighter1) %>%
-  arrange(desc(Date)) %>%
-  slice(1) %>%
-  select(Link1, Fighter1, r1a) %>%
-  arrange(desc(r1a)) %>%
-  head(5000)
 
 # extra functions
 with_plus <- function(x, ...) {

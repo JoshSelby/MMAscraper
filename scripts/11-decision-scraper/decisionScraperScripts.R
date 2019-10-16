@@ -32,6 +32,17 @@ winAttr <- function(score1, score2, rounds) {
 }
 
 decisionScraper <- function(fightLink) {
+  if (!require("tidyverse")) install.packages("tidyverse")
+  library(tidyverse)
+  if (!require("httr")) install.packages("httr")
+  library(httr)
+  if (!require("xml2")) install.packages("xml2")
+  library(xml2)
+  if (!require("rvest")) install.packages("rvest")
+  library(jsonlite)
+  if (!require("lubridate")) install.packages("lubridate")
+  library(lubridate)
+  
   fightPage <- read_html(paste0("http://www.mmadecisions.com/", fightLink))
   
   date <- fightPage %>% 
@@ -44,6 +55,11 @@ decisionScraper <- function(fightLink) {
     html_nodes(".decision-top2 a") %>% 
     html_attr("href")
   
+  result <- fightPage %>%
+    html_nodes(".decision-middle i") %>%
+    html_text() %>%
+    trimws()
+  
   fighter1 <- fightPage %>%
     html_nodes(".decision-top a") %>%
     html_text() %>%
@@ -55,6 +71,12 @@ decisionScraper <- function(fightLink) {
     html_text() %>%
     trimws() %>%
     gsub("\\s", " ", .)
+  
+  fighter1_lname <- fighter1 %>% 
+    gsub("([[:print:]]* )(.*)", "\\2", .)
+  
+  fighter2_lname <- fighter2 %>% 
+    gsub("([[:print:]]* )(.*)", "\\2", .)
   
   fighter1Link <- fightPage %>%
     html_nodes(".decision-top a") %>%
@@ -74,7 +96,29 @@ decisionScraper <- function(fightLink) {
     matrix(3,2,byrow=T) %>%
     apply(1, paste, collapse = "-")
   
-  decisions <- c(judgeDecisions, mediaDecisions)
+  fanvotes <- fightPage %>%
+    html_nodes("#scorecards_submitted b") %>%
+    html_text() %>%
+    as.numeric()
+  
+  fanDecisions_tbl <- fightPage %>%
+    html_nodes("#scorecard_totals .list, .selectedTop") %>% 
+    html_text() %>% 
+    matrix(ncol = 3, byrow = T) %>% 
+    as.tibble() %>%
+    mutate(num = V3 %>% 
+             gsub("%", "", .) %>%
+             as.numeric() %>%
+             '/'(100) %>%
+             '*'(fanvotes) %>%
+             round(digits = 0),
+           V4 = if_else(grepl(paste0(fighter2_lname,".*",fighter1_lname), V1),
+                        gsub("(.*)(-)(.*)", "\\3\\2\\1", V2), V2)
+           )
+  
+  fanDecisions <- rep(fanDecisions_tbl$V4, fanDecisions_tbl$num)
+  
+  decisions <- c(judgeDecisions, mediaDecisions, fanDecisions)
   
   rounds <- fightPage %>% 
     html_nodes("td td td:nth-child(2) .list:nth-child(1)") %>% 
@@ -82,14 +126,81 @@ decisionScraper <- function(fightLink) {
     as.numeric() %>%
     tail(1)
   
-  fighter1Scores <- decisions %>% 
-    gsub("-.*", "", .) %>%
-    as.numeric()
-  fighter2Scores <- decisions %>% 
-    gsub(".*-", "", .) %>%
-    as.numeric()
+  decisionsToScore <- function(decisions, fighter = 1) {
+    if(fighter == 1) {
+      score <- decisions %>% 
+        gsub("-.*", "", .) %>%
+        as.numeric()
+    }
+    else if(fighter == 2){
+      score <- decisions %>% 
+        gsub(".*-", "", .)%>%
+        as.numeric()
+    }
+  
+    return(score)
+  }
+  
+  
+  fighter1Scores <- decisionsToScore(decisions, 1)
+  fighter2Scores <- decisionsToScore(decisions, 2)
   
   fighter1winAttr <- winAttr(mean(fighter1Scores), mean(fighter2Scores), rounds)
-  return(tibble(date, fighter1, fighter2, f1Score = mean(fighter1Scores), f2Score = mean(fighter2Scores), rounds, fighter1winAttr, media = length(mediaDecisions), judge = length(judgeDecisions), fighter1Link, fighter2Link, eventLink))
+  f1winAttr_media <- winAttr(mean(decisionsToScore(mediaDecisions, 1)),
+                             mean(decisionsToScore(mediaDecisions, 2)), rounds)
+  f1winAttr_judge <- winAttr(mean(decisionsToScore(judgeDecisions, 1)),
+                             mean(decisionsToScore(judgeDecisions, 2)), rounds)
+  f1winAttr_fan <- winAttr(mean(decisionsToScore(fanDecisions, 1)),
+                           mean(decisionsToScore(fanDecisions, 2)), rounds)
+  
+  
+  return(tibble(date, 
+                fighter1, 
+                result,
+                fighter2, 
+                f1Score = mean(fighter1Scores), 
+                f2Score = mean(fighter2Scores), 
+                rounds, 
+                fighter1winAttr, 
+                media = length(mediaDecisions), 
+                judge = length(judgeDecisions), 
+                fan = fanvotes,
+                f1winAttr_media,
+                f1winAttr_judge,
+                f1winAttr_fan,
+                fighter1Link, 
+                fighter2Link, 
+                eventLink,
+                fightLink))
     
 }
+
+
+parScrapDecisions <- function(fightsMMAdec, num = 100) {
+  NumberOfCluster <- detectCores()
+  cl <- NumberOfCluster %>% makeCluster(outfile="log.txt")
+  registerDoSNOW(cl)
+  
+  
+  print(system.time({
+    pb <- fightsMMAdec %>%
+      head(num) %>% 
+      length %>%
+      txtProgressBar(max = ., style = 3)
+    progress <- function(n) setTxtProgressBar(pb, n)
+    opts <- list(progress = progress)
+    
+    decisions2 <<- foreach(fightLink = head(fightsMMAdec, num), 
+                             .combine = 'rbind', .multicombine = TRUE, 
+                             .maxcombine = 2, .export = c("decisionScraper", "winAttr"), 
+                             .options.snow = opts) %dopar% {
+                               decisionScraper(fightLink)
+                             } 
+  }))
+  
+  stopCluster(cl)
+  rm(NumberOfCluster, opts, pb)
+  
+}
+
+

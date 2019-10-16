@@ -24,14 +24,18 @@ if (exists("decisions")) {
 
 fightsMMAdec <- pblapply(events, fightsScraper) %>% unlist
 
-decisions <- pblapply(fightsMMAdec, decisionScraper) %>% 
-  bind_rows() %>%
-  rbind(if(exists("decisions")) decisions) %>%
-  unique
 
-fightsMMAdec <- decisions$eventLink
+decisions <- tibble()
+while(length(fightsMMAdec) > 0) {
+  parScrapDecisions(fightsMMAdec, 300)
+  decisions <- rbind(decisions, decisions2)
+  fightsMMAdec <- setdiff(fightsMMAdec, decisions2$fightLink)
+}
 
-saveRDS(fightsMMAdec, "./scripts/11-decision-scraper/data/fightsMMAdec.RDS")
+
+
+
+saveRDS(decisions$fightLink, "./scripts/11-decision-scraper/data/fightsMMAdec.RDS")
 saveRDS(decisions, "./scripts/11-decision-scraper/data/decisions.RDS")
 
 rm(list=ls())
